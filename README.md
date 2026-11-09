@@ -4,6 +4,8 @@
 
 This is the first working foundation milestone, not the entire application. It contains a responsive landing page, registration/login/recovery, secure sessions, onboarding, editable profiles/timezones, a protected dashboard with actual account activity, settings, and clearly marked future-feature screens. New accounts have no fabricated challenge statistics. No real money or payment integration exists.
 
+Public preview: **https://stakeup-olive.vercel.app**. Supabase is connected, but custom SMTP still needs configuration before general public email signup. See the deployment guide for current verification and rollout limits.
+
 ## Run locally
 
 Use Node 22.12+ (Node 24 LTS recommended) and npm. From the repository root:

@@ -10,7 +10,7 @@ Keep the requested stack. Use an npm-workspaces monorepo with a React/TypeScript
 
 In development, an explicit local-only adapter supplies persistent accounts and expiring HttpOnly sessions. It is disabled under NODE_ENV=production or VERCEL, listens only on loopback, checks mutation origins, and never presents itself as Supabase. No credentials are required to exercise the foundation. The file adapter is single-process development infrastructure, not a deployable database. Passwords use Node scrypt with random salts; sessions store token hashes. Production passwords and resets belong exclusively to Supabase Auth.
 
-Deploy the SPA and API as separate Vercel projects from this repository, proxying `/api` to the API project through a same-origin rewrite. Vercel's native Fastify support uses `apps/api/src/index.ts`, which starts the same application tested locally. Do not persist local state in serverless filesystems. Durable scheduled work will operate through transactional PostgreSQL functions, not in-process timers.
+Deploy the SPA and API as separate Vercel projects from this repository, proxying `/api` to the API project through a same-origin rewrite. The API uses a standard Vercel Node handler wrapping the same Fastify app tested locally. Internal TypeScript and shared contracts are bundled before function tracing; `src/index.ts` remains the local listening server. Do not persist local state in serverless filesystems. Durable scheduled work will operate through transactional PostgreSQL functions, not in-process timers.
 
 ## Initial project structure
 

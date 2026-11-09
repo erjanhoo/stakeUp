@@ -1,5 +1,7 @@
 # Foundation verification
 
+**Update:** the foundation is now deployed and Supabase is configured. See [public preview verification](PUBLIC_PREVIEW.md) for current external verification and remaining SMTP/Git integration limits. The notes below describe the original local foundation checkpoint.
+
 Story: a person visits the landing page, creates a persistent account, completes onboarding, sees their own account dashboard, saves profile/timezone changes, signs out, signs in again and can recover a forgotten password.
 
 ## Verified locally on 2026-11-09

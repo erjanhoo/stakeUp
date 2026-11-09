@@ -12,7 +12,7 @@
   },
   "scripts": {
     "dev": "concurrently -k -n api,web -c yellow,cyan \"npm run dev -w @stakeup/api\" \"npm run dev -w @stakeup/web\"",
-    "build": "npm run build -w @stakeup/web && npm run build -w @stakeup/api",
+    "build": "npm run build -w @stakeup/web && npm run build -w @stakeup/api && npm run build:vercel -w @stakeup/api && npm run test:bundle -w @stakeup/api",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",

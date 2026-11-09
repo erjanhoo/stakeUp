@@ -1,4 +1,8 @@
-import Fastify, { type FastifyReply } from 'fastify';
+import Fastify, {
+  type FastifyReply,
+  type FastifyInstance,
+  type FastifyServerOptions,
+} from 'fastify';
 import cookie from '@fastify/cookie';
 import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
@@ -16,15 +20,22 @@ import {
 import { AppError, LocalStore } from './local-store.js';
 import type { Config } from './config.js';
 
-export async function buildApp(config: Config) {
-  const app = Fastify({
+export function serverOptions(): FastifyServerOptions {
+  return {
     logger: {
       level: process.env.NODE_ENV === 'test' ? 'silent' : 'info',
       redact: ['req.headers.authorization', 'req.headers.cookie', 'res.headers["set-cookie"]'],
     },
     bodyLimit: 16_384,
     trustProxy: false,
-  });
+  };
+}
+
+export async function buildApp(config: Config) {
+  return configureApp(Fastify(serverOptions()), config);
+}
+
+export async function configureApp(app: FastifyInstance, config: Config) {
   await app.register(cookie);
   await app.register(helmet);
   await app.register(rateLimit, { max: 100, timeWindow: '1 minute' });

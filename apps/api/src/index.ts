@@ -1,7 +1,9 @@
-import { buildApp } from './create-app.js';
+import Fastify from 'fastify';
+import { configureApp, serverOptions } from './create-app.js';
 import { loadConfig } from './config.js';
 const config = loadConfig();
-const app = await buildApp(config);
+const app = Fastify(serverOptions());
+await configureApp(app, config);
 export default app;
 await app.listen({
   port: Number(process.env.PORT ?? 3001),
