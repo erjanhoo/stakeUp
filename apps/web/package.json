@@ -1,0 +1,30 @@
+{
+  "name": "@stakeup/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "dependencies": {
+    "@stakeup/contracts": "*",
+    "@supabase/supabase-js": "2.119.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-router-dom": "7.18.5",
+    "lucide-react": "1.70.0",
+    "motion": "14.11.1",
+    "@radix-ui/react-slot": "1.5.0",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "tailwind-merge": "3.7.0"
+  },
+  "devDependencies": {
+    "vite": "8.3.7",
+    "@vitejs/plugin-react": "6.3.0",
+    "tailwindcss": "4.3.5",
+    "@tailwindcss/vite": "4.3.5"
+  }
+}
