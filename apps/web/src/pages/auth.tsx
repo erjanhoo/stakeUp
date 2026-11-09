@@ -12,6 +12,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { api, message, supabase } from '../lib/api';
 import { useAuth } from '../lib/auth';
+import { afterSignIn } from '../lib/social';
 
 export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot' | 'reset' }) {
   const auth = useAuth();
@@ -23,7 +24,9 @@ export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot'
   const [recoveryUrl, setRecoveryUrl] = useState<string | null>(null);
   if (auth.loading) return <Loading full />;
   if (auth.profile && (variant === 'login' || variant === 'register'))
-    return <Navigate to={auth.profile.onboardingCompleted ? '/app' : '/onboarding'} replace />;
+    return (
+      <Navigate to={auth.profile.onboardingCompleted ? afterSignIn() : '/onboarding'} replace />
+    );
   const titles = {
     login: 'Good to have you back.',
     register: 'Your day one starts here.',
@@ -101,8 +104,8 @@ export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot'
           if (result.error) throw result.error;
         }
       } else await api(`/auth/${variant}`, { method: 'POST', body: JSON.stringify(input) });
-      await auth.refresh();
-      navigate('/app');
+      const current = await auth.refresh();
+      navigate(current?.onboardingCompleted ? afterSignIn() : '/onboarding');
     } catch (error) {
       if (error && typeof error === 'object' && 'issues' in error)
         setError((error.issues as { message: string }[])[0].message);
@@ -194,9 +197,9 @@ export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot'
                     name="password"
                     type={showPassword ? 'text' : 'password'}
                     autoComplete={variant === 'login' ? 'current-password' : 'new-password'}
-                    placeholder={variant === 'login' ? 'Your password' : 'At least 12 characters'}
+                    placeholder={variant === 'login' ? 'Your password' : 'At least 8 characters'}
                     required
-                    minLength={variant === 'login' ? 1 : 12}
+                    minLength={variant === 'login' ? 1 : 8}
                     maxLength={128}
                   />
                   <button

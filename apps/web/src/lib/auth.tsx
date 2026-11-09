@@ -1,14 +1,15 @@
 import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from 'react';
-import type { Profile, RuntimeConfig, ProfileInput } from '@stakeup/contracts';
+import type { Profile, RuntimeConfig, ProfileInput, Appearance } from '@stakeup/contracts';
 import { api, ApiError, supabase, message } from './api';
 interface AuthState {
   profile: Profile | null;
   mode: RuntimeConfig['authMode'] | null;
   loading: boolean;
   error: string;
-  refresh: () => Promise<void>;
+  refresh: () => Promise<Profile | null>;
   signOut: () => Promise<void>;
   update: (input: ProfileInput) => Promise<void>;
+  updateAppearance: (appearance: Appearance) => Promise<void>;
 }
 const AuthContext = createContext<AuthState | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -18,11 +19,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState('');
   const refresh = useCallback(async () => {
     try {
-      setProfile(await api<Profile>('/me'));
+      const current = await api<Profile>('/me');
+      setProfile(current);
       setError('');
+      return current;
     } catch (error) {
-      if (error instanceof ApiError && error.status === 401) setProfile(null);
-      else throw error;
+      if (error instanceof ApiError && error.status === 401) {
+        setProfile(null);
+        return null;
+      } else throw error;
     }
   }, []);
   useEffect(() => {
@@ -68,8 +73,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function update(input: ProfileInput) {
     setProfile(await api<Profile>('/me', { method: 'PATCH', body: JSON.stringify(input) }));
   }
+  async function updateAppearance(appearance: Appearance) {
+    setProfile(
+      await api<Profile>('/me/appearance', { method: 'PATCH', body: JSON.stringify(appearance) }),
+    );
+  }
   return (
-    <AuthContext.Provider value={{ profile, mode, loading, error, refresh, signOut, update }}>
+    <AuthContext.Provider
+      value={{ profile, mode, loading, error, refresh, signOut, update, updateAppearance }}
+    >
       {children}
     </AuthContext.Provider>
   );

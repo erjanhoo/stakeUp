@@ -8,13 +8,26 @@ import { Button } from './components/ui/button';
 import { Shell } from './components/shell';
 import { Landing } from './pages/landing';
 import './styles.css';
+import './themes.css';
+import './social.css';
+import { AppearanceProvider } from './lib/appearance';
+import { afterSignIn } from './lib/social';
 const AuthPage = lazy(() => import('./pages/auth').then((m) => ({ default: m.AuthPage })));
 const DashboardPage = lazy(() =>
   import('./pages/dashboard').then((m) => ({ default: m.DashboardPage })),
 );
-const CirclesPage = lazy(() =>
-  import('./pages/dashboard').then((m) => ({ default: m.CirclesPage })),
+const CirclesPage = lazy(() => import('./pages/social').then((m) => ({ default: m.CirclesPage })));
+const CirclePage = lazy(() => import('./pages/social').then((m) => ({ default: m.CirclePage })));
+const CreateCircle = lazy(() =>
+  import('./pages/social').then((m) => ({ default: m.CreateCircle })),
 );
+const CreateChallenge = lazy(() =>
+  import('./pages/social').then((m) => ({ default: m.CreateChallenge })),
+);
+const ChallengePage = lazy(() =>
+  import('./pages/social').then((m) => ({ default: m.ChallengePage })),
+);
+const JoinCircle = lazy(() => import('./pages/social').then((m) => ({ default: m.JoinCircle })));
 const ActivityPage = lazy(() =>
   import('./pages/dashboard').then((m) => ({ default: m.ActivityPage })),
 );
@@ -60,7 +73,7 @@ function Protected({ onboarding = false }: { onboarding?: boolean }) {
     );
   if (!profile) return <Navigate to="/login" replace />;
   if (!onboarding && !profile.onboardingCompleted) return <Navigate to="/onboarding" replace />;
-  if (onboarding && profile.onboardingCompleted) return <Navigate to="/app" replace />;
+  if (onboarding && profile.onboardingCompleted) return <Navigate to={afterSignIn()} replace />;
   return <Outlet />;
 }
 function App() {
@@ -69,42 +82,49 @@ function App() {
       <MotionConfig reducedMotion="user">
         <BrowserRouter>
           <AuthProvider>
-            <Suspense fallback={<Loading full />}>
-              <Routes>
-                <Route path="/" element={<Landing />} />
-                <Route path="/login" element={<AuthPage variant="login" />} />
-                <Route path="/register" element={<AuthPage variant="register" />} />
-                <Route path="/forgot-password" element={<AuthPage variant="forgot" />} />
-                <Route path="/reset-password" element={<AuthPage variant="reset" />} />
-                <Route element={<Protected onboarding />}>
-                  <Route path="/onboarding" element={<Onboarding />} />
-                </Route>
-                <Route element={<Protected />}>
-                  <Route path="/app" element={<Shell />}>
-                    <Route index element={<DashboardPage />} />
-                    <Route path="circles" element={<CirclesPage />} />
-                    <Route path="activity" element={<ActivityPage />} />
-                    <Route path="notifications" element={<NotificationsPage />} />
-                    <Route path="settings" element={<Settings />} />
-                    <Route path="profile" element={<Navigate to="/app/settings" replace />} />
-                    <Route path="roadmap" element={<Roadmap />} />
+            <AppearanceProvider>
+              <Suspense fallback={<Loading full />}>
+                <Routes>
+                  <Route path="/" element={<Landing />} />
+                  <Route path="/login" element={<AuthPage variant="login" />} />
+                  <Route path="/register" element={<AuthPage variant="register" />} />
+                  <Route path="/forgot-password" element={<AuthPage variant="forgot" />} />
+                  <Route path="/reset-password" element={<AuthPage variant="reset" />} />
+                  <Route path="/join" element={<JoinCircle />} />
+                  <Route element={<Protected onboarding />}>
+                    <Route path="/onboarding" element={<Onboarding />} />
                   </Route>
-                </Route>
-                <Route
-                  path="*"
-                  element={
-                    <div className="fatal-page">
-                      <Brand />
-                      <span className="eyebrow">A LITTLE OFF THE PATH</span>
-                      <h1>This page hasn’t found its circle.</h1>
-                      <Button asChild>
-                        <Link to="/">Back to StakeUp</Link>
-                      </Button>
-                    </div>
-                  }
-                />
-              </Routes>
-            </Suspense>
+                  <Route element={<Protected />}>
+                    <Route path="/app" element={<Shell />}>
+                      <Route index element={<DashboardPage />} />
+                      <Route path="circles" element={<CirclesPage />} />
+                      <Route path="circles/new" element={<CreateCircle />} />
+                      <Route path="circles/:id" element={<CirclePage />} />
+                      <Route path="circles/:id/challenges/new" element={<CreateChallenge />} />
+                      <Route path="challenges/:id" element={<ChallengePage />} />
+                      <Route path="activity" element={<ActivityPage />} />
+                      <Route path="notifications" element={<NotificationsPage />} />
+                      <Route path="settings" element={<Settings />} />
+                      <Route path="profile" element={<Navigate to="/app/settings" replace />} />
+                      <Route path="roadmap" element={<Roadmap />} />
+                    </Route>
+                  </Route>
+                  <Route
+                    path="*"
+                    element={
+                      <div className="fatal-page">
+                        <Brand />
+                        <span className="eyebrow">A LITTLE OFF THE PATH</span>
+                        <h1>This page hasn’t found its circle.</h1>
+                        <Button asChild>
+                          <Link to="/">Back to StakeUp</Link>
+                        </Button>
+                      </div>
+                    }
+                  />
+                </Routes>
+              </Suspense>
+            </AppearanceProvider>
           </AuthProvider>
         </BrowserRouter>
       </MotionConfig>

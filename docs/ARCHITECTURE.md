@@ -28,7 +28,7 @@ Avoid separate microservices, a queue, an ORM, and a state framework until a ver
 
 ## Database schema proposal
 
-Implement foundation tables now; add remaining entities in the milestone that owns their behavior. UUID primary keys; UTC `timestamptz` audit fields; constrained enums/checks; indexed foreign keys. Preserve local civil dates separately from UTC instants.
+Foundation and phase-2 tables are implemented in versioned migrations; remaining entities arrive with their owning milestone. UUID primary keys; UTC `timestamptz` audit fields; constrained enums/checks; indexed foreign keys. Preserve local civil dates separately from UTC instants. Phase 2 stores immutable, validated challenge policies as versioned JSON snapshots inside the relational challenge entity, avoiding parallel mutable copies of accepted rules. See SOCIAL_CHALLENGES.md for current invariants.
 
 | Entity                                 | Key fields and invariants                                                                                                                                                                                 | Phase |
 | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
@@ -57,15 +57,17 @@ The full MVP is private circles, accepted and locked daily challenge rules, priv
 
 **Foundation acceptance:** registration, login, logout, session restoration, protected API and routes, onboarding, profile/timezone editing, Supabase password recovery, persistent local development alternative, a responsive home/dashboard, useful empty/error/loading states, foundation migration/RLS, automated checks, and setup documentation. New accounts start with zero activity. No seeded statistics appear as live user data.
 
-**Deferred explicitly:** circle mutations and invites, challenge enrollment/scheduling, camera/storage uploads including profile photos, AI requests, disputes, ledger mutations, rankings, social interactions, recaps, achievements, and notifications. Navigation may explain the next milestone, but must not pretend these features work. Do not ship arbitrary sample challenges as a user's own.
+**Social-challenge acceptance:** two distinct accounts join a private Circle through an expiring invitation, propose and accept identical immutable rules, and activate a fixed UTC schedule. Roles, privacy, enrollment locks, DST and appearance persistence have automated checks. This milestone is implemented locally and awaits a coordinated database/API/web release.
+
+**Deferred explicitly:** camera/storage uploads including profile and Circle photos, AI requests, disputes, ledger mutations, rankings, social reactions/comments, recaps, achievements, and notifications. Circle membership/challenge events are already recorded. Future-feature screens must identify their milestone. Do not ship arbitrary sample challenges as a user's own.
 
 ## UI/UX direction
 
-Dark graphite canvas, warm off-white text, orange action color with restrained lime success indicators. Use large editorial headings, fine borders, small uppercase labels, generous spacing, and a distinctive circular accountability motif. Desktop has a compact rail/sidebar; phones have a four-item bottom navigation. The home screen prioritizes today's commitments, then circle context and momentum. The landing screen explains the social loop. Honest empty states guide the next action; disabled future actions identify their milestone. Respect reduced motion, visible focus, contrast, keyboard navigation, explicit labels, and touch targets.
+Default dark graphite canvas with warm off-white text; optional warm light canvas. Appearance and accent are independent Settings choices: orange or electric lime works in either mode. Preferences persist per account and cache locally for first paint. Use large editorial headings, fine borders, small uppercase labels, generous spacing, and a distinctive circular accountability motif. Desktop has a compact rail/sidebar; phones have a four-item bottom navigation. The home screen prioritizes today's commitments, then circle context and momentum. Honest empty states guide the next action; future actions identify their milestone. Respect reduced motion, visible focus, contrast, keyboard navigation, explicit labels, and touch targets.
 
 ## Phased roadmap
 
-1. **Foundation (this change):** workspace, design tokens and primitives, local/Supabase auth adapters, onboarding/profile, server authorization, live account dashboard, migration, CI and deployment instructions.
+1. **Foundation (deployed):** workspace, design tokens and primitives, local/Supabase auth adapters, onboarding/profile, server authorization, live account dashboard, migration, CI and deployment instructions.
 2. **Social challenges:** circle CRUD, role rules, invite redemption, immutable challenge configuration and participant acceptance, local-date obligation generation and DST tests. Exit: two accounts join a private circle and accept the same rules.
 3. **Evidence:** private signed uploads with byte-signature/size checks, server receipt time, history, verification-provider abstraction and honest mock, cautiously scoped vision integration, dispute quorum/history. Exit: upload → review → resolution works across members with privacy tests.
 4. **Competition:** transactional deadline processing, caps/grace, balanced virtual ledger, standings and reward settlement. Exit: retries and concurrency cannot double-charge; settlement conserves every minor unit.
@@ -77,7 +79,7 @@ Each milestone runs TypeScript, relevant domain/API/database/browser tests, reco
 
 - Auth and RLS must agree. Never use a service-role key to bypass membership checks in normal API handlers. Test direct database calls as well as HTTP.
 - SPA bearer tokens are exposed to XSS; maintain a restrictive CSP, render text safely, avoid arbitrary HTML, and isolate third-party scripts. Local cookies are HttpOnly and same-site; Origin validation protects mutations.
-- Timezones and DST require an explicit policy: nonexistent cutoff moves to the first valid instant; ambiguous cutoff uses the later instant. Freeze a resolved deadline per obligation and test transitions before scheduling ships.
+- DST uses the later instant for an overlap and shifts a skipped time forward by the clock-change gap (02:30 becomes 03:30 for a one-hour jump). Temporal and PostgreSQL `AT TIME ZONE` agree in transition tests. Freeze deadlines at activation; future timezone database updates do not rewrite them.
 - Photos establish observations, not completion or capture time. Server receipt time proves only submission time. Duplicate hashes are signals, not proof of fraud. Never finalize disputed penalties while review is unresolved.
 - Peer collusion remains possible. Use a minimum two non-owner reviewers and strict majority; ties or insufficient quorum remain unresolved. Larger circles and moderator policies may be needed before launch.
 - Local persistence is deliberately not multi-process safe or a production auth substitute. Supabase email delivery, callback allowlists, migrations and RLS must be configured and tested against a real project before release.

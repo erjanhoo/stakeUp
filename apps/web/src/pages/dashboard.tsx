@@ -130,8 +130,9 @@ export function DashboardPage() {
             with a small promise.
           </h2>
           <p>
-            Your profile is ready. Next up: a circle of friends
-            <br className="desktop-break" /> who make showing up feel good.
+            {data?.circleCount
+              ? 'Your people are here. Pick the next promise you’ll keep together.'
+              : 'Your profile is ready. Bring a circle of friends who make showing up feel good.'}
           </p>
           <Button variant="secondary" asChild>
             <Link to="/app/circles">
@@ -211,31 +212,61 @@ export function DashboardPage() {
           <div className="panel-heading">
             <h2>
               Today’s commitments{' '}
-              <span className="count-pill">{data?.activeChallenges ?? '—'}</span>
+              <span className="count-pill">{data?.commitments?.length ?? '—'}</span>
             </h2>
             <span className="subtle-label">ONE DAY AT A TIME</span>
           </div>
-          <div className="commitments-empty">
-            <div className="empty-orbit">
-              <span>
-                <Flag size={27} />
-              </span>
-              <i />
-              <i />
+          {data?.commitments?.length ? (
+            <div>
+              {data.commitments.map((o) => (
+                <Link
+                  key={o.id}
+                  className="today-commitment"
+                  to={`/app/challenges/${o.challengeId}`}
+                >
+                  <div>
+                    <strong>{o.title}</strong>
+                    <p>
+                      {o.circleName} · deadline{' '}
+                      {new Intl.DateTimeFormat('en', {
+                        timeZone: o.timezone,
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        timeZoneName: 'short',
+                      }).format(new Date(o.deadlineAt))}
+                    </p>
+                  </div>
+                  <ArrowUpRight size={18} />
+                </Link>
+              ))}
             </div>
-            <h3>A little space for a big goal.</h3>
-            <p>
-              Your daily commitments will live here.
-              <br />
-              First, find the people you want to grow with.
-            </p>
-            <Button variant="outline" asChild>
-              <Link to="/app/circles">
-                Explore your circles <ArrowRight size={16} />
-              </Link>
-            </Button>
-            <span className="phase-caption">Circle creation arrives in milestone 02.</span>
-          </div>
+          ) : (
+            <div className="commitments-empty">
+              <div className="empty-orbit">
+                <span>
+                  <Flag size={27} />
+                </span>
+                <i />
+                <i />
+              </div>
+              <h3>A little space for a big goal.</h3>
+              <p>
+                {data?.activeChallenges
+                  ? 'No commitments scheduled today.'
+                  : 'Your daily commitments will live here.'}
+                <br />
+                {data?.circleCount
+                  ? 'Explore your circle’s next shared promise.'
+                  : 'First, find the people you want to grow with.'}
+              </p>
+              <Button variant="outline" asChild>
+                <Link to="/app/circles">
+                  Explore your circles <ArrowRight size={16} />
+                </Link>
+              </Button>
+              <span className="phase-caption">Proof uploads arrive in milestone 03.</span>
+            </div>
+          )}
           <div className="commitments-foot">
             <ShieldCheck size={15} />
             <span>Clear rules. Friendly stakes. No real money.</span>
@@ -247,7 +278,9 @@ export function DashboardPage() {
             <Sprout size={19} />
           </div>
           <span className="steps-progress">
-            <span />
+            <span
+              style={{ width: data?.activeChallenges ? '100%' : data?.circleCount ? '66%' : '33%' }}
+            />
           </span>
           <div className="step-row completed">
             <span className="step-indicator">
@@ -258,16 +291,24 @@ export function DashboardPage() {
               <p>Your profile is good to go.</p>
             </div>
           </div>
-          <div className="step-row">
-            <span className="step-indicator">2</span>
+          <div className={`step-row ${data?.circleCount ? 'completed' : ''}`}>
+            <span className="step-indicator">{data?.circleCount ? <Check size={14} /> : 2}</span>
             <div>
               <strong>Bring your people</strong>
-              <p>Build your first private circle.</p>
-              <span className="pill">Coming in milestone 02</span>
+              <p>
+                {data?.circleCount
+                  ? 'Your circle is ready to grow.'
+                  : 'Build your first private circle.'}
+              </p>
+              <Link className="text-link" to="/app/circles">
+                Your circles <ArrowUpRight size={13} />
+              </Link>
             </div>
           </div>
-          <div className="step-row">
-            <span className="step-indicator">3</span>
+          <div className={`step-row ${data?.activeChallenges ? 'completed' : ''}`}>
+            <span className="step-indicator">
+              {data?.activeChallenges ? <Check size={14} /> : 3}
+            </span>
             <div>
               <strong>Make a shared promise</strong>
               <p>Pick a goal. Agree on the rules.</p>
@@ -294,42 +335,6 @@ export function DashboardPage() {
       <div className="dashboard-bottom-note">
         <span>✳</span> You don’t have to be perfect. You just have to show up.
       </div>
-    </>
-  );
-}
-export function CirclesPage() {
-  return (
-    <>
-      <div className="page-heading">
-        <span className="eyebrow">GOOD COMPANY. SHARED AMBITION.</span>
-        <h1>
-          Your people. Your circles<span>.</span>
-        </h1>
-        <p>Private spaces for friends who bring out your better.</p>
-      </div>
-      <section className="panel feature-empty">
-        <div className="empty-orbit">
-          <span>
-            <UsersRound size={28} />
-          </span>
-        </div>
-        <span className="eyebrow">ROOM FOR YOUR PEOPLE</span>
-        <h2>Everything’s better with a circle.</h2>
-        <p>
-          This is where your private groups will live. Circle creation, invitations, and member
-          roles are the next working milestone.
-        </p>
-        <Button disabled>Create a circle · coming next</Button>
-        <Button asChild variant="ghost">
-          <Link to="/app/roadmap">
-            See the development roadmap <ArrowUpRight size={16} />
-          </Link>
-        </Button>
-      </section>
-      <PhaseNote
-        title="Small circles. Strong commitments."
-        text="Invite friends with a private link, agree on the rules together, and build a habit that sticks."
-      />
     </>
   );
 }
@@ -401,7 +406,7 @@ export function Roadmap() {
         <h1>
           The road ahead<span>.</span>
         </h1>
-        <p>You’re using the foundation milestone. Here’s what works now, and what’s next.</p>
+        <p>Social challenges are here. Here’s what works now, and what’s next.</p>
       </div>
       <div className="roadmap-list">
         {[
@@ -415,7 +420,7 @@ export function Roadmap() {
             '02',
             'Your people, your promise',
             'Private circles, invitations, challenge rules, enrollment and timezone-aware deadlines.',
-            false,
+            true,
           ],
           [
             '03',

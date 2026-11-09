@@ -1,6 +1,6 @@
-# Proposed virtual reward policy v1 (implementation: phase 4)
+# Virtual reward policy v1 (accounting implementation: phase 4)
 
-All amounts are integer virtual cents. No real monetary value. Rules, formula version and eligibility threshold are accepted before activation and then locked.
+All amounts are integer virtual cents. No real monetary value. Phase 2 records `rewardPolicy: discipline_v1` in the hashed immutable rules snapshot and explicit acceptance record. This version fixes the 80% threshold and rules below; changing them requires a new version and a new proposal. Accounting is not executable until phase 4.
 
 - Scheduled obligations follow the challenge timezone/weekday policy. Successful days are accepted evidence only. Pending/disputed evidence blocks settlement.
 - Grace days apply chronologically to the earliest missed obligations, do not incur penalties, and are excluded from the completion denominator. An accepted day always counts as success.

@@ -1,26 +1,27 @@
-# Foundation verification
+# Verification and remaining work
 
-**Update:** the foundation is now deployed and Supabase is configured. See [public preview verification](PUBLIC_PREVIEW.md) for current external verification and remaining SMTP/Git integration limits. The notes below describe the original local foundation checkpoint.
+## Local milestone 2 checkpoint — 2026-11-10
 
-Story: a person visits the landing page, creates a persistent account, completes onboarding, sees their own account dashboard, saves profile/timezone changes, signs out, signs in again and can recover a forgotten password.
+- `npm run check`: strict TypeScript, 17 contract/API/client tests, Vite production build, Fastify build and HTTP verification of the bundled Vercel handler pass.
+- Six desktop/mobile Chromium journeys cover registration/onboarding, profile persistence, logout/login, recovery, two accounts joining a private Circle, explicit acceptance, activation, active-member leave restrictions, all four appearance combinations and persisted settings after reload.
+- Screenshots reviewed for active challenge and Settings, including light/electric lime and dark/orange. Browser tests check horizontal overflow and uncaught errors. Chromium touch emulation covers 390px; it is not physical iPhone/Safari or assistive-technology testing.
+- Both migrations applied successfully to fresh local PostgreSQL 17 with minimal Supabase Auth role fixtures. Foundation and social authorization scripts pass using real authenticated/anon roles and roll back all synthetic accounts. They test grants, outsider privacy, invitation expiry/idempotency, immutable reward/rule snapshots, ownership, atomic activation, schedule uniqueness, account appearance and DST agreement.
+- SQL/database checks are included in GitHub Actions alongside TypeScript/build/API/browser checks. The updated CI workflow itself has not yet run remotely.
 
-## Verified locally on 2026-11-09
+An initial browser test expected a manual profile link after signup; onboarding is automatic. Authentication now chooses its destination from the freshly loaded profile, keeping invitation continuation deterministic. A later mobile run was interrupted by development hot reload while shared contracts were being edited; final checks use unchanged application sources.
 
-- Strict TypeScript check across frontend, API, shared contracts and browser tests.
-- Thirteen contract/API/client tests: unauthenticated access, rejected cross-origin mutations, private account/dashboard data, persistent session restoration, hashed passwords/session tokens, concurrent duplicate registration, validated profile/timezone updates, identity-field tampering, onboarding audit events, incorrect passwords, logout revocation, single-use recovery and revoked sessions, local routes disabled in Supabase mode, production configuration rejection, malformed API routing responses and session-expiry status propagation.
-- Vite production build and Fastify TypeScript build.
-- Four Chromium browser journeys, desktop (1440 px) and mobile (390 px with touch emulation): landing → registration → onboarding → dashboard → reload → profile persistence → logout → login; forgotten-password → local mailbox → reset → login.
-- Screenshots of the landing and dashboard reviewed at both sizes; horizontal overflow assertions passed. Browser journeys recorded no uncaught page errors. Reduced-motion handling and keyboard focus styles are present.
-- npm installation audit reported zero known vulnerabilities at installation time. Versions are locked; this is not a substitute for ongoing dependency monitoring.
+## Public foundation checkpoint
 
-Browser tests initially found ambiguous field names because helper text and the password visibility button were included in implicit labels. Inputs now have explicit accessible names/descriptions. Mobile settings exposes password recovery and logout without relying on the desktop sidebar.
+The public foundation remains at [stakeup-olive.vercel.app](https://stakeup-olive.vercel.app). Its original external verification is recorded in [PUBLIC_PREVIEW.md](PUBLIC_PREVIEW.md): Vercel READY, public landing/auth/deep links, same-origin API health/configuration, unauthenticated authorization and disabled local recovery. Foundation RLS was also checked in the connected Supabase project.
 
-## Not verified / intentionally unfinished
+Milestone 2, themes and the eight-character policy are **not deployed**. Computer Use stopped because it could not verify the current browser URL on Windows. No subsequent browser actions were attempted. The remote migration and Auth minimum were not changed; the existing foundation stays online. See DEPLOYMENT.md for the coordinated release sequence.
 
-- **Real Supabase:** no configured project, credentials or SMTP service. Migration and RLS test script exist but were not executed against PostgreSQL. Docker CLI is present, but its engine is not running; no local PostgreSQL server was available. Connected registration, confirmation links, recovery links, RLS and persistence must be tested against a disposable project before release.
-- **Deployment:** Vercel-compatible entrypoint and configuration template are provided. Projects, API rewrite host, Supabase host, HTTPS origin and callback allowlists still require configuration. No live deployment was made.
-- **Device coverage:** Chromium mobile emulation, not a physical iPhone or Safari test. Assistive-technology and broader browser audits remain before public launch.
-- **Later milestones:** circles, invitations, challenge rules/enrollment, obligations/deadlines, photos including avatars, AI/peer reviews, disputes, ledger/penalties/rewards, rankings, social features and notifications. Their visible screens are honest empty states or roadmap notices, without simulated user achievements.
-- **Operational limits:** development JSON persistence is single-process only; serverless persistence requires Supabase. Rate limiting is per Fastify process; public production deployment needs platform limits and monitoring.
+## Still unverified or deferred
 
-Use `npm run check` and `npm run test:e2e` to reproduce the local checks. Use `supabase/tests/foundation.sql` and the deployment guide for external checks. E2E traces/screenshots and local account data are ignored by Git.
+- Managed Supabase/PostgREST integration for milestone 2, a successful real-user signup/confirmation/login/onboarding/invitation journey, actual recovery email delivery and production theme persistence.
+- Custom SMTP is missing; default Supabase mail is unsuitable for unrestricted public signup. Live minimum remains 12 until changed to 8 in Auth settings.
+- Evidence/private uploads, avatars, AI/peer review/disputes, virtual ledger/penalties/rewards, leaderboard, notifications and social reactions remain later milestones. Schedule creation is working; automatic deadline processing is not yet implemented.
+- Active challenge settlement, ownership transfer, account deletion/retention, physical devices, Safari and a broader accessibility audit remain required before general launch.
+- Local JSON persistence remains single-process and loopback-only. Process-local API rate limiting needs platform-wide controls and monitoring for public production use.
+
+Local test accounts, screenshots and traces live under ignored `.local` and `test-results` directories. Do not treat them as real production activity or commit them.

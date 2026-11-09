@@ -2,9 +2,9 @@
 
 **Show up. Together.** Private social accountability with friendly, entirely virtual stakes.
 
-This is the first working foundation milestone, not the entire application. It contains a responsive landing page, registration/login/recovery, secure sessions, onboarding, editable profiles/timezones, a protected dashboard with actual account activity, settings, and clearly marked future-feature screens. New accounts have no fabricated challenge statistics. No real money or payment integration exists.
+The repository contains foundation and social-challenge milestones: authentication, onboarding, profiles, saved dark/light appearance with orange/electric-lime accents, private Circles, expiring invitations, challenge proposals, explicit rule acceptance and locked timezone-aware schedules. Dashboard counts come from actual memberships and enrollment. Evidence and virtual accounting follow in later milestones; no real payments exist.
 
-Public preview: **https://stakeup-olive.vercel.app**. Supabase is connected, but custom SMTP still needs configuration before general public email signup. See the deployment guide for current verification and rollout limits.
+Public preview: **https://stakeup-olive.vercel.app** currently runs the earlier foundation release. The new milestone is not deployed: its Supabase migration and the live eight-character password policy still need applying. Custom SMTP is also required before general public email signup. See the deployment guide for the release sequence.
 
 ## Run locally
 
@@ -16,7 +16,7 @@ Copy-Item .env.example .env
 npm run dev
 ```
 
-Open **http://localhost:5173** (use `localhost`, not `127.0.0.1`, because mutation origins are checked). The API binds to `127.0.0.1:3001`; Vite proxies `/api`. Create an account with a password of at least 12 characters. There are no shared/default credentials.
+Open **http://localhost:5173** (use `localhost`, not `127.0.0.1`, because mutation origins are checked). The API binds to `127.0.0.1:3001`; Vite proxies `/api`. Create an account with a password of at least 8 characters. There are no shared/default credentials.
 
 Local accounts persist in ignored `.local/stakeup.json`. This file contains password hashes, email addresses, profiles and hashed sessions; treat it as private. Local mode is single-process, loopback-only development infrastructure. It is rejected in production and on Vercel. The password-recovery screen provides a clearly labeled local mailbox link instead of sending email. Browser tests use a separate ignored `.local/e2e-*.json` store. Remove only those files when you no longer need test accounts.
 
@@ -28,6 +28,7 @@ Stop development with Ctrl+C. No paid service is needed for this mode.
 - [Proposed virtual reward rules](docs/REWARD_RULES.md)
 - [Supabase and Vercel setup](docs/DEPLOYMENT.md)
 - [Foundation verification and known limitations](docs/VERIFICATION.md)
+- [Social challenges: rules, boundaries and acceptance checks](docs/SOCIAL_CHALLENGES.md)
 
 ```text
 apps/web             React + Vite + Tailwind + shadcn-style owned UI primitives
@@ -47,8 +48,8 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-`check` runs TypeScript, contract/API tests and both builds. Browser tests manage their own servers on 5173/3001; stop an existing development server before running them. They exercise registration → onboarding → dashboard → profile persistence → logout → login, and password recovery, at desktop and mobile sizes. CI runs these checks on pushes and pull requests.
+`check` runs TypeScript, contract/API tests, both builds and an HTTP check of the exact production API bundle. Browser tests manage their own servers on 5173/3001; stop an existing development server before running them. They cover account/recovery flows, two friends joining a Circle and activating accepted rules, and all four appearance combinations on desktop and mobile. CI also runs migrations and authorization tests against disposable PostgreSQL.
 
 ## Next milestone
 
-Private Circles, roles, expiring invitation redemption, challenge rule configuration, explicit enrollment and timezone-aware deadline generation. Evidence, AI, disputes, virtual ledgers, distributions, social features and notifications follow in later milestones. Profile photos ship with the secure upload pipeline in phase 3. See the architecture document for acceptance criteria and boundaries.
+Private photo uploads, evidence history, verification abstraction with a development mock, cautious AI analysis and peer disputes. Profile and Circle photos ship with this secure upload pipeline; current avatars use initials or icons. Virtual ledgers, distributions, social reactions and notifications follow afterward. See the architecture document for acceptance criteria and boundaries.

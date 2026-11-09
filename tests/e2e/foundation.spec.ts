@@ -44,7 +44,7 @@ test('landing → register → onboarding → dashboard → saved settings → l
   await expect(page.getByLabel('Display name')).toHaveValue('Maya Chen');
   await expect(page.getByLabel('Timezone', { exact: true })).toHaveValue('Asia/Bishkek');
   await page.goto('/app/circles');
-  await expect(page.getByRole('button', { name: /Create a circle/ })).toBeDisabled();
+  await expect(page.getByRole('link', { name: 'Create a circle', exact: true })).toBeVisible();
   await page.goto('/app/settings');
   await page.getByRole('button', { name: 'Log out of this account' }).click();
   await page.goto('/app');

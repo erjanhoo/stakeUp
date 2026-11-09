@@ -12,11 +12,18 @@ import {
   loginSchema,
   registerSchema,
   profileSchema,
+  appearanceSchema,
+  circleSchema,
+  challengeSchema,
+  invitationSchema,
   resetRequestSchema,
   resetPasswordSchema,
   type Profile,
   type Dashboard,
+  type SocialAction,
 } from '@stakeup/contracts';
+import { z } from 'zod';
+import { schedule, requireFutureStart } from './domain/challenges.js';
 import { AppError, LocalStore } from './local-store.js';
 import type { Config } from './config.js';
 
@@ -83,6 +90,10 @@ export async function configureApp(app: FastifyInstance, config: Config) {
       timezone: String(row.timezone),
       bio: String(row.bio),
       onboardingCompleted: !!row.onboarding_completed_at,
+      appearance: {
+        mode: row.theme_mode === 'light' ? 'light' : 'dark',
+        accent: row.theme_accent === 'lime' ? 'lime' : 'orange',
+      },
       createdAt: String(row.created_at),
     };
   }
@@ -149,6 +160,19 @@ export async function configureApp(app: FastifyInstance, config: Config) {
     return { ok: true };
   });
   app.get('/api/me', async (request) => (await authenticate(request)).profile);
+  app.patch('/api/me/appearance', async (request) => {
+    const appearance = appearanceSchema.parse(request.body);
+    const { profile, db } = await authenticate(request);
+    if (local) return local.appearance(profile.id, appearance);
+    const result = await db!
+      .from('profiles')
+      .update({ theme_mode: appearance.mode, theme_accent: appearance.accent })
+      .eq('id', profile.id)
+      .select('*')
+      .single();
+    if (result.error) dbError(result.error);
+    return mapProfile(result.data!, profile.email);
+  });
   app.patch('/api/me', async (request) => {
     const input = profileSchema.parse(request.body);
     const { profile, db } = await authenticate(request);
@@ -195,8 +219,89 @@ export async function configureApp(app: FastifyInstance, config: Config) {
         createdAt: row.created_at,
       }));
     }
-    // No challenge/circle entities exist in phase 1. New accounts truthfully have zero.
+    const social = (await socialData(profile.id, db, 'dashboard')) as {
+      circleCount: number;
+      activeChallenges: number;
+      commitments: Dashboard['commitments'];
+    };
+    Object.assign(dashboard, social);
     return dashboard;
   });
+  async function socialData(
+    userId: string,
+    db: SupabaseClient | undefined,
+    action: SocialAction,
+    payload: Record<string, unknown> = {},
+  ): Promise<unknown> {
+    if (local) return local.social(userId, action, payload);
+    const { data, error } = await db!.rpc('stakeup_social', {
+      p_action: action,
+      p_payload: payload,
+    });
+    if (error) {
+      if (['P0001', '22023', '23514', '22P02'].includes(error.code))
+        throw new AppError(409, error.message);
+      if (error.code === '42501') throw new AppError(403, 'You don’t have permission to do this.');
+      throw new Error(`Social database operation failed (${error.code}).`);
+    }
+    return data;
+  }
+  const idSchema = z.uuid();
+  app.get('/api/circles', async (request) => {
+    const { profile, db } = await authenticate(request);
+    return socialData(profile.id, db, 'list');
+  });
+  app.post('/api/circles', async (request, reply) => {
+    const input = circleSchema.parse(request.body);
+    const { profile, db } = await authenticate(request);
+    return reply.code(201).send(await socialData(profile.id, db, 'create_circle', input));
+  });
+  app.post('/api/invitations/join', async (request) => {
+    const input = invitationSchema.parse(request.body);
+    const { profile, db } = await authenticate(request);
+    return socialData(profile.id, db, 'join', input);
+  });
+  app.get<{ Params: { id: string } }>('/api/circles/:id', async (request) => {
+    const circleId = idSchema.parse(request.params.id);
+    const { profile, db } = await authenticate(request);
+    return socialData(profile.id, db, 'circle', { circleId });
+  });
+  app.patch<{ Params: { id: string } }>('/api/circles/:id', async (request) => {
+    const circleId = idSchema.parse(request.params.id);
+    const input = circleSchema.parse(request.body);
+    const { profile, db } = await authenticate(request);
+    return socialData(profile.id, db, 'update_circle', { circleId, input });
+  });
+  for (const action of ['invite', 'leave', 'archive'] as const)
+    app.post<{ Params: { id: string } }>(`/api/circles/:id/${action}`, async (request) => {
+      const circleId = idSchema.parse(request.params.id);
+      const { profile, db } = await authenticate(request);
+      return socialData(profile.id, db, action, { circleId });
+    });
+  app.post<{ Params: { id: string } }>('/api/circles/:id/challenges', async (request, reply) => {
+    const circleId = idSchema.parse(request.params.id);
+    const rules = challengeSchema.parse(request.body);
+    schedule(rules);
+    requireFutureStart(rules);
+    const { profile, db } = await authenticate(request);
+    return reply
+      .code(201)
+      .send(await socialData(profile.id, db, 'create_challenge', { circleId, rules }));
+  });
+  app.get<{ Params: { id: string } }>('/api/challenges/:id', async (request) => {
+    const challengeId = idSchema.parse(request.params.id);
+    const { profile, db } = await authenticate(request);
+    return socialData(profile.id, db, 'challenge', { challengeId });
+  });
+  for (const action of ['accept', 'withdraw', 'activate', 'cancel'] as const)
+    app.post<{ Params: { id: string } }>(`/api/challenges/:id/${action}`, async (request) => {
+      const challengeId = idSchema.parse(request.params.id);
+      const input =
+        action === 'accept'
+          ? z.object({ rulesHash: z.string().regex(/^[a-f0-9]{64}$/) }).parse(request.body)
+          : {};
+      const { profile, db } = await authenticate(request);
+      return socialData(profile.id, db, action, { challengeId, ...input });
+    });
   return app;
 }

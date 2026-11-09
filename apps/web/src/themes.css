@@ -1,0 +1,555 @@
+/* Palette extracted from the original design. Theme overrides keep imagery untouched. */
+:root {
+  --tone-0003: #0003;
+  --tone-0007: #0007;
+  --tone-111311: #111311;
+  --tone-121510: #121510;
+  --tone-161a13: #161a13;
+  --tone-171914: #171914;
+  --tone-171a13: #171a13;
+  --tone-171b14: #171b14;
+  --tone-171c12: #171c12;
+  --tone-191c17: #191c17;
+  --tone-191d17: #191d17;
+  --tone-191e15: #191e15;
+  --tone-1a1d18: #1a1d18;
+  --tone-1b2016: #1b2016;
+  --tone-1b2018: #1b2018;
+  --tone-1c2218f5: #1c2218f5;
+  --tone-1c2219: #1c2219;
+  --tone-202719: #202719;
+  --tone-20281c: #20281c;
+  --tone-21291b: #21291b;
+  --tone-22291b: #22291b;
+  --tone-222a1d: #222a1d;
+  --tone-222b1b: #222b1b;
+  --tone-242920: #242920;
+  --tone-252a1c: #252a1c;
+  --tone-252c1f: #252c1f;
+  --tone-252c20: #252c20;
+  --tone-252e1e: #252e1e;
+  --tone-272c23: #272c23;
+  --tone-27341f: #27341f;
+  --tone-292b1c: #292b1c;
+  --tone-292d25: #292d25;
+  --tone-2a2e23: #2a2e23;
+  --tone-2a2e24: #2a2e24;
+  --tone-2a3421: #2a3421;
+  --tone-2b3025: #2b3025;
+  --tone-2b3623: #2b3623;
+  --tone-2c3623: #2c3623;
+  --tone-2c3820: #2c3820;
+  --tone-2c3822: #2c3822;
+  --tone-30332c: #30332c;
+  --tone-303523: #303523;
+  --tone-30362a: #30362a;
+  --tone-30362b: #30362b;
+  --tone-303729: #303729;
+  --tone-30392b: #30392b;
+  --tone-303b22: #303b22;
+  --tone-303b25: #303b25;
+  --tone-313b27: #313b27;
+  --tone-333b2d: #333b2d;
+  --tone-333d28: #333d28;
+  --tone-333f24: #333f24;
+  --tone-343c2b: #343c2b;
+  --tone-343f29: #343f29;
+  --tone-344026: #344026;
+  --tone-35412a: #35412a;
+  --tone-383f2e: #383f2e;
+  --tone-393e26: #393e26;
+  --tone-39472c: #39472c;
+  --tone-3a4030: #3a4030;
+  --tone-3a4033: #3a4033;
+  --tone-3a462f: #3a462f;
+  --tone-3c472f: #3c472f;
+  --tone-3d251e: #3d251e;
+  --tone-3d452f: #3d452f;
+  --tone-3d472f: #3d472f;
+  --tone-3e4227: #3e4227;
+  --tone-404f30: #404f30;
+  --tone-414c33: #414c33;
+  --tone-414c34: #414c34;
+  --tone-43483c: #43483c;
+  --tone-443322: #443322;
+  --tone-454e35: #454e35;
+  --tone-465039: #465039;
+  --tone-493d28: #493d28;
+  --tone-4b6139: #4b6139;
+  --tone-515c3c: #515c3c;
+  --tone-586441: #586441;
+  --tone-58694b: #58694b;
+  --tone-593e29: #593e29;
+  --tone-5a6447: #5a6447;
+  --tone-5a6a49: #5a6a49;
+  --tone-5d4b2f: #5d4b2f;
+  --tone-5f7046: #5f7046;
+  --tone-63452f: #63452f;
+  --tone-63714e: #63714e;
+  --tone-6a7750: #6a7750;
+  --tone-704136: #704136;
+  --tone-72765f: #72765f;
+  --tone-737b65: #737b65;
+  --tone-785137: #785137;
+  --tone-7b4a30: #7b4a30;
+  --tone-7f9161: #7f9161;
+  --tone-818b74: #818b74;
+  --tone-858e78: #858e78;
+  --tone-858f78: #858f78;
+  --tone-89937d: #89937d;
+  --tone-919887: #919887;
+  --tone-919d80: #919d80;
+  --tone-92a17d: #92a17d;
+  --tone-969f88: #969f88;
+  --tone-96a284: #96a284;
+  --tone-999c91: #999c91;
+  --tone-999f8e: #999f8e;
+  --tone-9a9e8c: #9a9e8c;
+  --tone-9aa38c: #9aa38c;
+  --tone-9ba98a: #9ba98a;
+  --tone-9cab87: #9cab87;
+  --tone-9faa8a: #9faa8a;
+  --tone-9fab8b: #9fab8b;
+  --tone-9fac8a: #9fac8a;
+  --tone-9fae8a: #9fae8a;
+  --tone-a0a990: #a0a990;
+  --tone-a1a397: #a1a397;
+  --tone-a2aa94: #a2aa94;
+  --tone-a2af90: #a2af90;
+  --tone-a2b08d: #a2b08d;
+  --tone-a3a793: #a3a793;
+  --tone-a3ae94: #a3ae94;
+  --tone-a3af91: #a3af91;
+  --tone-a3af92: #a3af92;
+  --tone-a4ac96: #a4ac96;
+  --tone-a4b08f: #a4b08f;
+  --tone-a5ad97: #a5ad97;
+  --tone-a5b192: #a5b192;
+  --tone-a6b18f: #a6b18f;
+  --tone-a7ad9d: #a7ad9d;
+  --tone-a7b293: #a7b293;
+  --tone-a7b48d: #a7b48d;
+  --tone-a8b593: #a8b593;
+  --tone-a95b3966: #a95b3966;
+  --tone-a9ae9d: #a9ae9d;
+  --tone-a9b099: #a9b099;
+  --tone-a9b291: #a9b291;
+  --tone-a9b498: #a9b498;
+  --tone-aab895: #aab895;
+  --tone-aab99a: #aab99a;
+  --tone-abb59b: #abb59b;
+  --tone-abb69a: #abb69a;
+  --tone-abb998: #abb998;
+  --tone-adb89a: #adb89a;
+  --tone-aeb6a1: #aeb6a1;
+  --tone-aebb97: #aebb97;
+  --tone-b0b89f: #b0b89f;
+  --tone-b0b99f: #b0b99f;
+  --tone-b0baa0: #b0baa0;
+  --tone-b0bd9a: #b0bd9a;
+  --tone-b1bda0: #b1bda0;
+  --tone-b3c78b: #b3c78b;
+  --tone-b4bba7: #b4bba7;
+  --tone-b4bf9d: #b4bf9d;
+  --tone-b4c09f: #b4c09f;
+  --tone-b5b8a8: #b5b8a8;
+  --tone-b5c0a3: #b5c0a3;
+  --tone-b6c1a4: #b6c1a4;
+  --tone-b6c49f: #b6c49f;
+  --tone-b8beaa: #b8beaa;
+  --tone-b8c59e: #b8c59e;
+  --tone-b9c99e: #b9c99e;
+  --tone-b9cb8c: #b9cb8c;
+  --tone-bbc79a: #bbc79a;
+  --tone-bcc9a4: #bcc9a4;
+  --tone-bdc4a9: #bdc4a9;
+  --tone-bdcaa8: #bdcaa8;
+  --tone-c1cbb0: #c1cbb0;
+  --tone-c1cdab: #c1cdab;
+  --tone-c2ccb2: #c2ccb2;
+  --tone-c3d29b: #c3d29b;
+  --tone-c4d58a: #c4d58a;
+  --tone-c5c7b8: #c5c7b8;
+  --tone-c5c8b7: #c5c8b7;
+  --tone-c5d48e: #c5d48e;
+  --tone-c5d4a0: #c5d4a0;
+  --tone-c5d58e: #c5d58e;
+  --tone-c5d696: #c5d696;
+  --tone-c5d69622: #c5d69622;
+  --tone-c5d69d: #c5d69d;
+  --tone-c6cbb4: #c6cbb4;
+  --tone-c6d692: #c6d692;
+  --tone-c8d39d: #c8d39d;
+  --tone-c8d79f: #c8d79f;
+  --tone-c8d89b: #c8d89b;
+  --tone-c9cdba: #c9cdba;
+  --tone-c9cfbd: #c9cfbd;
+  --tone-cadb9c: #cadb9c;
+  --tone-cadb9d: #cadb9d;
+  --tone-ccd4bb: #ccd4bb;
+  --tone-cce29c: #cce29c;
+  --tone-cfdd9f: #cfdd9f;
+  --tone-d0bd85: #d0bd85;
+  --tone-d0dabd: #d0dabd;
+  --tone-d1e3b5: #d1e3b5;
+  --tone-d2dea8: #d2dea8;
+  --tone-d3d7c9: #d3d7c9;
+  --tone-d7e0c3: #d7e0c3;
+  --tone-e3dfc9: #e3dfc9;
+  --tone-e4e5db: #e4e5db;
+  --tone-eef0e4: #eef0e4;
+  --tone-f2e0ad: #f2e0ad;
+  --tone-f2edda: #f2edda;
+  --tone-f2f2e9: #f2f2e9;
+  --tone-f4f4e9: #f4f4e9;
+  --tone-ff814f: #ff814f;
+  --tone-ff925f: #ff925f;
+  --tone-ff9564: #ff9564;
+  --tone-ff956a: #ff956a;
+  --tone-ff9a67: #ff9a67;
+  --tone-ffad78: #ffad78;
+  --tone-ffb7a7: #ffb7a7;
+  --tone-ffb887: #ffb887;
+  --tone-ffc098: #ffc098;
+  --tone-ffc18e: #ffc18e;
+  --tone-fff: #fff;
+}
+:root[data-mode='light'] {
+  color-scheme: light;
+  --tone-111311: #fafbf6;
+  --tone-121510: #fafbf6;
+  --tone-161a13: #fafbf6;
+  --tone-171914: #fafbf6;
+  --tone-171a13: #fafbf6;
+  --tone-171b14: #fafbf6;
+  --tone-171c12: #fafbf6;
+  --tone-191c17: #fafbf6;
+  --tone-191d17: #fafbf6;
+  --tone-191e15: #eff2e8;
+  --tone-1a1d18: #fafbf6;
+  --tone-1b2016: #eff2e8;
+  --tone-1b2018: #eff2e8;
+  --tone-1c2218f5: #eff2e8f5;
+  --tone-1c2219: #eff2e8;
+  --tone-202719: #eff2e8;
+  --tone-20281c: #eff2e8;
+  --tone-21291b: #eff2e8;
+  --tone-22291b: #eff2e8;
+  --tone-222a1d: #eff2e8;
+  --tone-222b1b: #eff2e8;
+  --tone-242920: #eff2e8;
+  --tone-252a1c: #eff2e8;
+  --tone-252c1f: #eff2e8;
+  --tone-252c20: #eff2e8;
+  --tone-252e1e: #eff2e8;
+  --tone-272c23: #eff2e8;
+  --tone-27341f: #eff2e8;
+  --tone-292b1c: #eff2e8;
+  --tone-292d25: #eff2e8;
+  --tone-2a2e23: #eff2e8;
+  --tone-2a2e24: #eff2e8;
+  --tone-2a3421: #c9d1bd;
+  --tone-2b3025: #eff2e8;
+  --tone-2b3623: #c9d1bd;
+  --tone-2c3623: #c9d1bd;
+  --tone-2c3820: #c9d1bd;
+  --tone-2c3822: #c9d1bd;
+  --tone-30332c: #c9d1bd;
+  --tone-303523: #c9d1bd;
+  --tone-30362a: #c9d1bd;
+  --tone-30362b: #c9d1bd;
+  --tone-303729: #c9d1bd;
+  --tone-30392b: #c9d1bd;
+  --tone-303b22: #c9d1bd;
+  --tone-303b25: #c9d1bd;
+  --tone-313b27: #c9d1bd;
+  --tone-333b2d: #c9d1bd;
+  --tone-333d28: #c9d1bd;
+  --tone-333f24: #c9d1bd;
+  --tone-343c2b: #c9d1bd;
+  --tone-343f29: #c9d1bd;
+  --tone-344026: #c9d1bd;
+  --tone-35412a: #c9d1bd;
+  --tone-383f2e: #c9d1bd;
+  --tone-393e26: #c9d1bd;
+  --tone-39472c: #c9d1bd;
+  --tone-3a4030: #c9d1bd;
+  --tone-3a4033: #c9d1bd;
+  --tone-3a462f: #c9d1bd;
+  --tone-3c472f: #c9d1bd;
+  --tone-3d251e: #eff2e8;
+  --tone-3d452f: #c9d1bd;
+  --tone-3d472f: #c9d1bd;
+  --tone-3e4227: #c9d1bd;
+  --tone-404f30: #c9d1bd;
+  --tone-414c33: #c9d1bd;
+  --tone-414c34: #c9d1bd;
+  --tone-43483c: #c9d1bd;
+  --tone-443322: #c9d1bd;
+  --tone-454e35: #c9d1bd;
+  --tone-465039: #c9d1bd;
+  --tone-493d28: #c9d1bd;
+  --tone-4b6139: #657151;
+  --tone-515c3c: #657151;
+  --tone-586441: #657151;
+  --tone-58694b: #657151;
+  --tone-593e29: #c9d1bd;
+  --tone-5a6447: #657151;
+  --tone-5a6a49: #657151;
+  --tone-5d4b2f: #657151;
+  --tone-5f7046: #657151;
+  --tone-63452f: #c9d1bd;
+  --tone-63714e: #657151;
+  --tone-6a7750: #657151;
+  --tone-704136: #c9d1bd;
+  --tone-72765f: #657151;
+  --tone-737b65: #657151;
+  --tone-785137: #657151;
+  --tone-7b4a30: #657151;
+  --tone-7f9161: #657151;
+  --tone-818b74: #657151;
+  --tone-858e78: #657151;
+  --tone-858f78: #657151;
+  --tone-89937d: #657151;
+  --tone-919887: #283520;
+  --tone-919d80: #283520;
+  --tone-92a17d: #283520;
+  --tone-969f88: #283520;
+  --tone-96a284: #283520;
+  --tone-999c91: #283520;
+  --tone-999f8e: #283520;
+  --tone-9a9e8c: #283520;
+  --tone-9aa38c: #283520;
+  --tone-9ba98a: #283520;
+  --tone-9cab87: #283520;
+  --tone-9faa8a: #283520;
+  --tone-9fab8b: #283520;
+  --tone-9fac8a: #283520;
+  --tone-9fae8a: #283520;
+  --tone-a0a990: #283520;
+  --tone-a1a397: #283520;
+  --tone-a2aa94: #283520;
+  --tone-a2af90: #283520;
+  --tone-a2b08d: #283520;
+  --tone-a3a793: #283520;
+  --tone-a3ae94: #283520;
+  --tone-a3af91: #283520;
+  --tone-a3af92: #283520;
+  --tone-a4ac96: #283520;
+  --tone-a4b08f: #283520;
+  --tone-a5ad97: #283520;
+  --tone-a5b192: #283520;
+  --tone-a6b18f: #283520;
+  --tone-a7ad9d: #283520;
+  --tone-a7b293: #283520;
+  --tone-a7b48d: #283520;
+  --tone-a8b593: #283520;
+  --tone-a95b3966: #65715166;
+  --tone-a9ae9d: #283520;
+  --tone-a9b099: #283520;
+  --tone-a9b291: #283520;
+  --tone-a9b498: #283520;
+  --tone-aab895: #283520;
+  --tone-aab99a: #283520;
+  --tone-abb59b: #283520;
+  --tone-abb69a: #283520;
+  --tone-abb998: #283520;
+  --tone-adb89a: #283520;
+  --tone-aeb6a1: #283520;
+  --tone-aebb97: #283520;
+  --tone-b0b89f: #283520;
+  --tone-b0b99f: #283520;
+  --tone-b0baa0: #283520;
+  --tone-b0bd9a: #283520;
+  --tone-b1bda0: #283520;
+  --tone-b3c78b: #283520;
+  --tone-b4bba7: #283520;
+  --tone-b4bf9d: #283520;
+  --tone-b4c09f: #283520;
+  --tone-b5b8a8: #283520;
+  --tone-b5c0a3: #283520;
+  --tone-b6c1a4: #283520;
+  --tone-b6c49f: #283520;
+  --tone-b8beaa: #283520;
+  --tone-b8c59e: #283520;
+  --tone-b9c99e: #283520;
+  --tone-b9cb8c: #283520;
+  --tone-bbc79a: #283520;
+  --tone-bcc9a4: #283520;
+  --tone-bdc4a9: #283520;
+  --tone-bdcaa8: #283520;
+  --tone-c1cbb0: #283520;
+  --tone-c1cdab: #283520;
+  --tone-c2ccb2: #283520;
+  --tone-c3d29b: #283520;
+  --tone-c4d58a: #283520;
+  --tone-c5c7b8: #283520;
+  --tone-c5c8b7: #283520;
+  --tone-c5d48e: #283520;
+  --tone-c5d4a0: #283520;
+  --tone-c5d58e: #283520;
+  --tone-c5d696: #283520;
+  --tone-c5d69622: #28352022;
+  --tone-c5d69d: #283520;
+  --tone-c6cbb4: #283520;
+  --tone-c6d692: #283520;
+  --tone-c8d39d: #283520;
+  --tone-c8d79f: #283520;
+  --tone-c8d89b: #283520;
+  --tone-c9cdba: #283520;
+  --tone-c9cfbd: #283520;
+  --tone-cadb9c: #283520;
+  --tone-cadb9d: #283520;
+  --tone-ccd4bb: #283520;
+  --tone-cce29c: #283520;
+  --tone-cfdd9f: #283520;
+  --tone-d0bd85: #283520;
+  --tone-d0dabd: #283520;
+  --tone-d1e3b5: #283520;
+  --tone-d2dea8: #283520;
+  --tone-d3d7c9: #283520;
+  --tone-d7e0c3: #283520;
+  --tone-e3dfc9: #283520;
+  --tone-e4e5db: #283520;
+  --tone-eef0e4: #283520;
+  --tone-f2e0ad: #283520;
+  --tone-f2edda: #283520;
+  --tone-f2f2e9: #283520;
+  --tone-f4f4e9: #283520;
+  --tone-ffb7a7: #283520;
+  --tone-fff: #283520;
+}
+:root {
+  --canvas: var(--tone-111311);
+  --text-primary: var(--tone-f2f2e9);
+  --accent-ink: #ff956a;
+  --on-accent: #1c2415;
+  --accent-tint: #33271d;
+}
+:root[data-accent='lime'] {
+  --orange: #c6f34c;
+  --tone-ff814f: #c6f34c;
+  --tone-ff925f: #c6f34c;
+  --tone-ff9564: #c6f34c;
+  --tone-ff9a67: #c6f34c;
+  --tone-ff956a: #d3ff68;
+  --tone-ffb887: #d3ff68;
+  --tone-ffad78: #d3ff68;
+  --tone-ffc18e: #d3ff68;
+  --tone-ffb7a7: #ffb7a7;
+  --tone-a95b3966: #5a722c66;
+  --accent-ink: #c6f34c;
+  --accent-tint: #2d391b;
+}
+:root[data-mode='light'] {
+  --accent-ink: #b33d13;
+  --accent-tint: #fff0e6;
+}
+:root[data-mode='light'][data-accent='lime'] {
+  --accent-ink: #486600;
+  --accent-tint: #eff8d5;
+}
+:root[data-mode='dark'] {
+  color-scheme: dark;
+}
+.button-primary,
+.brand-icon {
+  color: var(--on-accent);
+}
+.skip-link {
+  opacity: 0;
+  pointer-events: none;
+  background: var(--orange);
+  color: var(--on-accent);
+}
+.skip-link:focus {
+  opacity: 1;
+  pointer-events: auto;
+}
+.brand-up,
+.hero h1 > span:first-of-type,
+.accent,
+.orange-text {
+  color: var(--accent-ink);
+}
+:focus-visible {
+  outline-color: var(--accent-ink);
+}
+.nav-item.active svg,
+.mobile-nav a.active,
+.page-heading h1 > span {
+  color: var(--accent-ink);
+}
+::selection {
+  background: var(--orange);
+  color: var(--on-accent);
+}
+.momentum-banner {
+  color: var(--on-accent);
+}
+.momentum-banner p,
+.banner-kicker,
+.banner-art-label,
+.banner-number {
+  color: #41462a;
+}
+.banner-asterisk,
+.banner-plus {
+  color: #29351f;
+}
+.button-secondary {
+  background: #252f1e;
+  color: #f4f7e9;
+}
+.button-secondary:hover {
+  background: #3b4a30;
+}
+.activity-icon.orange {
+  color: var(--accent-ink);
+  background: var(--accent-tint);
+}
+.appearance-panel {
+  margin-bottom: 20px;
+}
+.appearance-panel > p {
+  color: var(--muted);
+  font-size: 12px;
+}
+.appearance-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+.appearance-options button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 13px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text-primary);
+  background: var(--canvas);
+  min-height: 48px;
+  font-size: 11px;
+  text-align: left;
+}
+.appearance-options button[aria-pressed='true'] {
+  border-color: var(--accent-ink);
+  background: var(--accent-tint);
+}
+.appearance-options button > svg:last-child {
+  margin-left: auto;
+}
+.accent-swatch {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.swatch-orange {
+  background: #ff814f;
+}
+.swatch-lime {
+  background: #c6f34c;
+}

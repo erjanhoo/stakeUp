@@ -9,7 +9,21 @@
 - API project: `stakeup-api` / `prj_eQG65mLRJ5wJTof5TipVqDCDew7V`
 - Supabase project: `bwtpxrjcubvvsvnsjigm`, Tokyo region, Free plan.
 
-The foundation migration was applied to this new project through the Supabase SQL editor. The transactional two-user authorization test in `supabase/tests/foundation.sql` completed without errors; test fixtures were rolled back. Site URL and exact onboarding/password-reset callback URLs point to the public web origin. Email confirmation stays enabled. Minimum password length is 12 and secure password change is enabled.
+The foundation migration was applied to this new project through the Supabase SQL editor. The transactional two-user authorization test in `supabase/tests/foundation.sql` completed without errors; test fixtures were rolled back. Site URL and exact onboarding/password-reset callback URLs point to the public web origin. Email confirmation stays enabled. The live minimum password length is still 12 and secure password change is enabled. The application in this branch now requires 8; the Auth setting must be changed during the next release.
+
+## Pending milestone 2 release
+
+The new code is locally tested but not deployed. Computer Use stopped because it could not reliably determine the current browser URL on Windows; no further browser actions were attempted. The remote schema and password setting were left unchanged, and the earlier foundation stays online.
+
+Release in this order, once Supabase access is restored:
+
+1. Check the target project reference above. Reconcile the manually applied foundation migration history before using CLI migration push; do not rerun its CREATE statements. Apply only `20261109173728_social_challenges.sql` to the existing project. It is additive and compatible with the running foundation.
+2. Run both transactional authorization scripts on a disposable/staging project first. The migration and scripts already pass on local PostgreSQL 17 with real roles/RLS; staging must also verify Supabase Auth and PostgREST.
+3. Set Authentication's minimum password length to **8**. Keep email confirmation and secure password change enabled. Configure custom SMTP before opening public registration; do not disable confirmation to work around delivery.
+4. Deploy the API source with its current environment and verify health/configuration/401 responses. Then deploy the web source. Both projects require the shared workspace contracts; pushing Git alone does not deploy under the current integration.
+5. Verify with two authorized real accounts: confirmation → onboarding → invitation → challenge proposal → explicit acceptance → activation → frozen schedule; save all appearance combinations and reload. Check email recovery and a new eight-character password. Do not send synthetic signup emails to third parties.
+
+If deployment fails after the migration, the earlier foundation remains compatible with the additive tables/columns. Roll back the application deployment rather than deleting accepted challenge data.
 
 **Email launch limitation:** custom SMTP is not configured. Supabase's default email service is restricted and is not suitable for general public registration. Configure a production email provider in Supabase Authentication → Emails → SMTP Settings before inviting friends to create accounts. Email confirmation and end-to-end recovery delivery have not been verified. The public landing, auth screens, API and database are deployed; unrestricted email signup is not ready.
 

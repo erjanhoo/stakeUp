@@ -7,6 +7,8 @@ import { message } from '../lib/api';
 import { Avatar, Brand, ErrorMessage } from '../components/common';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { AppearanceSettings } from '../components/appearance-settings';
+import { afterSignIn } from '../lib/social';
 
 const timezones = Intl.supportedValuesOf('timeZone');
 export function ProfileForm({ onboarding = false }: { onboarding?: boolean }) {
@@ -31,7 +33,7 @@ export function ProfileForm({ onboarding = false }: { onboarding?: boolean }) {
       });
       await update(input);
       setSaved(true);
-      if (onboarding) navigate('/app', { replace: true });
+      if (onboarding) navigate(afterSignIn(), { replace: true });
     } catch (error) {
       setError(
         error && typeof error === 'object' && 'issues' in error
@@ -176,6 +178,7 @@ export function Settings() {
           <ProfileForm />
         </section>
         <aside className="settings-aside">
+          <AppearanceSettings />
           <div className="panel">
             <ShieldCheck className="accent" size={25} />
             <h3>Your account</h3>
@@ -199,8 +202,8 @@ export function Settings() {
           <div className="quiet-note">
             <h3>Made for your circle.</h3>
             <p>
-              Your details aren’t public. Upcoming circle features will share your display name and
-              progress only with members.
+              Your details aren’t public. Your circles share your display name, username and
+              challenge participation with members. Your email stays private.
             </p>
             <p>All stakes are virtual. There are no payment details to add.</p>
           </div>

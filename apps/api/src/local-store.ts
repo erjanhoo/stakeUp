@@ -8,7 +8,10 @@ import {
 import { promisify } from 'node:util';
 import { readFile, mkdir, writeFile, rename } from 'node:fs/promises';
 import { dirname } from 'node:path';
-import type { Profile, ProfileInput, Activity } from '@stakeup/contracts';
+import type { Profile, ProfileInput, Activity, Appearance, SocialAction } from '@stakeup/contracts';
+import { initializeSocial, socialCommand, type SocialState } from './local-social.js';
+import { AppError } from './errors.js';
+export { AppError } from './errors.js';
 
 const scrypt = promisify(scryptCallback);
 const digest = (value: string) => createHash('sha256').update(value).digest('hex');
@@ -27,20 +30,12 @@ interface Reset {
   userId: string;
   expires: number;
 }
-interface State {
+interface State extends SocialState {
   version: 1;
   accounts: Account[];
   sessions: Session[];
   resets: Reset[];
   activities: (Activity & { userId: string })[];
-}
-export class AppError extends Error {
-  constructor(
-    public status: number,
-    message: string,
-  ) {
-    super(message);
-  }
 }
 
 export class LocalStore {
@@ -53,8 +48,24 @@ export class LocalStore {
         state = JSON.parse(await readFile(this.file, 'utf8')) as State;
       } catch (error) {
         if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
-        state = { version: 1, accounts: [], sessions: [], resets: [], activities: [] };
+        state = {
+          version: 1,
+          accounts: [],
+          sessions: [],
+          resets: [],
+          activities: [],
+          circles: [],
+          members: [],
+          invitations: [],
+          challenges: [],
+          enrollments: [],
+          obligations: [],
+          socialEvents: [],
+        };
       }
+      initializeSocial(state);
+      for (const account of state.accounts)
+        account.profile.appearance ??= { mode: 'dark', accent: 'orange' };
       state.sessions = state.sessions.filter((s) => s.expires > Date.now());
       state.resets = state.resets.filter((s) => s.expires > Date.now());
       const result = await fn(state);
@@ -87,6 +98,7 @@ export class LocalStore {
         timezone: 'UTC',
         bio: '',
         onboardingCompleted: false,
+        appearance: { mode: 'dark', accent: 'orange' },
         createdAt: new Date().toISOString(),
       };
       state.accounts.push({
@@ -147,6 +159,16 @@ export class LocalStore {
         .reverse()
         .map(({ userId: _id, ...event }) => event),
     );
+  }
+  appearance(id: string, appearance: Appearance) {
+    return this.transact((state) => {
+      const profile = state.accounts.find((a) => a.profile.id === id)!.profile;
+      profile.appearance = appearance;
+      return profile;
+    });
+  }
+  social(userId: string, action: SocialAction, payload: Record<string, unknown> = {}) {
+    return this.transact((state) => socialCommand(state, userId, action, payload));
   }
   requestReset(email: string) {
     return this.transact((state) => {

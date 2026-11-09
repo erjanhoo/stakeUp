@@ -55,7 +55,6 @@ export function Shell() {
             >
               <link.icon size={19} />
               <span>{link.label}</span>
-              {link.to === '/app/circles' ? <span className="nav-count">0</span> : null}
             </NavLink>
           ))}
         </nav>

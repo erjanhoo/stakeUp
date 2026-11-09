@@ -13,6 +13,7 @@
     "@fastify/cookie": "11.1.5",
     "@fastify/helmet": "13.2.0",
     "@fastify/rate-limit": "11.2.2",
+    "@js-temporal/polyfill": "0.5.1",
     "@stakeup/contracts": "*",
     "@supabase/supabase-js": "2.119.0",
     "fastify": "5.12.8",
