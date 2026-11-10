@@ -31,10 +31,10 @@ export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot'
       <Navigate to={auth.profile.onboardingCompleted ? afterSignIn() : '/onboarding'} replace />
     );
   const titles = {
-    login: 'Good to have you back.',
-    register: 'Your day one starts here.',
-    forgot: 'Let’s get you back in.',
-    reset: 'A fresh start.',
+    login: 'Welcome back',
+    register: 'Create your private account.',
+    forgot: 'Reset your password',
+    reset: 'Create new password',
   };
   const descriptions = {
     login: 'Your goals. Your people. Your next small win.',
@@ -118,24 +118,76 @@ export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot'
     }
   }
   return (
-    <div className="auth-layout">
-      <aside className="auth-story">
+    <div className={`auth-layout st-auth-layout st-auth-${variant}`}>
+      <header className="st-auth-header">
         <Brand />
-        <div>
-          <span className="eyebrow">{t('THE FIRST STEP IS YOURS.')}</span>
-          <h1>
-            {t('Good habits.')} <br />
-            {t('Great company.')} <br />
-            <em>{t('Let’s go.')}</em>
-          </h1>
-          <p>{t('You’re one small commitment away from something good.')}</p>
+        <nav>
+          <Link to="/join">{t('Join circle')}</Link>
+          <Link to="/login">{t('Log in')}</Link>
+          <Link className="st-btn st-btn-small" to="/register">
+            {t('Create account')}
+          </Link>
+        </nav>
+      </header>
+      <aside className="auth-story">
+        <div className="st-auth-intro">
+          <span className="eyebrow">{t('PRIVATE ACCOUNTABILITY')}</span>
+          <h1>{t('Your people. Your progress.')}</h1>
+          <p>{t('Make a commitment, show up, and grow with friends who get it.')}</p>
         </div>
-        <span className="auth-footnote">
-          <ShieldCheck size={17} /> {t('All stakes are virtual. Your circle stays private.')}{' '}
-        </span>
-        <span className="auth-star" aria-hidden="true">
-          ✳
-        </span>
+        <section className="st-auth-context">
+          <div className="st-module-heading">
+            <ShieldCheck size={24} />
+            <h3>{t('Your daily rhythm')}</h3>
+          </div>
+          <div className="st-auth-rhythm">
+            {[
+              [
+                '01',
+                'Accept the same rules',
+                'Choose the days, upload window and virtual penalty.',
+              ],
+              ['02', 'Show the effort', 'One private photo. Your own context.'],
+              ['03', 'Review fairly', 'Independent peers make the decision.'],
+            ].map(([n, title, detail]) => (
+              <article key={n}>
+                <span>{n}</span>
+                <div>
+                  <strong>{t(title)}</strong>
+                  <p>{t(detail)}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+        <section className="st-auth-context">
+          <div className="st-module-heading">
+            <ShieldCheck size={24} />
+            <h3>{t('Private by default.')}</h3>
+          </div>
+          <p>
+            {t(
+              'Your details aren’t public. Your circles share your display name, username and challenge participation with members. Your email stays private.',
+            )}
+          </p>
+          <div className="st-auth-points">
+            <span>
+              <ShieldCheck size={16} />
+              {t('All stakes are virtual. Always.')}
+            </span>
+            <span>
+              <ArrowUpRight size={16} />
+              {t('One shared version of the rules.')}
+            </span>
+          </div>
+          <img
+            className="st-auth-editorial"
+            src="/images/stitch-athletes.jpg"
+            alt=""
+            width={800}
+            height={260}
+          />
+        </section>
       </aside>
       <main className="auth-main">
         <Link className="back-link" to="/">
@@ -143,7 +195,7 @@ export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot'
         </Link>
         <div className="auth-form-wrap">
           <span className="eyebrow">
-            {variant === 'register' ? 'WELCOME TO THE CIRCLE' : 'MAKE ROOM FOR PROGRESS'}
+            {t(variant === 'register' ? 'WELCOME TO THE CIRCLE' : 'MAKE ROOM FOR PROGRESS')}
           </span>
           <h2>{t(titles[variant])}</h2>
           <p>{t(descriptions[variant])}</p>

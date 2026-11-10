@@ -1,5 +1,5 @@
 import { useI18n } from '../lib/i18n';
-import { ArrowUpRight, Mountain, LoaderCircle, CircleAlert } from 'lucide-react';
+import { ArrowUpRight, Zap, LoaderCircle, CircleAlert } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
 export function Brand() {
@@ -8,9 +8,9 @@ export function Brand() {
   return (
     <Link className="brand" to="/" aria-label={t('StakeUp home')}>
       <span className="brand-icon">
-        <Mountain size={23} strokeWidth={2.7} />
+        <Zap size={23} strokeWidth={2.7} />
       </span>
-      stake<span className="brand-up">up</span>
+      Stake<span className="brand-up">Up</span>
     </Link>
   );
 }

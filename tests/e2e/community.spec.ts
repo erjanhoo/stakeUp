@@ -27,7 +27,7 @@ test('Russian account preferences, visible accents, chosen grace dates and priva
   });
   await page.goto('/app/settings');
   await page.getByRole('button', { name: 'Русский', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Ваша энергия' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Оформление и темы' })).toBeVisible();
   await expect(page.locator('html')).toHaveAttribute('lang', 'ru');
   await page.getByRole('button', { name: 'Электрический лайм' }).click();
   await expect(page.locator('html')).toHaveAttribute('data-accent', 'lime');
@@ -119,6 +119,7 @@ test('Russian account preferences, visible accents, chosen grace dates and priva
   });
   await writeFile(file, JSON.stringify(state));
   await page.goto(`/app/challenges/${hid}/evidence`);
+  await page.getByRole('tab', { name: /Дни отдыха/ }).click();
   await page.getByText('Выбрать или изменить день отдыха', { exact: true }).click();
   await page.getByRole('button', { name: 'Выбрать для отдыха', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Отменить отдых' })).toBeVisible();
@@ -126,9 +127,11 @@ test('Russian account preferences, visible accents, chosen grace dates and priva
     0,
   );
   await page.reload();
+  await page.getByRole('tab', { name: /Дни отдыха/ }).click();
   await page.getByText('Выбрать или изменить день отдыха', { exact: true }).click();
   await expect(page.getByRole('button', { name: 'Отменить отдых' })).toBeVisible();
   await page.getByRole('button', { name: 'Отменить отдых' }).click();
+  await page.getByRole('tab', { name: /Отправка/ }).click();
   await expect(page.getByLabel('Выбрать фото', { exact: true })).toBeAttached();
   await page.goto(`/app/challenges/${hid}/competition`);
   await expect(page.locator('.pool-mark svg')).toBeVisible();
@@ -141,14 +144,14 @@ test('Russian account preferences, visible accents, chosen grace dates and priva
   await page.getByRole('button', { name: 'Тёмная', exact: true }).click();
   await page.getByRole('button', { name: 'Тёплый оранжевый', exact: true }).click();
   await page.getByRole('button', { name: 'English', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Your kind of energy' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Appearance & themes' })).toBeVisible();
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await page.getByRole('button', { name: 'Русский', exact: true }).click();
   await page.goto('/unknown-page');
   await expect(
     page.getByRole('heading', { name: 'Эта страница не нашла свой круг.' }),
   ).toBeVisible();
-  await page.getByRole('link', { name: 'На главную StakeUp' }).click();
+  await page.goto('/');
   await expect(page.getByRole('heading', { name: /Личная ответственность/ })).toBeVisible();
   expect(errors).toEqual([]);
 });

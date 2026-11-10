@@ -1,134 +1,177 @@
-import { useI18n } from '../lib/i18n';
-import { NotificationBell } from './community';
-import { useState } from 'react';
-import { NavLink, Outlet, Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink, Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import {
-  House,
-  UsersRound,
-  Activity,
-  Settings2,
+  LayoutGrid,
+  Users,
+  ReceiptText,
+  SlidersHorizontal,
   ArrowUpRight,
   LogOut,
-  Bell,
-  ChevronDown,
-  Mountain,
+  Plus,
+  KeyRound,
+  Route,
+  Globe,
 } from 'lucide-react';
+import type { CircleSummary } from '@stakeup/contracts';
+import { useI18n } from '../lib/i18n';
+import { NotificationBell } from './community';
 import { useAuth } from '../lib/auth';
+import { useResource } from '../lib/social';
 import { message } from '../lib/api';
 import { Avatar, Brand, ErrorMessage } from './common';
-import { Button } from './ui/button';
 const links = [
-  { to: '/app', label: 'Overview', icon: House, end: true },
-  { to: '/app/circles', label: 'My circles', icon: UsersRound },
-  { to: '/app/activity', label: 'Activity', icon: Activity },
-  { to: '/app/settings', label: 'Settings', icon: Settings2 },
+  { to: '/app', label: 'Overview', icon: LayoutGrid, end: true },
+  { to: '/app/circles', label: 'My circles', icon: Users },
+  { to: '/app/activity', label: 'Personal activity', icon: ReceiptText },
+  { to: '/app/settings', label: 'Settings & appearance', icon: SlidersHorizontal },
 ];
 export function Shell() {
-  const { t } = useI18n();
-
-  const { profile, signOut, mode } = useAuth();
-  const navigate = useNavigate();
-  const [error, setError] = useState('');
-  const [busy, setBusy] = useState(false);
+  const { t } = useI18n(),
+    { profile, signOut } = useAuth(),
+    { data: circles, reload: reloadCircles } = useResource<CircleSummary[]>('/circles'),
+    navigate = useNavigate();
+  const { pathname } = useLocation();
+  useEffect(() => {
+    void reloadCircles();
+  }, [pathname, reloadCircles]);
+  const [error, setError] = useState(''),
+    [busy, setBusy] = useState(false);
   async function logout() {
     setBusy(true);
     try {
       await signOut();
       navigate('/login');
-    } catch (error) {
-      setError(message(error));
+    } catch (e) {
+      setError(message(e));
     } finally {
       setBusy(false);
     }
   }
   return (
-    <div className="app-shell">
-      <a href="#main-content" className="skip-link">
-        {t('Skip to content')}{' '}
+    <div className="st-shell">
+      <a className="skip-link" href="#main-content">
+        {t('Skip to content')}
       </a>
-      <aside className="sidebar">
-        <Brand />
-        <div className="sidebar-label">{t('YOUR SPACE')}</div>
-        <nav aria-label={t('Your space')}>
-          {links.map((link) => (
-            <NavLink
-              end={link.end}
-              to={link.to}
-              key={link.to}
-              className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-            >
-              <link.icon size={19} />
-              <span>{t(link.label)}</span>
-            </NavLink>
-          ))}
-        </nav>
-        <div className="sidebar-bottom">
-          <div className="sidebar-promise">
-            <span className="small-star">✳</span>
-            <h3>{t('Better, together.')}</h3>
-            <p>
-              {t('A little accountability.')} <br />
-              {t('A lot of possibility.')}{' '}
-            </p>
-            <Link to="/app/roadmap">
-              {t('The road ahead')} <ArrowUpRight size={15} />
+      <aside className="st-sidebar">
+        <div>
+          <div className="st-sidebar-brand">
+            <Brand />
+            <span className="st-version">VC</span>
+          </div>
+          <div className="st-sidebar-caption">
+            <i />
+            {t('PRIVATE CIRCLES')}
+          </div>
+          <div className="st-nav-group">
+            <span className="st-mono st-nav-heading">{t('Your workspace')}</span>
+            <nav aria-label={t('Your space')}>
+              {links.map((l) => (
+                <NavLink
+                  key={l.to}
+                  to={l.to}
+                  end={l.end}
+                  className={({ isActive }) => `st-nav-link ${isActive ? 'is-active' : ''}`}
+                >
+                  <l.icon size={19} />
+                  {t(l.label)}
+                </NavLink>
+              ))}
+            </nav>
+          </div>
+          <div className="st-nav-group">
+            <div className="st-nav-heading st-squad-label">
+              <span>{t('Your circles')}</span>
+              <span>{circles?.filter((c) => !c.archived).length ?? '—'}</span>
+            </div>
+            <div className="st-squad-list">
+              {circles
+                ?.filter((c) => !c.archived)
+                .slice(0, 6)
+                .map((c) => (
+                  <Link to={`/app/circles/${c.id}`} key={c.id}>
+                    <i />
+                    <span>{c.name}</span>
+                    <small>{t(c.role === 'owner' ? 'Owner' : 'Member')}</small>
+                  </Link>
+                ))}
+            </div>
+            <Link className="st-nav-link" to="/app/roadmap">
+              <Route size={18} />
+              {t('The road ahead')}
             </Link>
           </div>
-          <div className="virtual-caption">
-            <span className="status-dot" /> {t('VIRTUAL STAKES ONLY')}{' '}
+        </div>
+        <div className="st-profile-dock">
+          <Link to="/app/settings" aria-label={t('Your profile and settings')}>
+            <Avatar name={profile?.displayName ?? ''} />
+            <div>
+              <strong>{profile?.displayName}</strong>
+              <span>@{profile?.username}</span>
+            </div>
+            <ArrowUpRight size={16} />
+          </Link>
+          <div className="st-profile-dock-footer">
+            <span>{t('VIRTUAL STAKES ONLY')}</span>
+            <button disabled={busy} onClick={() => void logout()} aria-label={t('Log out')}>
+              <LogOut size={16} />
+            </button>
           </div>
-          <button className="logout-button" disabled={busy} onClick={logout}>
-            <LogOut size={17} />
-            {busy ? t('Signing out…') : t('Log out')}
-          </button>
         </div>
       </aside>
-      <div className="app-body">
-        <header className="app-header">
-          <div className="mobile-brand">
+      <div className="st-app-content">
+        <header className="st-topbar">
+          <div className="st-phone-brand">
             <Brand />
           </div>
-          <div className="breadcrumb">
-            <Mountain size={17} />
-            <span>{t('Your space')}</span>
-            <span>/</span>
-            <strong>StakeUp</strong>
+          <div className="st-topbar-location">
+            <Globe size={15} />
+            <span>{profile?.timezone}</span>
+            <span className="st-topbar-divider" />
+            <span>{t('All stakes are virtual. Always.')}</span>
           </div>
-          <div className="header-actions">
-            {mode === 'local' ? <span className="dev-indicator">{t('LOCAL DEV')}</span> : null}
-            <Link className="header-invite" to="/join">
+          <div className="st-topbar-actions">
+            <Link className="st-topbar-join" to="/join">
+              <KeyRound size={14} />
               {t('Join circle')}
             </Link>
-            <Link className="header-create" to="/app/circles/new">
-              + {t('Create circle')}
+            <Link className="st-btn st-btn-small" to="/app/circles/new">
+              <Plus size={15} />
+              {t('Create circle')}
             </Link>
             <NotificationBell />
-            <span className="header-divider" />
             <Link
-              className="profile-chip"
+              className="st-topbar-avatar"
               to="/app/settings"
               aria-label={t('Your profile and settings')}
             >
-              <Avatar name={profile?.displayName ?? 'You'} />
-              <span>{profile?.displayName}</span>
-              <ChevronDown size={14} />
+              <Avatar name={profile?.displayName ?? ''} />
             </Link>
           </div>
         </header>
-        <main id="main-content" className="app-main">
+        <main id="main-content" className="st-main">
           {error ? <ErrorMessage message={error} /> : null}
           <Outlet />
         </main>
-        <footer className="app-footer">
-          <span>{t('PROGRESS IS A TEAM SPORT.')}</span>
-          <span>{t('All stakes are virtual. Always.')}</span>
+        <footer className="st-app-footer">
+          <span>{t('StakeUp · All stakes are virtual.')}</span>
+          <span>{t('Private circles. Friendly stakes. Always virtual.')}</span>
         </footer>
       </div>
-      <nav className="mobile-nav" aria-label={t('Mobile navigation')}>
-        {links.map((link) => (
-          <NavLink end={link.end} to={link.to} key={link.to}>
-            <link.icon size={20} />
-            <span>{link.label === 'Overview' ? t('Home') : t(link.label)}</span>
+      <nav className="st-bottom-nav" aria-label={t('Mobile navigation')}>
+        {links.map((l) => (
+          <NavLink key={l.to} to={l.to} end={l.end}>
+            <l.icon size={21} />
+            <span>
+              {t(
+                l.to === '/app'
+                  ? 'Home'
+                  : l.to === '/app/activity'
+                    ? 'Activity'
+                    : l.to === '/app/settings'
+                      ? 'Settings'
+                      : l.label,
+              )}
+            </span>
           </NavLink>
         ))}
       </nav>

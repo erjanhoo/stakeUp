@@ -1,5 +1,5 @@
 import { useI18n } from '../lib/i18n';
-import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent, type ChangeEvent } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   Flame,
@@ -9,6 +9,8 @@ import {
   Sprout,
   UsersRound,
   ArrowUpRight,
+  ArrowRight,
+  KeyRound,
   ArrowLeft,
   Plus,
   Copy,
@@ -30,6 +32,7 @@ import {
   type ChallengeSummary,
   type ChallengeDetail,
   type Invitation,
+  type Competition,
 } from '@stakeup/contracts';
 import { useAuth } from '../lib/auth';
 import { api, message } from '../lib/api';
@@ -111,94 +114,190 @@ function JoinForm({ initial = '', onJoin }: { initial?: string; onJoin?: (id: st
     </form>
   );
 }
+function CircleWorkspaceCard({ circle: c }: { circle: CircleSummary }) {
+  const { t, language } = useI18n();
+  const { data } = useResource<CircleDetail>(`/circles/${c.id}`);
+  const active = data?.challenges.find((h) => h.status === 'active'),
+    proposal = data?.challenges.find((h) => h.status === 'proposed');
+  return (
+    <article className="st-circle-card">
+      <div
+        className="st-circle-cover"
+        style={{
+          backgroundImage: `url(/images/${['book', 'sprout'].includes(c.icon) ? 'stitch-work-circle.jpg' : 'stitch-running-circle.jpg'})`,
+        }}
+      >
+        <div className="st-circle-card-top">
+          <span className="st-status st-status-safe">
+            {t(c.role === 'owner' ? 'Owner' : 'Member')}
+          </span>
+          <span className="st-mono st-muted">{t(c.archived ? 'Archived' : 'Private circle')}</span>
+        </div>
+        <div className="st-circle-card-title">
+          <CircleIcon icon={c.icon} />
+          <div>
+            <h2>{c.name}</h2>
+            <span>{t('Private by default.')}</span>
+          </div>
+        </div>
+      </div>
+      <p>{c.description || t('A private corner for your people.')}</p>
+      <div className="st-circle-card-metrics">
+        <div>
+          <small>{t('Members')}</small>
+          <strong>{c.memberCount}</strong>
+        </div>
+        <div>
+          <small>{t('challenges')}</small>
+          <strong>{c.challengeCount}</strong>
+        </div>
+        <div>
+          <small>{t('Accepted')}</small>
+          <strong>{active?.acceptedCount ?? proposal?.acceptedCount ?? '—'}</strong>
+        </div>
+      </div>
+      {active || proposal ? (
+        <div className="st-circle-current">
+          <span className="st-eyebrow">{t(active ? 'Active challenge' : 'Accepting members')}</span>
+          <strong>{(active ?? proposal)!.rules.title}</strong>
+          <div className="st-progress">
+            <span
+              style={{
+                width: `${Math.min(100, (100 * (active ?? proposal)!.acceptedCount) / Math.max(1, c.memberCount))}%`,
+              }}
+            />
+          </div>
+          <div className="st-avatar-strip">
+            {data?.members.slice(0, 6).map((m) => (
+              <Avatar key={m.userId} name={m.displayName} />
+            ))}
+            <small>
+              {(active ?? proposal)!.rules.opening}–{(active ?? proposal)!.rules.cutoff} ·{' '}
+              {(active ?? proposal)!.rules.timezone}
+            </small>
+          </div>
+        </div>
+      ) : (
+        <div className="st-circle-current">
+          <Flag size={20} />
+          <span>
+            {t('Propose your first challenge. Everyone accepts the same rules before it starts.')}
+          </span>
+        </div>
+      )}
+      <Link className="st-circle-open" to={`/app/circles/${c.id}`}>
+        {t('Open Circle workspace')}
+        <ArrowRight size={18} />
+      </Link>
+    </article>
+  );
+}
 export function CirclesPage() {
   const { t } = useI18n();
-
   const { data, error, loading, reload } = useResource<CircleSummary[]>('/circles');
   const [showArchived, setShowArchived] = useState(false);
+  const active = data?.filter((c) => !c.archived) ?? [],
+    archived = data?.filter((c) => c.archived) ?? [];
   return (
-    <>
-      <div className="page-heading heading-with-action">
+    <div className="st-circles-page">
+      <section className="st-circles-privacy">
+        <ShieldCheck size={22} />
         <div>
-          <span className="eyebrow">{t('GOOD COMPANY. SHARED AMBITION.')}</span>
-          <h1>
-            {t('Your people. Your circles')}
-            <span>.</span>
-          </h1>
-          <p>{t('Private spaces for friends who bring out your better.')}</p>
+          <strong>{t('ZERO PUBLIC DIRECTORY')}</strong>
+          <p>{t('No public directory. Your Circle stays between its members.')}</p>
         </div>
-        <Button asChild>
-          <Link to="/app/circles/new">
-            <Plus size={17} />
-            {t('Create a circle')}{' '}
-          </Link>
-        </Button>
+      </section>
+      <div className="st-circles-hero">
+        <header className="st-page-header">
+          <div>
+            <span className="st-eyebrow">{t('ZERO PUBLIC DIRECTORY')}</span>
+            <h1>{t('My circles')}</h1>
+            <p>{t('Private, invite-only squads holding each other accountable.')}</p>
+          </div>
+          <div className="st-header-actions">
+            <Link className="st-btn st-btn-secondary" to="/join">
+              <KeyRound size={16} />
+              {t('Join circle')}
+            </Link>
+            <Link className="st-btn" to="/app/circles/new">
+              <Plus size={17} />
+              {t('Create a circle')}
+            </Link>
+          </div>
+        </header>
+        <div className="st-circle-summary">
+          <div>
+            <small>{t('Your circles')}</small>
+            <strong>{active.length}</strong>
+            <span>{t('Private by default.')}</span>
+          </div>
+          <div>
+            <small>{t('Members')}</small>
+            <strong>{active.reduce((n, c) => n + c.memberCount, 0)}</strong>
+            <span>{t('Across your Circles')}</span>
+          </div>
+          <div>
+            <small>{t('challenges')}</small>
+            <strong>{active.reduce((n, c) => n + c.challengeCount, 0)}</strong>
+            <span>{t('Shared promises')}</span>
+          </div>
+          <div>
+            <ShieldCheck size={25} />
+            <strong>{t('Invite only')}</strong>
+            <span>{t('All stakes are virtual. Always.')}</span>
+          </div>
+        </div>
+      </div>
+      <div className="st-view-tabs">
+        <button aria-pressed={!showArchived} onClick={() => setShowArchived(false)}>
+          {t('Active Circles')} <span>{active.length}</span>
+        </button>
+        <button aria-pressed={showArchived} onClick={() => setShowArchived(true)}>
+          {t('Archived')} <span>{archived.length}</span>
+        </button>
       </div>
       {error ? <Failure error={error} reload={reload} /> : null}
       {loading && !data ? <Loading /> : null}
-      <div className="circle-grid">
-        {data
-          ?.filter((c) => showArchived || !c.archived)
-          .map((c) => (
-            <Link key={c.id} to={`/app/circles/${c.id}`} className="panel circle-card">
-              <div className="circle-card-top">
-                <CircleIcon icon={c.icon} />
-                <span className="pill">
-                  {c.archived ? t('Archived') : c.role === 'owner' ? t('Your circle') : t('Member')}
-                </span>
-              </div>
-              <h2>{c.name}</h2>
-              <p>{c.description || t('A private corner for your people.')}</p>
-              <div className="circle-card-foot">
-                <span>
-                  <UsersRound size={15} />
-                  {c.memberCount} {c.memberCount === 1 ? 'member' : 'members'}
-                </span>
-                <span>
-                  {c.challengeCount} {t('challenges')} <ArrowUpRight size={16} />
-                </span>
-              </div>
-            </Link>
-          ))}
+      <div className="st-circles-collection">
+        {(showArchived ? archived : active).map((c) => (
+          <CircleWorkspaceCard key={c.id} circle={c} />
+        ))}
       </div>
-      {data?.length === 0 ? (
-        <section className="panel feature-empty">
-          <CircleIcon icon="sprout" />
+      {data && !(showArchived ? archived : active).length ? (
+        <section className="st-empty-workspace">
+          <UsersRound size={38} />
           <h2>{t('Everything’s better with a circle.')}</h2>
           <p>
             {t(
               'Start a private group, invite your friends, and turn a shared ambition into a daily promise.',
-            )}{' '}
+            )}
           </p>
-          <Button asChild variant="outline">
-            <Link to="/app/circles/new">
-              {t('Create your first circle')} <ArrowUpRight size={17} />
-            </Link>
-          </Button>
+          <Link className="st-btn" to="/app/circles/new">
+            {t('Create your first circle')}
+            <ArrowRight size={16} />
+          </Link>
         </section>
       ) : null}
-      {data?.some((c) => c.archived) ? (
-        <label className="inline-check">
-          <input
-            type="checkbox"
-            checked={showArchived}
-            onChange={(e) => setShowArchived(e.target.checked)}
-          />
-          {t('Show archived circles')}{' '}
-        </label>
-      ) : null}
-      <section className="panel join-panel">
-        <div>
-          <span className="eyebrow">{t('GOT AN INVITATION?')}</span>
-          <h2>{t('Your people are waiting.')}</h2>
-          <p>{t('Only people with a valid private invitation can join a Circle.')}</p>
-        </div>
+      <details className="st-invitation-entry">
+        <summary>
+          <KeyRound size={18} />
+          {t('GOT AN INVITATION?')}
+          <Plus size={16} />
+        </summary>
         <JoinForm />
-      </section>
-    </>
+      </details>
+    </div>
   );
 }
-function CircleFields({ initial }: { initial?: CircleInput }) {
+function CircleFields({
+  initial,
+  selectedIcon,
+  onIconChange,
+}: {
+  initial?: CircleInput;
+  selectedIcon?: CircleInput['icon'];
+  onIconChange?: (icon: CircleInput['icon']) => void;
+}) {
   const { t } = useI18n();
 
   return (
@@ -226,7 +325,16 @@ function CircleFields({ initial }: { initial?: CircleInput }) {
       </label>
       <label>
         {t('Circle icon')}{' '}
-        <select name="icon" defaultValue={initial?.icon ?? 'flame'}>
+        <select
+          name="icon"
+          {...(selectedIcon
+            ? {
+                value: selectedIcon,
+                onChange: (e: ChangeEvent<HTMLSelectElement>) =>
+                  onIconChange?.(e.target.value as CircleInput['icon']),
+              }
+            : { defaultValue: initial?.icon ?? 'flame' })}
+        >
           <option value="flame">{t('Flame · consistency')}</option>
           <option value="sun">{t('Sun · fresh starts')}</option>
           <option value="book">{t('Book · learning')}</option>
@@ -234,6 +342,29 @@ function CircleFields({ initial }: { initial?: CircleInput }) {
           <option value="sprout">{t('Sprout · growth')}</option>
         </select>
       </label>
+      {onIconChange ? (
+        <div className="st-icon-picker" role="group" aria-label={t('Circle icon selection')}>
+          {(
+            [
+              ['flame', 'Flame · consistency'],
+              ['sun', 'Sun · fresh starts'],
+              ['book', 'Book · learning'],
+              ['dumbbell', 'Dumbbell · movement'],
+              ['sprout', 'Sprout · growth'],
+            ] as const
+          ).map(([icon, label]) => (
+            <button
+              type="button"
+              key={icon}
+              aria-label={t(label)}
+              aria-pressed={selectedIcon === icon}
+              onClick={() => onIconChange(icon)}
+            >
+              <CircleIcon icon={icon} />
+            </button>
+          ))}
+        </div>
+      ) : null}
     </>
   );
 }
@@ -243,6 +374,11 @@ export function CreateCircle() {
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false),
     [error, setError] = useState('');
+  const [preview, setPreview] = useState({
+    name: '',
+    description: '',
+    icon: 'flame' as CircleInput['icon'],
+  });
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
@@ -261,35 +397,112 @@ export function CreateCircle() {
     }
   }
   return (
-    <>
+    <div className="st-create-circle">
       <Link className="back-link" to="/app/circles">
         <ArrowLeft size={16} />
-        {t('Your circles')}{' '}
+        {t('Your circles')}
       </Link>
-      <div className="page-heading">
-        <span className="eyebrow">{t('MAKE ROOM FOR GOOD COMPANY')}</span>
-        <h1>
-          {t('A little circle. Big possibilities')}
-          <span>.</span>
-        </h1>
-        <p>{t('You’ll be the owner. Invite friends with a private, expiring link.')}</p>
+      <header className="st-page-header">
+        <div>
+          <span className="st-eyebrow">{t('PRIVATE CIRCLE · NEW WORKSPACE')}</span>
+          <h1>{t('Create a circle')}</h1>
+          <p>{t('You’ll be the owner. Invite friends with a private, expiring link.')}</p>
+        </div>
+      </header>
+      <div className="st-creation-layout">
+        <section className="st-module">
+          <div className="st-module-heading">
+            <h2>{t('Circle identity')}</h2>
+            <UsersRound size={22} />
+          </div>
+          <form
+            className="form-stack"
+            onSubmit={submit}
+            onChange={(e) => {
+              const f = new FormData(e.currentTarget);
+              setPreview({
+                name: String(f.get('name') ?? ''),
+                description: String(f.get('description') ?? ''),
+                icon: String(f.get('icon') ?? 'flame') as CircleInput['icon'],
+              });
+            }}
+          >
+            <CircleFields
+              selectedIcon={preview.icon}
+              onIconChange={(icon) => setPreview((v) => ({ ...v, icon }))}
+            />
+            {error ? <ErrorMessage message={error} /> : null}
+            <div className="st-form-actions">
+              <Link className="st-text-link" to="/app/circles">
+                {t('Cancel')}
+              </Link>
+              <Button type="submit" disabled={busy}>
+                {t(busy ? 'Creating…' : 'Create circle')}
+                <ArrowRight size={17} />
+              </Button>
+            </div>
+          </form>
+          <p className="secure-caption">
+            <LockKeyhole size={15} />
+            {t('Private by default. No public directory.')}
+          </p>
+        </section>
+        <aside className="st-creation-rail">
+          <section className="st-module">
+            <small className="st-eyebrow">{t('LIVE CIRCLE PREVIEW')}</small>
+            <article className="st-circle-preview">
+              <div className="st-circle-card-title">
+                <CircleIcon icon={preview.icon} />
+                <div>
+                  <h2>{preview.name || t('Your new circle')}</h2>
+                  <small>{t('Created by you · 1 member')}</small>
+                </div>
+                <span className="st-status st-status-safe">{t('Owner')}</span>
+              </div>
+              <p>{preview.description || t('What brings your people together?')}</p>
+              <footer>
+                <span>0 {t('Active challenges')}</span>
+                <span>0.00 {t('VC')}</span>
+              </footer>
+            </article>
+          </section>
+          <section className="st-module">
+            <div className="st-module-heading">
+              <ShieldCheck size={22} />
+              <h2>{t('Circle owner permissions')}</h2>
+            </div>
+            <ul className="st-guardrails">
+              <li>
+                <Check size={17} />
+                {t('Invite friends with private links.')}
+              </li>
+              <li>
+                <Check size={17} />
+                {t('Propose challenges with clear, shared rules.')}
+              </li>
+              <li>
+                <Check size={17} />
+                {t('Every participant accepts individually, including you.')}
+              </li>
+            </ul>
+          </section>
+          <section className="st-callout">
+            <Flag size={22} />
+            <div>
+              <h3>{t('Membership is not a commitment.')}</h3>
+              <p>
+                {t(
+                  'Creating a challenge does not enroll you. Joining a circle does not accept any challenge rules.',
+                )}
+              </p>
+            </div>
+          </section>
+        </aside>
       </div>
-      <section className="panel narrow-panel">
-        <form className="form-stack" onSubmit={submit}>
-          <CircleFields />
-          {error ? <ErrorMessage message={error} /> : null}
-          <Button type="submit" disabled={busy}>
-            {busy ? t('Creating…') : t('Create circle')}
-            <ArrowUpRight size={17} />
-          </Button>
-        </form>
-        <p className="secure-caption">
-          <LockKeyhole size={15} /> {t('Private by default. No public directory.')}{' '}
-        </p>
-      </section>
-    </>
+    </div>
   );
 }
+
 function AcceptanceRoster({ challenge }: { challenge: ChallengeSummary }) {
   const { t } = useI18n();
 
@@ -352,6 +565,7 @@ export function CirclePage() {
 
   const { id } = useParams();
   const { data: c, error, loading, reload } = useResource<CircleDetail>(`/circles/${id}`);
+  const [challengeFilter, setChallengeFilter] = useState('all');
   const [invite, setInvite] = useState<Invitation | null>(null),
     [busy, setBusy] = useState(false),
     [actionError, setActionError] = useState(''),
@@ -463,16 +677,39 @@ export function CirclePage() {
           </div>
         </section>
       ) : null}
-      <div className="social-detail-grid">
+      <div className="st-circle-layout">
         <section className="panel">
           <div className="panel-heading">
-            <h2>{t('Shared promises')}</h2>
+            <h2>{t('Circle challenges')}</h2>
             <span className="count-pill">{c.challenges.length}</span>
           </div>
+          <div className="st-view-tabs">
+            {['all', 'active', 'proposed', 'completed'].map((status) => (
+              <button
+                key={status}
+                aria-pressed={challengeFilter === status}
+                onClick={() => setChallengeFilter(status)}
+              >
+                {t(
+                  (
+                    {
+                      all: 'All',
+                      active: 'Active',
+                      proposed: 'Accepting members',
+                      completed: 'Completed',
+                    } as Record<string, string>
+                  )[status],
+                )}{' '}
+                <span>
+                  {c.challenges.filter((h) => status === 'all' || h.status === status).length}
+                </span>
+              </button>
+            ))}
+          </div>
           {c.challenges.length ? (
-            c.challenges.map((challenge) => (
-              <ChallengeCard key={challenge.id} challenge={challenge} />
-            ))
+            c.challenges
+              .filter((h) => challengeFilter === 'all' || h.status === challengeFilter)
+              .map((challenge) => <ChallengeCard key={challenge.id} challenge={challenge} />)
           ) : (
             <div className="small-empty">
               <Flag size={30} />
@@ -492,48 +729,50 @@ export function CirclePage() {
             </div>
           )}
         </section>
-        <aside className="panel member-panel">
-          <div className="panel-heading">
-            <h2>{t('In your corner')}</h2>
-            <UsersRound size={20} />
-          </div>
-          {c.members.map((member) => (
-            <div className="member-row" key={member.userId}>
-              <Avatar name={member.displayName} />
-              <div>
-                <strong>{member.displayName}</strong>
-                <span>@{member.username}</span>
+        <div className="st-circle-rail">
+          <aside className="panel member-panel">
+            <div className="panel-heading">
+              <h2>{t('In your corner')}</h2>
+              <UsersRound size={20} />
+            </div>
+            {c.members.map((member) => (
+              <div className="member-row" key={member.userId}>
+                <Avatar name={member.displayName} />
+                <div>
+                  <strong>{member.displayName}</strong>
+                  <span>@{member.username}</span>
+                </div>
+                {member.role === 'owner' ? <span className="pill">{t('Owner')}</span> : null}
               </div>
-              {member.role === 'owner' ? <span className="pill">{t('Owner')}</span> : null}
+            ))}
+          </aside>{' '}
+          <section className="panel recent-activity">
+            <div className="panel-heading">
+              <h2>{t('Circle activity')}</h2>
+              <Clock3 size={18} />
             </div>
-          ))}
-        </aside>
-      </div>
-      <section className="panel recent-activity">
-        <div className="panel-heading">
-          <h2>{t('Circle activity')}</h2>
-          <Clock3 size={18} />
+            {c.events.map((event) => (
+              <div className="activity-row" key={event.id}>
+                <span className="activity-icon">
+                  <Check size={17} />
+                </span>
+                <div>
+                  <strong>{event.actorName}</strong>
+                  <p>{t(event.title)}</p>
+                </div>
+                <time dateTime={event.createdAt}>
+                  {new Date(event.createdAt).toLocaleDateString(language, {
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </time>
+              </div>
+            ))}
+          </section>
         </div>
-        {c.events.map((event) => (
-          <div className="activity-row" key={event.id}>
-            <span className="activity-icon">
-              <Check size={17} />
-            </span>
-            <div>
-              <strong>{event.actorName}</strong>
-              <p>{t(event.title)}</p>
-            </div>
-            <time dateTime={event.createdAt}>
-              {new Date(event.createdAt).toLocaleDateString(language, {
-                month: 'short',
-                day: 'numeric',
-              })}
-            </time>
-          </div>
-        ))}
-      </section>
+      </div>
       {!c.archived ? (
-        <section className="circle-management">
+        <section className="circle-management" id="circle-management">
           {c.role === 'owner' ? (
             <details className="panel">
               <summary>{t('Manage circle')}</summary>
@@ -581,6 +820,7 @@ export function JoinCircle() {
     try {
       const fromHash = new URLSearchParams(location.hash.slice(1)).get('token');
       const saved = fromHash ?? sessionStorage.getItem(PENDING_INVITE) ?? '';
+      if (!saved) return;
       const parsed = invitationToken(saved);
       setToken(parsed);
       sessionStorage.setItem(PENDING_INVITE, parsed);
@@ -590,18 +830,42 @@ export function JoinCircle() {
     }
   }, []);
   return (
-    <div className="onboarding">
+    <div className="onboarding st-join">
       <header>
         <Brand />
         <span className="eyebrow">{t('AN INVITATION TO SHOW UP')}</span>
       </header>
-      <main>
+      <main className="st-join-layout">
         <div className="onboarding-heading">
           <span className="page-icon">
             <UsersRound />
           </span>
+          <span className="st-eyebrow">{t('INVITATION REQUIRED')}</span>
           <h1>{t('Good company is waiting.')}</h1>
           <p>{t('A private circle. A shared ambition. Your next small step.')}</p>
+          <div className="st-join-benefits">
+            {[
+              [
+                '01',
+                'Private by default.',
+                'No public directory. Your Circle stays between its members.',
+              ],
+              [
+                '02',
+                'Your rules. Your choice.',
+                'Joining a circle does not enroll you in its challenges.',
+              ],
+              ['03', 'Only virtual stakes.', 'No deposits, charges or withdrawals.'],
+            ].map(([n, title, detail]) => (
+              <article key={n}>
+                <span>{n}</span>
+                <div>
+                  <h2>{t(title)}</h2>
+                  <p>{t(detail)}</p>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
         <section className="panel">
           {auth.loading ? (
@@ -635,7 +899,13 @@ export function JoinCircle() {
             </Button>
           ) : token ? (
             <JoinForm initial={token} onJoin={(id) => navigate(`/app/circles/${id}`)} />
-          ) : null}
+          ) : (
+            <JoinForm />
+          )}
+          <p className="secure-caption">
+            <LockKeyhole size={16} />
+            {t('Private by default. No public directory.')}
+          </p>
         </section>
       </main>
     </div>
@@ -651,6 +921,17 @@ export function CreateChallenge() {
   const [busy, setBusy] = useState(false),
     [error, setError] = useState('');
   const start = tomorrow(profile?.timezone ?? 'UTC');
+  const [preview, setPreview] = useState<Record<string, string>>({
+    title: '',
+    startDate: start,
+    endDate: addDays(start, 29),
+    timezone: profile?.timezone ?? 'UTC',
+    opening: '00:00',
+    cutoff: '20:00',
+    penalty: '5.00',
+    cap: '100.00',
+    graceDays: '1',
+  });
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
@@ -685,18 +966,25 @@ export function CreateChallenge() {
         <ArrowLeft size={16} />
         {circle?.name ?? t('Back to circle')}
       </Link>
-      <div className="page-heading">
+      <div className="page-heading st-proposal-heading">
         <span className="eyebrow">{t('A PROMISE WORTH KEEPING')}</span>
-        <h1>
-          {t('What will you show up for')}
-          <span>?</span>
-        </h1>
+        <h1>{t('Design a challenge proposal')}</h1>
         <p>{t('Publish clear rules, then let your people choose to join.')}</p>
       </div>
       {circleError ? <ErrorMessage message={circleError} /> : null}
-      <form className="challenge-form" onSubmit={submit}>
+      <form
+        className="challenge-form st-challenge-create"
+        onSubmit={submit}
+        onChange={(e) =>
+          setPreview(
+            Object.fromEntries(
+              [...new FormData(e.currentTarget).entries()].map(([k, v]) => [k, String(v)]),
+            ),
+          )
+        }
+      >
         <section className="panel form-stack">
-          <h2>{t('01 · The shared ambition')}</h2>
+          <h2>{t('01 · Identity & mission')}</h2>
           <label>
             {t('Challenge title')}{' '}
             <Input
@@ -716,6 +1004,9 @@ export function CreateChallenge() {
               placeholder={t('Why does this matter to your circle?')}
             />
           </label>
+        </section>
+        <section className="panel form-stack">
+          <h2>{t('02 · Temporal architecture')}</h2>
           <div className="form-row">
             <label>
               {t('Start date')}{' '}
@@ -768,7 +1059,7 @@ export function CreateChallenge() {
           </p>
         </section>
         <section className="panel form-stack">
-          <h2>{t('02 · What showing up looks like')}</h2>
+          <h2>{t('03 · Evidence protocol')}</h2>
           <label>
             {t('Evidence requirements')}{' '}
             <textarea
@@ -797,7 +1088,9 @@ export function CreateChallenge() {
               )}{' '}
             </p>
           </div>
-          <h2>{t('03 · Keep the stakes friendly')}</h2>
+        </section>
+        <section className="panel form-stack">
+          <h2>{t('04 · Stakes & forgiveness')}</h2>
           <div className="form-row">
             <label>
               {t('Virtual penalty per missed day')}{' '}
@@ -837,6 +1130,41 @@ export function CreateChallenge() {
           </div>
         </section>
         <section className="panel publish-panel">
+          <small className="st-eyebrow">{t('LIVE CHALLENGE PREVIEW')}</small>
+          <article className="st-proposal-preview">
+            <span className="st-status st-status-safe">{t('Accepting members')}</span>
+            <h3>{preview.title || t('Your new challenge')}</h3>
+            <p>{circle?.name}</p>
+            <div className="st-proposal-preview-metrics">
+              <div>
+                <span>{t('Per missed day')}</span>
+                <strong>
+                  {preview.penalty || '—'} {t('VC')}
+                </strong>
+              </div>
+              <div>
+                <span>{t('Your maximum')}</span>
+                <strong>
+                  {preview.cap || '—'} {t('VC')}
+                </strong>
+              </div>
+              <div>
+                <span>{t('Grace days')}</span>
+                <strong>{preview.graceDays || '0'}</strong>
+              </div>
+            </div>
+            <div className="st-challenge-window">
+              <Clock3 size={20} />
+              <span>{t('Daily upload window')}</span>
+              <strong>
+                {preview.opening}–{preview.cutoff}
+              </strong>
+              <small>{preview.timezone}</small>
+            </div>
+            <footer>
+              {preview.startDate} → {preview.endDate}
+            </footer>
+          </article>
           <LockKeyhole size={22} />
           <div>
             <h3>{t('One shared version of the rules.')}</h3>
@@ -851,9 +1179,75 @@ export function CreateChallenge() {
             {busy ? t('Publishing…') : t('Publish proposal')}
             <ArrowUpRight size={18} />
           </Button>
+          <Link className="st-text-link" to={`/app/circles/${id}`}>
+            {t('Cancel')}
+          </Link>
         </section>
       </form>
     </>
+  );
+}
+function ChallengeParticipant({ challenge: c }: { challenge: ChallengeDetail }) {
+  const { t, language } = useI18n(),
+    { profile } = useAuth(),
+    { data } = useResource<Competition>(`/challenges/${c.id}/competition`);
+  const own = data?.rows.find((r) => r.userId === profile?.id),
+    scored = own ? own.scheduled - own.grace : 0,
+    percent = scored ? Math.round((100 * own!.successful) / scored) : 0;
+  return (
+    <section className="st-challenge-person">
+      <div className="st-challenge-person-name">
+        <Avatar name={profile?.displayName ?? ''} large />
+        <div>
+          <strong>{profile?.displayName}</strong>
+          <span>{t(c.ownStatus === 'accepted' ? 'Accepted' : 'Not accepted')}</span>
+        </div>
+      </div>
+      <span className="st-eyebrow">{t('Discipline rate')}</span>
+      <strong className="st-discipline-number">
+        {scored ? percent : '—'}
+        <small>%</small>
+      </strong>
+      <div className="st-progress">
+        <span style={{ width: `${percent}%` }} />
+      </div>
+      <div className="st-person-figures">
+        <div>
+          <span>{t('Successful days')}</span>
+          <strong>{own ? `${own.successful} / ${scored}` : '—'}</strong>
+        </div>
+        <div>
+          <span>{t('Grace days')}</span>
+          <strong>
+            {own?.grace ?? 0} / {c.rules.graceDays}
+          </strong>
+        </div>
+        <div>
+          <span>{t('Virtual penalty')}</span>
+          <strong>{credits(own?.penaltyMinor ?? 0, language)}</strong>
+        </div>
+      </div>
+      <div className="st-challenge-window">
+        <Clock3 size={20} />
+        <span>{t('Daily upload window')}</span>
+        <strong>
+          {c.rules.opening}–{c.rules.cutoff}
+        </strong>
+        <small>{c.rules.timezone}</small>
+      </div>
+      {['active', 'completed'].includes(c.status) ? (
+        <Link className="st-btn" to={`/app/challenges/${c.id}/evidence`}>
+          {t('Open proof workspace')}
+          <ArrowRight size={16} />
+        </Link>
+      ) : null}
+      {c.status === 'proposed' ? (
+        <Link className="st-text-link" to={`/app/challenges/${c.id}/competition`}>
+          {t('Standings & virtual pool')}
+          <ArrowRight size={14} />
+        </Link>
+      ) : null}
+    </section>
   );
 }
 export function ChallengePage() {
@@ -891,13 +1285,15 @@ export function ChallengePage() {
       </Link>
       <div className="page-heading">
         <span className="eyebrow">
-          {c.status === 'active'
-            ? 'ACTIVE · RULES AND ROSTER LOCKED'
-            : c.status === 'proposed'
-              ? 'A SHARED PROMISE · OPEN FOR ACCEPTANCE'
-              : c.status === 'completed'
-                ? 'COMPLETED · RESULTS FINAL'
-                : 'CANCELLED PROPOSAL'}
+          {t(
+            c.status === 'active'
+              ? 'ACTIVE · RULES AND ROSTER LOCKED'
+              : c.status === 'proposed'
+                ? 'A SHARED PROMISE · OPEN FOR ACCEPTANCE'
+                : c.status === 'completed'
+                  ? 'COMPLETED · RESULTS FINAL'
+                  : 'CANCELLED PROPOSAL',
+          )}
         </span>
         <h1>
           {r.title}
@@ -918,10 +1314,77 @@ export function ChallengePage() {
         </div>
       ) : null}
       {actionError ? <ErrorMessage message={actionError} /> : null}
-      <div className="social-detail-grid">
+      <div className="st-challenge-layout">
+        <div className="st-challenge-person-column">
+          <ChallengeParticipant challenge={c} />
+          <div className="st-participation-slot">
+            {' '}
+            {c.status === 'proposed' ? (
+              c.ownStatus === 'accepted' ? (
+                <div className="acceptance-box">
+                  <span className="pill pill-active">
+                    <Check size={14} />
+                    {t('You accepted these rules')}{' '}
+                  </span>
+                  <Button variant="ghost" disabled={busy} onClick={() => void action('withdraw')}>
+                    {t('Withdraw before activation')}{' '}
+                  </Button>
+                </div>
+              ) : (
+                <div className="acceptance-box">
+                  <label className="inline-check">
+                    <input
+                      type="checkbox"
+                      checked={agreed}
+                      onChange={(e) => setAgreed(e.target.checked)}
+                    />
+                    {t(
+                      'I accept these dates, upload window, evidence rules, grace days, virtual penalties and cap.',
+                    )}{' '}
+                  </label>
+                  <Button disabled={!agreed || busy} onClick={() => void action('accept')}>
+                    {busy ? t('Saving…') : t('Accept rules & join')}
+                    <Check size={17} />
+                  </Button>
+                </div>
+              )
+            ) : null}
+            {c.canManage && c.status === 'proposed' ? (
+              <div className="activation-box">
+                <LockKeyhole size={21} />
+                <h3>{t('Ready for day one?')}</h3>
+                <p>
+                  {t(
+                    'At least two people must accept. Only accepted members participate; unaccepted Circle members sit out. Activation locks the rules and roster. No one can enroll or withdraw afterward.',
+                  )}{' '}
+                </p>
+                <Button
+                  disabled={busy || c.acceptedCount < 2}
+                  onClick={() => void action('activate')}
+                >
+                  {t('Activate & lock roster')}{' '}
+                </Button>
+                <Button variant="ghost" disabled={busy} onClick={() => void action('cancel')}>
+                  {t('Cancel proposal')}{' '}
+                </Button>
+              </div>
+            ) : null}
+            {c.status === 'active' ? (
+              <div className="quiet-info">
+                <LockKeyhole size={21} />
+                <div>
+                  <p>{t('The shared promise is locked.')}</p>
+                  <Link className="text-link" to={`/app/challenges/${c.id}/evidence`}>
+                    {t('Submit & review proof →')}{' '}
+                  </Link>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </div>
         <section className="panel rules-panel">
           <div className="panel-heading">
-            <h2>{t('The rules, in plain sight')}</h2>
+            <h2>{t('Immutable challenge rules')}</h2>
             <ShieldCheck size={21} />
           </div>
           <dl className="rules-grid">
@@ -984,7 +1447,7 @@ export function ChallengePage() {
         </section>
         <aside className="panel">
           <div className="panel-heading">
-            <h2>{t('Showing up together')}</h2>
+            <h2>{t('Challenge roster')}</h2>
             <span className="count-pill">{c.acceptedCount}</span>
           </div>
           {c.participants
@@ -1004,67 +1467,6 @@ export function ChallengePage() {
           <AcceptanceRoster challenge={c} />
           {!c.acceptedCount ? (
             <p className="muted">{t('Be the first to make the promise.')}</p>
-          ) : null}
-          {c.status === 'proposed' ? (
-            c.ownStatus === 'accepted' ? (
-              <div className="acceptance-box">
-                <span className="pill pill-active">
-                  <Check size={14} />
-                  {t('You accepted these rules')}{' '}
-                </span>
-                <Button variant="ghost" disabled={busy} onClick={() => void action('withdraw')}>
-                  {t('Withdraw before activation')}{' '}
-                </Button>
-              </div>
-            ) : (
-              <div className="acceptance-box">
-                <label className="inline-check">
-                  <input
-                    type="checkbox"
-                    checked={agreed}
-                    onChange={(e) => setAgreed(e.target.checked)}
-                  />
-                  {t(
-                    'I accept these dates, upload window, evidence rules, grace days, virtual penalties and cap.',
-                  )}{' '}
-                </label>
-                <Button disabled={!agreed || busy} onClick={() => void action('accept')}>
-                  {busy ? t('Saving…') : t('Accept rules & join')}
-                  <Check size={17} />
-                </Button>
-              </div>
-            )
-          ) : null}
-          {c.canManage && c.status === 'proposed' ? (
-            <div className="activation-box">
-              <LockKeyhole size={21} />
-              <h3>{t('Ready for day one?')}</h3>
-              <p>
-                {t(
-                  'At least two people must accept. Only accepted members participate; unaccepted Circle members sit out. Activation locks the rules and roster. No one can enroll or withdraw afterward.',
-                )}{' '}
-              </p>
-              <Button
-                disabled={busy || c.acceptedCount < 2}
-                onClick={() => void action('activate')}
-              >
-                {t('Activate & lock roster')}{' '}
-              </Button>
-              <Button variant="ghost" disabled={busy} onClick={() => void action('cancel')}>
-                {t('Cancel proposal')}{' '}
-              </Button>
-            </div>
-          ) : null}
-          {c.status === 'active' ? (
-            <div className="quiet-info">
-              <LockKeyhole size={21} />
-              <div>
-                <p>{t('The shared promise is locked.')}</p>
-                <Link className="text-link" to={`/app/challenges/${c.id}/evidence`}>
-                  {t('Submit & review proof →')}{' '}
-                </Link>
-              </div>
-            </div>
           ) : null}
         </aside>
       </div>

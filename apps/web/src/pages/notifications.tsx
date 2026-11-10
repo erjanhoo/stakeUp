@@ -25,6 +25,7 @@ export function Notifications() {
   const { t, language } = useI18n();
 
   const { data, error, loading, reload } = useResource<AppNotification[]>('/notifications');
+  const [filter, setFilter] = useState('all');
   const [actionError, setError] = useState('');
   async function read(id?: string) {
     try {
@@ -36,12 +37,12 @@ export function Notifications() {
     }
   }
   return (
-    <>
-      <div className="page-heading heading-with-action">
+    <div className="st-notifications-page">
+      <div className="st-page-header">
         <div>
           <span className="eyebrow">{t('YOUR CIRCLE, IN THE LOOP')}</span>
           <h1>
-            {t('A little nudge')}
+            {t('Notification center')}
             <span>.</span>
           </h1>
           <p>{t('Deadlines, decisions and the moments worth noticing.')}</p>
@@ -60,41 +61,90 @@ export function Notifications() {
           <p>{t('Reminders and circle updates will appear here.')}</p>
         </div>
       ) : null}
-      <div className="notification-stream">
-        {data?.map((n) => (
-          <article key={n.id} className={`notification-item ${n.readAt ? '' : 'unread'}`}>
-            <span className="notification-signal" />
-            <div>
-              <h2>{t(notificationTitles[n.kind] ?? 'Circle update')}</h2>
-              {n.payload.title ? <p>{n.payload.title}</p> : null}
-              {n.payload.date ? <p>{n.payload.date}</p> : null}
-              {n.kind === 'recap' ? (
-                <p>
-                  {n.payload.month} · {n.payload.accepted} {t('accepted /')} {n.payload.submitted}{' '}
-                  {t('submitted')}{' '}
-                </p>
-              ) : null}
-              <time>{new Date(n.createdAt).toLocaleString(language)}</time>
-              <div className="heading-actions">
-                {n.challengeId ? (
-                  <Link
-                    className="text-link"
-                    to={`/app/challenges/${n.challengeId}${['accepted', 'rejected', 'disputed', 'review', 'comment', 'deadline', 'missed'].includes(n.kind) ? '/evidence' : n.kind === 'completed' ? '/competition' : ''}`}
-                    onClick={() => void read(n.id)}
-                  >
-                    {t('Open update →')}{' '}
-                  </Link>
-                ) : null}
-                {!n.readAt ? (
-                  <button className="text-link" onClick={() => void read(n.id)}>
-                    {t('Mark as read')}{' '}
-                  </button>
-                ) : null}
+      <div className="st-notification-layout">
+        <div>
+          <div className="st-view-tabs">
+            {[
+              ['all', 'All'],
+              ['unread', 'Unread'],
+              ['review', 'Reviews'],
+              ['recap', 'Recaps'],
+            ].map(([key, label]) => (
+              <button key={key} aria-pressed={filter === key} onClick={() => setFilter(key)}>
+                {t(label)}
+                <span>
+                  {data?.filter(
+                    (n) => key === 'all' || (key === 'unread' && !n.readAt) || key === n.kind,
+                  ).length ?? 0}
+                </span>
+              </button>
+            ))}
+          </div>
+          <div className="notification-stream">
+            {data
+              ?.filter(
+                (n) => filter === 'all' || (filter === 'unread' && !n.readAt) || filter === n.kind,
+              )
+              .map((n) => (
+                <article key={n.id} className={`notification-item ${n.readAt ? '' : 'unread'}`}>
+                  <span className="notification-signal" />
+                  <div>
+                    <h2>{t(notificationTitles[n.kind] ?? 'Circle update')}</h2>
+                    {n.payload.title ? <p>{n.payload.title}</p> : null}
+                    {n.payload.date ? <p>{n.payload.date}</p> : null}
+                    {n.kind === 'recap' ? (
+                      <p>
+                        {n.payload.month} · {n.payload.accepted} {t('accepted /')}{' '}
+                        {n.payload.submitted} {t('submitted')}{' '}
+                      </p>
+                    ) : null}
+                    <time>{new Date(n.createdAt).toLocaleString(language)}</time>
+                    <div className="heading-actions">
+                      {n.challengeId ? (
+                        <Link
+                          className="text-link"
+                          to={`/app/challenges/${n.challengeId}${['accepted', 'rejected', 'disputed', 'review', 'comment', 'deadline', 'missed'].includes(n.kind) ? '/evidence' : n.kind === 'completed' ? '/competition' : ''}`}
+                          onClick={() => void read(n.id)}
+                        >
+                          {t('Open update →')}{' '}
+                        </Link>
+                      ) : null}
+                      {!n.readAt ? (
+                        <button className="text-link" onClick={() => void read(n.id)}>
+                          {t('Mark as read')}{' '}
+                        </button>
+                      ) : null}
+                    </div>
+                  </div>
+                </article>
+              ))}
+          </div>
+        </div>
+        <aside className="st-notification-policy">
+          <section className="st-module">
+            <h2>{t('Your private inbox')}</h2>
+            <p>{t('In-app updates from your Circles. Only you can read your notifications.')}</p>
+            <div className="st-inbox-policy-row">
+              <Bell size={20} />
+              <div>
+                <strong>{t('In-app notifications')}</strong>
+                <p>{t('Reminders and circle updates will appear here.')}</p>
               </div>
             </div>
-          </article>
-        ))}
+            <div className="st-inbox-policy-row">
+              <CheckCheck size={20} />
+              <div>
+                <strong>{t('Mark all as read')}</strong>
+                <p>{t('Read states are personal. Your Circles do not see them.')}</p>
+              </div>
+            </div>
+            <small className="st-mono st-muted">{t('Latest 100 updates')}</small>
+          </section>
+          <Link className="st-btn st-btn-secondary" to="/app/circles">
+            {t('Your circles')}
+          </Link>
+        </aside>
       </div>
-    </>
+    </div>
   );
 }

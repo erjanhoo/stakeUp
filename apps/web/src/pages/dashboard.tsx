@@ -1,27 +1,12 @@
 import { useI18n } from '../lib/i18n';
-import { PersonalProgress, PoolMark } from '../components/community';
+import { PersonalProgress } from '../components/community';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  ArrowUpRight,
-  ArrowRight,
-  Flame,
-  UsersRound,
-  CircleCheck,
-  Coins,
-  PiggyBank,
-  Check,
-  Sprout,
-  Flag,
-  ShieldCheck,
-  Clock3,
-  Sparkles,
-} from 'lucide-react';
-import { motion } from 'motion/react';
+import { ArrowRight, CircleCheck, Check, Sprout, ShieldCheck } from 'lucide-react';
 import type { Dashboard, Activity } from '@stakeup/contracts';
 import { useAuth } from '../lib/auth';
 import { api, ApiError, message } from '../lib/api';
-import { ErrorMessage, PhaseNote } from '../components/common';
+import { ErrorMessage } from '../components/common';
 import { Button } from '../components/ui/button';
 
 export function useDashboard() {
@@ -96,351 +81,217 @@ export function ActivityList({ activities }: { activities: Activity[] }) {
     </div>
   );
 }
-export function DashboardPage() {
-  const { t, language } = useI18n();
-
-  const { profile } = useAuth();
-  const { data, error, retry } = useDashboard();
-  const date = new Intl.DateTimeFormat(language, {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    timeZone: profile?.timezone ?? 'UTC',
-  }).format(new Date());
+export { Overview as DashboardPage } from './overview';
+export function ActivityPage() {
+  const { t, language } = useI18n(),
+    { profile } = useAuth(),
+    { data, error, retry } = useDashboard();
+  const [filter, setFilter] = useState('all'),
+    [query, setQuery] = useState('');
+  const events =
+    data?.activities.filter(
+      (e) =>
+        (filter === 'all' ||
+          (filter === 'profile' ? e.kind === 'profile_updated' : e.kind !== 'profile_updated')) &&
+        t(activityLabels[e.kind]?.title ?? 'Account activity')
+          .toLocaleLowerCase(language)
+          .includes(query.toLocaleLowerCase(language)),
+    ) ?? [];
   return (
-    <>
-      <div className="dashboard-heading">
+    <div className="st-activity-page">
+      <header className="st-page-header">
         <div>
-          <span className="eyebrow">{date.toUpperCase()}</span>
-          <h1>
-            {t('Hey,')} {profile?.displayName.split(' ')[0]}
-            <span className="orange-text">.</span> {t('Let’s show up.')}{' '}
-          </h1>
-          <p>{t('A little better every day. Even better together.')}</p>
+          <span className="st-eyebrow">{t('YOUR ACCOUNT HISTORY')}</span>
+          <h1>{t('Personal activity')}</h1>
+          <p>{t('Real account activity. The beginning of your story.')}</p>
         </div>
-        <span className="day-one-badge">
-          <span className="status-dot" /> {t('YOUR NEXT CHAPTER')}{' '}
-        </span>
+        <span className="st-status st-status-safe">{t('Private by default.')}</span>
+      </header>
+      <div className="st-activity-controls">
+        <div className="st-view-tabs">
+          {[
+            ['all', 'All activity'],
+            ['account', 'Account'],
+            ['profile', 'Profile updates'],
+          ].map(([v, label]) => (
+            <button key={v} aria-pressed={filter === v} onClick={() => setFilter(v)}>
+              {t(label)}
+            </button>
+          ))}
+        </div>
+        <label className="st-search">
+          <span>{t('Search activity')}</span>
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t('Search activity')}
+          />
+        </label>
       </div>
-      <motion.section
-        className="momentum-banner"
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <div className="banner-copy">
-          <span className="eyebrow">{t('YOUR CIRCLE. YOUR NEXT STEP.')}</span>
-          <h2>{t(data?.circleCount ? 'Keep the momentum' : 'Find your people')}</h2>
-          <p>
-            {t(
-              data?.circleCount
-                ? 'Your people are here. Pick the next promise you’ll keep together.'
-                : 'Your profile is ready. Bring a circle of friends who make showing up feel good.',
-            )}
-          </p>
-          <div className="heading-actions">
-            <Button asChild>
-              <Link to="/app/circles/new">
-                {t('Create circle')}
-                <ArrowUpRight size={16} />
-              </Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link to="/join">{t('Join circle')}</Link>
-            </Button>
-          </div>
-        </div>
-      </motion.section>
-      {error ? (
-        <div className="retry-error">
-          <ErrorMessage message={error} />
-          <Button variant="outline" onClick={retry}>
-            {t('Try again')}{' '}
-          </Button>
-        </div>
-      ) : null}
-      <section className="stats-grid" aria-label={t('Your statistics')}>
-        {[
-          {
-            icon: Flag,
-            label: 'Active challenges',
-            value: data?.activeChallenges,
-            foot: 'A promise worth keeping',
-          },
-          {
-            icon: UsersRound,
-            label: 'Your circles',
-            value: data?.circleCount,
-            foot: 'Your people, your pace',
-          },
-          {
-            icon: Flame,
-            label: 'Successful days',
-            value: data?.acceptedDays,
-            foot: 'Small wins add up',
-          },
-          {
-            icon: PiggyBank,
-            label: 'Virtual prize pool',
-            value: data
-              ? (data.virtualPoolMinor / 100).toLocaleString(language, { minimumFractionDigits: 2 })
-              : undefined,
-            foot: 'Virtual credits · no cash value',
-          },
-        ].map((stat, i) => (
-          <article className="stat-card" key={t(stat.label)}>
-            <div>
-              <span>{t(stat.label)}</span>
-              <stat.icon size={17} />
-            </div>
-            {stat.value === undefined ? (
-              <span className="skeleton stat-skeleton" aria-label={t('Loading statistic')} />
-            ) : (
-              <strong>
-                {stat.value}
-                {i === 3 ? <small> {t('VC')}</small> : null}
-              </strong>
-            )}
-            <p>{t(stat.foot)}</p>
-          </article>
-        ))}
-      </section>
-      <div className="dashboard-grid">
-        <section className="commitments-panel panel">
-          <div className="panel-heading">
-            <h2>
-              {t('Today’s commitments')}{' '}
-              <span className="count-pill">{data?.commitments?.length ?? '—'}</span>
-            </h2>
-            <span className="subtle-label">{t('ONE DAY AT A TIME')}</span>
-          </div>
-          {data?.commitments?.length ? (
-            <div>
-              {data.commitments.map((o) => (
-                <Link
-                  key={o.id}
-                  className="today-commitment"
-                  to={`/app/challenges/${o.challengeId}/evidence`}
-                >
+      <div className="st-activity-layout">
+        <section className="st-timeline">
+          {error ? (
+            <>
+              <ErrorMessage message={error} />
+              <Button onClick={retry}>{t('Try again')}</Button>
+            </>
+          ) : !data ? (
+            <div
+              className="activity-skeleton skeleton"
+              role="status"
+              aria-label={t('Loading activity')}
+            />
+          ) : events.length ? (
+            events.map((e) => (
+              <article key={e.id} className="st-timeline-entry">
+                <div className="st-timeline-event">
+                  <span className="st-event-icon">
+                    {e.kind === 'account_created' ? <Sprout size={22} /> : <Check size={22} />}
+                  </span>
                   <div>
-                    <strong>{o.title}</strong>
-                    <p>
-                      {o.circleName} {t('· deadline')}{' '}
+                    <h2>{t(activityLabels[e.kind]?.title ?? 'Account activity')}</h2>
+                    <time dateTime={e.createdAt}>
                       {new Intl.DateTimeFormat(language, {
-                        timeZone: o.timezone,
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        timeZoneName: 'short',
-                      }).format(new Date(o.deadlineAt))}
-                    </p>
+                        dateStyle: 'medium',
+                        timeStyle: 'short',
+                        timeZone: profile?.timezone ?? 'UTC',
+                      }).format(new Date(e.createdAt))}
+                    </time>
                   </div>
-                  <ArrowUpRight size={18} />
-                </Link>
-              ))}
-            </div>
+                  <span className="st-status st-status-quiet">
+                    {t(e.kind === 'profile_updated' ? 'Profile' : 'Account')}
+                  </span>
+                </div>
+                <div className="st-event-detail">
+                  <p>{t(activityLabels[e.kind]?.detail ?? '')}</p>
+                  <span>
+                    {profile?.displayName} · @{profile?.username}
+                  </span>
+                </div>
+              </article>
+            ))
           ) : (
-            <div className="commitments-empty">
-              <div className="empty-orbit">
-                <span>
-                  <Flag size={27} />
-                </span>
-                <i />
-                <i />
-              </div>
-              <h3>{t('A little space for a big goal.')}</h3>
-              <p>
-                {data?.activeChallenges
-                  ? t('No commitments scheduled today.')
-                  : t('Your daily commitments will live here.')}
-                <br />
-                {data?.circleCount
-                  ? t('Explore your circle’s next shared promise.')
-                  : t('First, find the people you want to grow with.')}
-              </p>
-              <Button variant="outline" asChild>
-                <Link to="/app/circles">
-                  {t('Explore your circles')} <ArrowRight size={16} />
-                </Link>
-              </Button>
-              <span className="phase-caption">
-                {t('Submit photos and review evidence inside an active challenge.')}{' '}
-              </span>
+            <div className="st-module">
+              <p>{t('No activity matches this filter.')}</p>
             </div>
           )}
-          <div className="commitments-foot">
-            <ShieldCheck size={15} />
-            <span>{t('Clear rules. Friendly stakes. No real money.')}</span>
-          </div>
         </section>
-        <aside className="first-steps panel">
-          <div className="panel-heading">
-            <h2>{t('Find your footing')}</h2>
-            <Sprout size={19} />
-          </div>
-          <span className="steps-progress">
-            <span
-              style={{ width: data?.activeChallenges ? '100%' : data?.circleCount ? '66%' : '33%' }}
-            />
-          </span>
-          <div className="step-row completed">
-            <span className="step-indicator">
-              <Check size={14} />
-            </span>
-            <div>
-              <strong>{t('Make yourself at home')}</strong>
-              <p>{t('Your profile is good to go.')}</p>
+        <aside className="st-activity-rail">
+          <PersonalProgress />
+          <section className="st-module">
+            <div className="st-module-heading">
+              <ShieldCheck size={22} />
+              <h2>{t('Your private history')}</h2>
             </div>
-          </div>
-          <div className={`step-row ${data?.circleCount ? 'completed' : ''}`}>
-            <span className="step-indicator">{data?.circleCount ? <Check size={14} /> : 2}</span>
-            <div>
-              <strong>{t('Bring your people')}</strong>
-              <p>
-                {data?.circleCount
-                  ? t('Your circle is ready to grow.')
-                  : t('Build your first private circle.')}
-              </p>
-              <Link className="text-link" to="/app/circles">
-                {t('Your circles')} <ArrowUpRight size={13} />
-              </Link>
-            </div>
-          </div>
-          <div className={`step-row ${data?.activeChallenges ? 'completed' : ''}`}>
-            <span className="step-indicator">
-              {data?.activeChallenges ? <Check size={14} /> : 3}
-            </span>
-            <div>
-              <strong>{t('Make a shared promise')}</strong>
-              <p>{t('Pick a goal. Agree on the rules.')}</p>
-            </div>
-          </div>
-          <div className="first-steps-bottom">
-            <Sparkles size={16} /> {t('Every great streak starts with one.')}{' '}
-          </div>
+            <p>
+              {t(
+                'This page records account and profile activity. Circle events stay in their own private workspaces.',
+              )}
+            </p>
+            <Link className="st-text-link" to="/app/circles">
+              {t('Explore your circles')}
+              <ArrowRight size={16} />
+            </Link>
+          </section>
         </aside>
       </div>
-      <section className="panel recent-activity">
-        <div className="panel-heading">
-          <h2>{t('A little momentum')}</h2>
-          <Link to="/app/activity" className="text-link">
-            {t('All activity')} <ArrowUpRight size={15} />
-          </Link>
-        </div>
-        {data ? (
-          <ActivityList activities={data.activities.slice(0, 3)} />
-        ) : (
-          <div
-            className="activity-skeleton skeleton"
-            role="status"
-            aria-label={t('Loading activity')}
-          />
-        )}
-      </section>
-      <PersonalProgress />
-      <div className="dashboard-bottom-note">
-        <span>✳</span> {t('You don’t have to be perfect. You just have to show up.')}{' '}
-      </div>
-    </>
+    </div>
   );
 }
-export function ActivityPage() {
-  const { t } = useI18n();
-
-  const { data, error, retry } = useDashboard();
-  return (
-    <>
-      <div className="page-heading">
-        <span className="eyebrow">{t('SMALL STEPS, RECORDED')}</span>
-        <h1>
-          {t('Your momentum')}
-          <span>.</span>
-        </h1>
-        <p>{t('Real account activity. The beginning of your story.')}</p>
-      </div>
-      <section className="panel">
-        <div className="panel-heading">
-          <h2>{t('Recent activity')}</h2>
-          <Clock3 size={19} />
-        </div>
-        {error ? (
-          <>
-            <ErrorMessage message={error} />
-            <Button onClick={retry} variant="outline">
-              {t('Try again')}{' '}
-            </Button>
-          </>
-        ) : data ? (
-          <ActivityList activities={data.activities} />
-        ) : (
-          <div
-            className="activity-skeleton skeleton"
-            role="status"
-            aria-label={t('Loading activity')}
-          />
-        )}
-      </section>
-    </>
-  );
-}
+const capabilities = [
+  [
+    'A place to start',
+    'Account registration, sign-in, recovery, onboarding, profiles and a real account dashboard.',
+  ],
+  [
+    'Your people, your promise',
+    'Private circles, invitations, challenge rules, enrollment and timezone-aware deadlines.',
+  ],
+  [
+    'Show your effort',
+    'Private photo evidence, honest mock review, peer review and fair disputes.',
+  ],
+  [
+    'Make consistency count',
+    'Provisional virtual penalties, balanced ledgers, standings and exact final rewards.',
+  ],
+  [
+    'Keep the momentum',
+    'In-app notifications, reactions, comments, recaps and final launch testing.',
+  ],
+];
+const planned = [
+  [
+    'Phone & Windows apps',
+    'Installable mobile and Windows experiences built on this shared application.',
+  ],
+  ['Real AI assistance', 'Optional vision analysis with honest limitations and human review.'],
+  ['Push notifications', 'Opt-in reminders beyond the in-app inbox.'],
+];
 export function Roadmap() {
   const { t } = useI18n();
-
   return (
-    <>
-      <div className="page-heading">
-        <span className="eyebrow">{t('BUILT ONE GOOD STEP AT A TIME')}</span>
-        <h1>
-          {t('The road ahead')}
-          <span>.</span>
-        </h1>
-        <p>{t('Social challenges are here. Here’s what works now, and what’s next.')}</p>
-      </div>
-      <div className="roadmap-list">
-        {[
-          [
-            '01',
-            'A place to start',
-            'Account registration, sign-in, recovery, onboarding, profiles and a real account dashboard.',
-            true,
-          ],
-          [
-            '02',
-            'Your people, your promise',
-            'Private circles, invitations, challenge rules, enrollment and timezone-aware deadlines.',
-            true,
-          ],
-          [
-            '03',
-            'Show your effort',
-            'Private photo evidence, honest mock review, peer review and fair disputes.',
-            true,
-          ],
-          [
-            '04',
-            'Make consistency count',
-            'Provisional virtual penalties, balanced ledgers, standings and exact final rewards.',
-            true,
-          ],
-          [
-            '05',
-            'Keep the momentum',
-            'In-app notifications, reactions, comments, recaps and final launch testing.',
-            true,
-          ],
-        ].map(([number, title, description, complete]) => (
-          <article
-            className={`panel roadmap-row ${complete ? 'complete' : ''}`}
-            key={String(number)}
-          >
-            <span className="roadmap-number">{number}</span>
+    <div className="st-roadmap-page">
+      <header className="st-page-header">
+        <div>
+          <span className="st-eyebrow">{t('BUILT ONE GOOD STEP AT A TIME')}</span>
+          <h1>{t('The road ahead')}</h1>
+          <p>{t('Social challenges are here. Here’s what works now, and what’s next.')}</p>
+        </div>
+      </header>
+      <div className="st-roadmap-layout">
+        <section>
+          <div className="st-section-label">
+            <h2>
+              <span />
+              {t('Working now')}
+            </h2>
+            <small className="st-mono">05</small>
+          </div>
+          <div className="roadmap-list">
+            {capabilities.map(([title, detail], i) => (
+              <article className="panel roadmap-row complete" key={title}>
+                <span className="roadmap-number">0{i + 1} //</span>
+                <div>
+                  <span className="eyebrow">{t('WORKING NOW')}</span>
+                  <h2>{t(title)}</h2>
+                  <p>{t(detail)}</p>
+                </div>
+                <CircleCheck size={20} />
+              </article>
+            ))}
+          </div>
+        </section>
+        <aside className="st-roadmap-planned">
+          <div className="st-section-label">
+            <h2>
+              <span />
+              {t('What comes next')}
+            </h2>
+          </div>
+          {planned.map(([title, detail], i) => (
+            <article className="st-module" key={title}>
+              <span className="st-status st-status-quiet">{t('Planned')}</span>
+              <h2>
+                <small>0{i + 6} / </small>
+                {t(title)}
+              </h2>
+              <p>{t(detail)}</p>
+            </article>
+          ))}
+          <section className="st-callout">
+            <ShieldCheck size={24} />
             <div>
-              <span className="eyebrow">{complete ? 'WORKING NOW' : 'PLANNED'}</span>
-              <h2>{t(String(title))}</h2>
-              <p>{t(String(description))}</p>
+              <h3>{t('Virtual by design.')}</h3>
+              <p>
+                {t(
+                  'No deposits, real-money transfers or withdrawals. There is no launch date promised for future capabilities.',
+                )}
+              </p>
             </div>
-            {complete ? <CircleCheck size={22} /> : <span className="roadmap-marker" />}
-          </article>
-        ))}
+          </section>
+        </aside>
       </div>
-    </>
+    </div>
   );
 }

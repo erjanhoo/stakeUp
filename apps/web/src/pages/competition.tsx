@@ -2,7 +2,7 @@ import { useI18n } from '../lib/i18n';
 import { PoolMark, CompletionCelebration } from '../components/community';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowUpRight, Trophy, RefreshCw } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, Trophy, RefreshCw, Clock3, ShieldCheck } from 'lucide-react';
 import type { Competition } from '@stakeup/contracts';
 import { useResource, credits } from '../lib/social';
 import { api, message } from '../lib/api';
@@ -51,7 +51,7 @@ export function CompetitionPage() {
       {error || actionError ? <ErrorMessage message={error || actionError} /> : null}
       {loading && !data ? <Loading /> : null}
       {data ? (
-        <>
+        <div className="st-competition-layout">
           {data.status === 'settled' ? <CompletionCelebration /> : null}
           <section className="competition-pool" id="virtual-pool">
             <div>
@@ -92,6 +92,32 @@ export function CompetitionPage() {
               ) : null}
             </div>
           </section>
+          <aside className="st-settlement-engine">
+            <span className="st-eyebrow">{t('Settlement lifecycle')}</span>
+            <h2>{t('Before final results')}</h2>
+            <div className="st-settlement-states">
+              {['blocked', 'ready', 'settled'].map((state) => (
+                <span key={state} className={data.status === state ? 'current' : ''}>
+                  {t(state)}
+                </span>
+              ))}
+            </div>
+            <ul>
+              <li>
+                <Clock3 size={18} />
+                <span>{t('All scheduled deadlines must pass.')}</span>
+              </li>
+              <li>
+                <ShieldCheck size={18} />
+                <span>{t('All reviews and disputes must be resolved.')}</span>
+              </li>
+              <li>
+                <Clock3 size={18} />
+                <span>{t('The 24-hour appeal period must finish.')}</span>
+              </li>
+            </ul>
+            <p>{t('The server determines when finalization is ready.')}</p>
+          </aside>
           <div className="leaderboard-scroll" id="standings">
             <table className="leaderboard">
               <caption>
@@ -192,7 +218,7 @@ export function CompetitionPage() {
               </p>
             )}
           </section>
-        </>
+        </div>
       ) : null}
     </>
   );

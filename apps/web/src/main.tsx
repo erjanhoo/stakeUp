@@ -1,18 +1,18 @@
-import { useI18n, LocalizedText } from './lib/i18n';
 import { LanguageProvider } from './lib/i18n';
 import { Component, lazy, Suspense, type ErrorInfo, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Routes, Route, Navigate, Outlet, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { MotionConfig } from 'motion/react';
 import { AuthProvider, useAuth } from './lib/auth';
-import { Brand, ErrorMessage, Loading } from './components/common';
-import { Button } from './components/ui/button';
+import { Loading } from './components/common';
+import { UtilityScreen } from './components/utility-screen';
 import { Shell } from './components/shell';
 import { Landing } from './pages/landing';
 import './styles.css';
 import './themes.css';
 import './social.css';
 import './kinetic.css';
+import './stitch-layout.css';
 import { AppearanceProvider } from './lib/appearance';
 import { afterSignIn } from './lib/social';
 const CompetitionPage = lazy(() =>
@@ -57,44 +57,22 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { failed: boolean
   }
   render() {
     return this.state.failed ? (
-      <div className="fatal-page">
-        <Brand />
-        <h1>
-          <LocalizedText text="Let’s take a quick breather." />
-        </h1>
-        <p>
-          <LocalizedText text="We couldn’t load this page. Reload to try again." />
-        </p>
-        <Button onClick={() => location.reload()}>
-          <LocalizedText text="Reload StakeUp" />
-        </Button>
-      </div>
+      <UtilityScreen kind="error" retry={() => location.reload()} />
     ) : (
       this.props.children
     );
   }
 }
 function Protected({ onboarding = false }: { onboarding?: boolean }) {
-  const { t } = useI18n();
-
   const { profile, loading, error } = useAuth();
   if (loading) return <Loading full />;
-  if (error)
-    return (
-      <div className="fatal-page">
-        <Brand />
-        <h1>{t('We couldn’t connect.')}</h1>
-        <ErrorMessage message={error} />
-        <Button onClick={() => location.reload()}>{t('Try again')}</Button>
-      </div>
-    );
+  if (error) return <UtilityScreen kind="connection" retry={() => location.reload()} />;
   if (!profile) return <Navigate to="/login" replace />;
   if (!onboarding && !profile.onboardingCompleted) return <Navigate to="/onboarding" replace />;
   if (onboarding && profile.onboardingCompleted) return <Navigate to={afterSignIn()} replace />;
   return <Outlet />;
 }
 function AppContent() {
-  const { t } = useI18n();
   return (
     <Suspense fallback={<Loading full />}>
       <Routes>
@@ -124,19 +102,7 @@ function AppContent() {
             <Route path="roadmap" element={<Roadmap />} />
           </Route>
         </Route>
-        <Route
-          path="*"
-          element={
-            <div className="fatal-page">
-              <Brand />
-              <span className="eyebrow">{t('A LITTLE OFF THE PATH')}</span>
-              <h1>{t('This page hasn’t found its circle.')}</h1>
-              <Button asChild>
-                <Link to="/">{t('Back to StakeUp')}</Link>
-              </Button>
-            </div>
-          }
-        />
+        <Route path="*" element={<UtilityScreen />} />
       </Routes>
     </Suspense>
   );

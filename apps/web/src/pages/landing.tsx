@@ -10,6 +10,9 @@ import {
   KeyRound,
   Check,
   Lock,
+  UserRound,
+  EyeOff,
+  Scale,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Brand } from '../components/common';
@@ -53,18 +56,33 @@ export function Landing() {
       <header className="kl-header">
         <Brand />
         <nav aria-label={t('Main navigation')}>
-          <a href="#how-it-works">{t('The idea')}</a>
+          <a className="kl-nav-active" href="#overview">
+            {t('Overview')}
+          </a>
           <Link to="/join">{t('Join circle')}</Link>
+          <a href="#how-it-works">{t('How it works')}</a>
         </nav>
-        <Button asChild size="sm" variant="outline">
-          <Link to={profile ? '/app' : '/login'}>
-            {t(profile ? 'Open your space' : 'Log in')}
-            <ArrowUpRight size={15} />
+        <div className="kl-header-actions">
+          <Button asChild size="sm" variant="outline">
+            <Link to={profile ? '/app' : '/login'}>
+              {t(profile ? 'Open your space' : 'Log in')}
+              <ArrowUpRight size={15} />
+            </Link>
+          </Button>
+          <Button asChild size="sm">
+            <Link to={destination}>{t('Start a circle')}</Link>
+          </Button>
+          <Link
+            to={profile ? '/app/settings' : '/login'}
+            className="kl-account"
+            aria-label={t('Your account')}
+          >
+            <UserRound size={18} />
           </Link>
-        </Button>
+        </div>
       </header>
       <main>
-        <section className="kl-hero">
+        <section id="overview" className="kl-hero">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -74,15 +92,16 @@ export function Landing() {
               <span className="status-dot" /> {t('PRIVATE CIRCLES. SHARED INTENTION.')}
             </span>
             <h1>
-              {t('Private accountability.')}
-              <br />
-              <em>{t('Real social stakes.')}</em>
+              {t('Private accountability with')}{' '}
+              <em>
+                {t('real')} <span>{t('social stakes.')}</span>
+              </em>
             </h1>
             <p>{t('Make a commitment, show up, and grow with friends who get it.')}</p>
             <div className="kl-actions">
               <Button asChild>
                 <Link to={destination}>
-                  {t('Find your momentum')}
+                  {t('Start a circle')}
                   <ArrowUpRight size={18} />
                 </Link>
               </Button>
@@ -108,42 +127,53 @@ export function Landing() {
           </motion.div>
           <div className="kl-pool">
             <div className="kl-pool-head">
-              <PiggyBank size={24} />
-              <span>{t('Virtual credits · no cash value')}</span>
-              <span className="pill">{t('Illustration')}</span>
-            </div>
-            <span className="eyebrow">{t('THE SHARED PROMISE')}</span>
-            <h2>
-              {t('Good habits.')}
-              <br />
-              {t('Great company.')}
-            </h2>
-            <div className="kl-score">
-              <span>VC</span>
-              <strong>
-                100%<small>{t('virtual')}</small>
-              </strong>
-            </div>
-            <p>{t('No deposits. No withdrawals. Just a reason to keep your word.')}</p>
-            <div className="kl-proof">
-              <div className="kl-proof-icon">
-                <Camera size={20} />
-              </div>
+              <PiggyBank size={28} />
               <div>
-                <strong>{t('Private by default.')}</strong>
-                <p>{t('Your people, your promise')}</p>
+                <strong>{t('Virtual Credit (VC)')}</strong>
+                <small>{t('No cash value')}</small>
               </div>
-              <Lock size={15} />
+              <span className="pill">100% {t('virtual')}</span>
             </div>
-            <div className="kl-proof">
-              <div className="kl-proof-icon orange">
-                <ShieldCheck size={20} />
-              </div>
+            <div className="kl-standard">
               <div>
-                <strong>{t('People make the decision.')}</strong>
-                <p>{t('Encouragement never counts as a review vote.')}</p>
+                <small>{t('THE SHARED PROMISE')}</small>
+                <strong>
+                  100% <span>{t('virtual')}</span>
+                </strong>
+                <p>{t('One shared version of the rules.')}</p>
+              </div>
+              <div className="kl-token-ring">
+                <PiggyBank size={27} />
               </div>
             </div>
+            <section className="kl-zero-risk">
+              <ShieldCheck size={20} />
+              <div>
+                <h2>{t('Only virtual stakes.')}</h2>
+                <p>{t('No deposits. No withdrawals. Just a reason to keep your word.')}</p>
+              </div>
+            </section>
+            <ul className="kl-protocol-list">
+              <li>
+                <Lock size={18} />
+                <span>{t('Private photo evidence')}</span>
+                <small>{t('CIRCLE ONLY')}</small>
+              </li>
+              <li>
+                <EyeOff size={18} />
+                <span>{t('No public feed')}</span>
+                <small>{t('INVITE ONLY')}</small>
+              </li>
+              <li>
+                <Scale size={18} />
+                <span>{t('People make the decision.')}</span>
+                <small>{t('PEER REVIEW')}</small>
+              </li>
+            </ul>
+            <footer>
+              <span>{t('All stakes are virtual. Always.')}</span>
+              <span>{t('Private by default.')}</span>
+            </footer>
           </div>
         </section>
         <section id="why-together" className="kl-statement">
@@ -156,9 +186,14 @@ export function Landing() {
               )}
             </p>
           </div>
-          <div className="kl-emblem" aria-hidden="true">
-            <Users size={72} strokeWidth={1} />
-            <span>STAKEUP / TOGETHER</span>
+          <div className="kl-editorial">
+            <img
+              src="/images/stitch-athletes.jpg"
+              alt={t('Two friends preparing for a workout')}
+              width={800}
+              height={600}
+            />
+            <span>{t('YOUR PEOPLE. YOUR PROMISE.')}</span>
           </div>
         </section>
         <section id="how-it-works" className="kl-process">
@@ -185,56 +220,125 @@ export function Landing() {
                 </div>
                 <h3>{t(step.title)}</h3>
                 <p>{t(step.text)}</p>
+                <footer>
+                  <strong>
+                    {t(
+                      [
+                        'INVITE ONLY',
+                        'SHARED RULES',
+                        'PRIVATE PHOTO',
+                        'PEER REVIEW',
+                        'VIRTUAL REWARDS',
+                      ][index],
+                    )}
+                  </strong>
+                  <span>
+                    {t(
+                      [
+                        'Your people, your promise',
+                        'Accept before activation',
+                        'Server receipt time',
+                        'Independent reviewers',
+                        'No cash value',
+                      ][index],
+                    )}
+                  </span>
+                </footer>
               </motion.article>
             ))}
           </div>
         </section>
         <section className="kl-bottom">
-          <div className="kl-faq">
-            <span className="eyebrow">{t('THE RULES, IN PLAIN SIGHT')}</span>
-            <h2>{t('A few good questions.')}</h2>
+          <aside className="kl-examples">
+            <div className="kl-section-heading">
+              <div>
+                <span className="eyebrow">{t('ILLUSTRATIVE CIRCLES')}</span>
+                <h2>{t('Built around real life.')}</h2>
+              </div>
+            </div>
+            <p>{t('Private by default. These are examples, not a public feed.')}</p>
             {[
-              [
-                'Can I exchange credits for real money?',
-                'No. VC are simulated points with no cash value. There are no deposits, payments or withdrawals.',
-              ],
-              [
-                'Who sees my proof?',
-                'Only current members of your private Circle can view its submitted photos. There is no public feed.',
-              ],
-              [
-                'Does AI verify my activity?',
-                'The current development mock checks image readability only. It does not analyze the photo or prove completion. Peers make review decisions.',
-              ],
-              [
-                'What if I need a rest day?',
-                'New challenges let you reserve a scheduled grace day before its upload deadline, within your accepted allowance.',
-              ],
-            ].map(([question, answer]) => (
-              <details key={question}>
-                <summary>{t(question)}</summary>
-                <p>{t(answer)}</p>
-              </details>
+              ['Dawn Runners', 'Morning movement', '/images/stitch-watch.jpg', '06:00–08:30'],
+              ['Deep Work', 'Make time to focus', '/images/stitch-focus.jpg', '13:00–17:00'],
+            ].map(([name, detail, img, window], i) => (
+              <article className="kl-example" key={name}>
+                <header>
+                  <span className="kl-example-symbol">
+                    {i ? <ClipboardCheck size={22} /> : <Users size={22} />}
+                  </span>
+                  <div>
+                    <h3>{t(name)}</h3>
+                    <small>{t(detail)}</small>
+                  </div>
+                  <span className="st-status st-status-safe">{t('Illustration')}</span>
+                </header>
+                <div>
+                  <img src={img} alt="" width={64} height={56} loading="lazy" />
+                  <div>
+                    <strong>
+                      {t(i ? 'A quieter hour. A shared goal.' : 'One small effort, together.')}
+                    </strong>
+                    <span>{t('Your people, your promise')}</span>
+                  </div>
+                  <ShieldCheck size={24} />
+                </div>
+                <footer>
+                  <span>{t('Daily upload window')}</span>
+                  <strong>{window}</strong>
+                </footer>
+              </article>
             ))}
-          </div>
-          <div className="kl-start">
-            <PiggyBank size={38} />
-            <h2>
-              {t('Your people.')}
-              <br />
-              {t('Your next small win.')}
-            </h2>
-            <p>{t('Just you, your people, and a promise to show up.')}</p>
-            <Button asChild>
-              <Link to={destination}>
-                {t('Make this your day one')}
-                <ArrowRight size={17} />
-              </Link>
-            </Button>
-            <span>
-              <Check size={14} />
-              {t('All stakes are virtual. Always.')}
-            </span>
+          </aside>
+          <div className="kl-faq-column">
+            <div className="kl-faq">
+              <span className="eyebrow">{t('THE RULES, IN PLAIN SIGHT')}</span>
+              <h2>{t('A few good questions.')}</h2>
+              {[
+                [
+                  'Can I exchange credits for real money?',
+                  'No. VC are simulated points with no cash value. There are no deposits, payments or withdrawals.',
+                ],
+                [
+                  'Who sees my proof?',
+                  'Only current members of your private Circle can view its submitted photos. There is no public feed.',
+                ],
+                [
+                  'Does AI verify my activity?',
+                  'The current development mock checks image readability only. It does not analyze the photo or prove completion. Peers make review decisions.',
+                ],
+                [
+                  'What if I need a rest day?',
+                  'New challenges let you reserve a scheduled grace day before its upload deadline, within your accepted allowance.',
+                ],
+              ].map(([question, answer]) => (
+                <details
+                  key={question}
+                  open={question === 'Can I exchange credits for real money?'}
+                >
+                  <summary>{t(question)}</summary>
+                  <p>{t(answer)}</p>
+                </details>
+              ))}
+            </div>
+            <div className="kl-start">
+              <PiggyBank size={38} />
+              <h2>
+                {t('Your people.')}
+                <br />
+                {t('Your next small win.')}
+              </h2>
+              <p>{t('Just you, your people, and a promise to show up.')}</p>
+              <Button asChild>
+                <Link to={destination}>
+                  {t('Make this your day one')}
+                  <ArrowRight size={17} />
+                </Link>
+              </Button>
+              <span>
+                <Check size={14} />
+                {t('All stakes are virtual. Always.')}
+              </span>
+            </div>
           </div>
         </section>
       </main>

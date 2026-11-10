@@ -8,6 +8,7 @@ import { message } from '../lib/api';
 import { Avatar, Brand, ErrorMessage } from '../components/common';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { LanguageSettings } from '../components/language-settings';
 import { AppearanceSettings } from '../components/appearance-settings';
 import { afterSignIn } from '../lib/social';
 
@@ -49,7 +50,7 @@ export function ProfileForm({ onboarding = false }: { onboarding?: boolean }) {
   }
   return (
     <form onSubmit={submit} className="form-stack profile-form">
-      <div className="profile-identity">
+      <div className={`profile-identity ${onboarding ? '' : 'st-profile-form-identity'}`}>
         <Avatar name={profile.displayName} large />
         <div>
           <strong>{t('Your corner of StakeUp')}</strong>
@@ -128,30 +129,57 @@ export function ProfileForm({ onboarding = false }: { onboarding?: boolean }) {
 export function Onboarding() {
   const { t } = useI18n();
 
+  const { profile } = useAuth();
   return (
-    <div className="onboarding">
+    <div className="onboarding st-onboarding">
       <header>
         <Brand />
         <span className="eyebrow">{t('YOUR FIRST SMALL STEP')}</span>
       </header>
-      <main>
-        <div className="onboarding-heading">
-          <span className="page-icon">
-            <UserRound />
-          </span>
-          <h1>{t('Let’s make this yours.')}</h1>
+      <main className="st-onboarding-layout">
+        <aside className="st-onboarding-identity">
+          <span className="st-eyebrow">{t('YOUR PRIVATE IDENTITY')}</span>
+          <h2>{t('Your circle starts with you.')}</h2>
+          <p>{t('This is how your friends will recognize you in Circles and reviews.')}</p>
+          <section className="st-module st-onboarding-monogram">
+            <Avatar name={profile?.displayName ?? ''} large />
+            <strong>{profile?.displayName}</strong>
+            <span>@{profile?.username}</span>
+            <small>{t('Initials for now. Your profile stays private.')}</small>
+          </section>
+          <section className="st-module">
+            <h3>{t('A few shared principles')}</h3>
+            <ul className="st-guardrails">
+              <li>
+                <ShieldCheck size={18} />
+                {t('Private by default. No public directory.')}
+              </li>
+              <li>
+                <Check size={18} />
+                {t('All stakes are virtual. Always.')}
+              </li>
+              <li>
+                <UserRound size={18} />
+                {t('You choose which challenges to accept.')}
+              </li>
+            </ul>
+          </section>
+        </aside>
+        <section className="st-module st-onboarding-form">
+          <span className="st-status st-status-safe">{t('YOUR PROFILE')}</span>
+          <h1>{t('Set up your profile')}</h1>
           <p>{t('What should your circle call you? Set up your profile and find your footing.')}</p>
-        </div>
-        <div className="panel">
           <ProfileForm onboarding />
-        </div>
-        <p className="secure-caption">
-          <ShieldCheck size={16} /> {t('Your profile stays within the circles you join.')}{' '}
-        </p>
+          <p className="secure-caption">
+            <ShieldCheck size={16} />
+            {t('Your profile stays within the circles you join.')}
+          </p>
+        </section>
       </main>
     </div>
   );
 }
+
 export function Settings() {
   const { t } = useI18n();
 
@@ -172,53 +200,74 @@ export function Settings() {
     }
   }
   return (
-    <>
-      <div className="page-heading">
-        <span className="eyebrow">{t('A LITTLE MORE YOU')}</span>
-        <h1>
-          {t('Your profile & settings')}
-          <span>.</span>
-        </h1>
-        <p>{t('A familiar face. A fresh ambition. Make yourself at home.')}</p>
-      </div>
-      <div className="settings-grid">
-        <section className="panel">
-          <h2>{t('Personal details')}</h2>
-          <ProfileForm />
-        </section>
-        <aside className="settings-aside">
-          <AppearanceSettings />
-          <div className="panel">
-            <ShieldCheck className="accent" size={25} />
-            <h3>{t('Your account')}</h3>
-            <span className="eyebrow">{t('EMAIL ADDRESS')}</span>
+    <div className="st-settings-page">
+      <header className="st-page-header">
+        <div>
+          <span className="st-eyebrow">{t('YOUR ACCOUNT. YOUR PREFERENCES.')}</span>
+          <h1>{t('Settings & preferences')}</h1>
+          <p>{t('Manage your profile, appearance and language.')}</p>
+        </div>
+      </header>
+      <div className="st-settings-layout">
+        <div className="st-settings-left">
+          <section className="st-profile-summary">
+            <Avatar name={profile?.displayName ?? ''} large />
+            <div>
+              <h2>{profile?.displayName}</h2>
+              <span>@{profile?.username}</span>
+              <p>{t('Private by default.')}</p>
+            </div>
+            <ShieldCheck size={24} />
+          </section>
+          <section className="st-module st-profile-edit">
+            <div className="st-module-heading">
+              <h2>{t('Personal details')}</h2>
+              <UserRound size={20} />
+            </div>
+            <ProfileForm />
+          </section>
+          <section className="st-module st-account-security">
+            <div className="st-module-heading">
+              <h2>{t('Your account')}</h2>
+              <ShieldCheck size={20} />
+            </div>
+            <small className="st-eyebrow">{t('EMAIL ADDRESS')}</small>
             <p className="break-anywhere">{profile?.email}</p>
-            <span className="pill">
-              {mode === 'local' ? t('Local development account') : t('Supabase authenticated')}
+            <span className="st-status st-status-quiet">
+              {t(mode === 'local' ? 'Local development account' : 'Supabase authenticated')}
             </span>
             <div className="account-actions">
-              <Button asChild variant="ghost">
+              <Button asChild variant="outline">
                 <Link to="/forgot-password">
-                  {t('Reset your password')} <ArrowUpRight size={15} />
+                  {t('Reset your password')}
+                  <ArrowUpRight size={15} />
                 </Link>
               </Button>
-              <Button variant="outline" disabled={busy} onClick={logout}>
-                {busy ? t('Signing out…') : t('Log out of this account')}
+              <Button disabled={busy} variant="outline" onClick={logout}>
+                {t(busy ? 'Signing out…' : 'Log out of this account')}
               </Button>
-              {error ? <ErrorMessage message={error} /> : null}
             </div>
-          </div>
-          <div className="quiet-note">
+            {error ? <ErrorMessage message={error} /> : null}
+          </section>
+        </div>
+        <aside className="st-settings-right">
+          <AppearanceSettings />
+          <section className="st-module st-language-panel">
+            <LanguageSettings />
+            <p className="st-muted">{t('Your interface language is saved to your account.')}</p>
+          </section>
+          <section className="st-trust-note">
+            <ShieldCheck size={24} />
             <h3>{t('Made for your circle.')}</h3>
             <p>
               {t(
                 'Your details aren’t public. Your circles share your display name, username and challenge participation with members. Your email stays private.',
-              )}{' '}
+              )}
             </p>
             <p>{t('All stakes are virtual. There are no payment details to add.')}</p>
-          </div>
+          </section>
         </aside>
       </div>
-    </>
+    </div>
   );
 }

@@ -179,6 +179,7 @@ test('private photo → peer rejection → owner appeal → two-peer resolution'
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
     await page.screenshot({ path: info.outputPath('proof-reviewed.png'), fullPage: true });
     expect(errors).toEqual([]);
     await page.goto('/');

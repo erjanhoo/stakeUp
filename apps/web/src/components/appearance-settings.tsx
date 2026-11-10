@@ -1,7 +1,6 @@
 import { useI18n } from '../lib/i18n';
-import { LanguageSettings } from './language-settings';
 import { useState } from 'react';
-import { Moon, Sun, Check, Palette } from 'lucide-react';
+import { Moon, Sun, Check, Palette, ShieldCheck } from 'lucide-react';
 import { useAppearance } from '../lib/appearance';
 import { ErrorMessage } from './common';
 import { message } from '../lib/api';
@@ -21,7 +20,7 @@ export function AppearanceSettings() {
   return (
     <section className="panel appearance-panel">
       <div className="panel-heading">
-        <h2>{t('Your kind of energy')}</h2>
+        <h2>{t('Appearance & themes')}</h2>
         <Palette size={20} />
       </div>
       <p>{t('Choose your appearance and accent. Saved to your account.')}</p>
@@ -55,7 +54,19 @@ export function AppearanceSettings() {
           </button>
         ))}
       </div>
-      <LanguageSettings />
+
+      <div className="st-appearance-preview">
+        <span className="st-eyebrow">{t('Live theme preview')}</span>
+        <div>
+          <ShieldCheck size={23} />
+          <strong>{t('Your next small win.')}</strong>
+          <p>{t('Your people, your promise')}</p>
+          <span className="st-status st-status-safe">
+            {t(appearance.mode === 'dark' ? 'Dark' : 'Light')} /{' '}
+            {t(appearance.accent === 'lime' ? 'Electric lime' : 'Warm orange')}
+          </span>
+        </div>
+      </div>
       {error ? <ErrorMessage message={error} /> : null}
     </section>
   );

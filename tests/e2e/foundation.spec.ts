@@ -14,26 +14,30 @@ test('landing → register → onboarding → dashboard → saved settings → l
   await expect(
     page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
   ).resolves.toBe(true);
-  await page.getByRole('link', { name: 'Find your momentum' }).click();
+  await page.locator('.kl-actions').getByRole('link', { name: 'Start a circle' }).click();
   await page.getByLabel('Username', { exact: true }).fill(`qa_${suffix}`);
   await page.getByLabel('Email address').fill(email);
   await page.getByLabel('Password', { exact: true }).fill(password);
   await page.getByRole('button', { name: 'Create your account' }).click();
-  await expect(page.getByRole('heading', { name: 'Let’s make this yours.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Set up your profile' })).toBeVisible();
   await page.getByLabel('Display name').fill('Maya');
   await page.getByLabel('Timezone', { exact: true }).selectOption('Asia/Bishkek');
   await page.getByRole('button', { name: 'Make yourself at home' }).click();
   await expect(page.getByRole('heading', { name: /Hey, Maya/ })).toBeVisible();
-  await expect(page.locator('.momentum-banner')).toHaveCSS('opacity', '1');
+  await expect(page.locator('.stitch-overview')).toHaveCSS('opacity', '1');
   await expect(page.getByText('Your day one. Officially.')).toBeVisible();
   await expect(page.getByText('You made yourself at home.')).toBeVisible();
   await page.reload();
   await expect(page.getByRole('heading', { name: /Hey, Maya/ })).toBeVisible();
-  await expect(page.locator('.momentum-banner')).toHaveCSS('opacity', '1');
+  await expect(page.locator('.stitch-overview')).toHaveCSS('opacity', '1');
   await expect(
     page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
   ).resolves.toBe(true);
   await page.screenshot({ path: testInfo.outputPath('dashboard.png'), fullPage: true });
+  // The join entry works without an invitation already stored in the URL/session.
+  await page.goto('/join');
+  await expect(page.getByLabel('Invitation link or code')).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
   // Navigate directly to prove protected deep links render and session restoration works.
   await page.goto('/app/settings');
   await page.getByLabel('Display name').fill('Maya Chen');

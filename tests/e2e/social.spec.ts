@@ -23,8 +23,9 @@ test('two friends create a private circle, accept immutable rules and activate a
   await page.getByRole('link', { name: 'Create a circle', exact: true }).click();
   await page.getByLabel('Circle name').fill('The reading crew');
   await page.getByLabel('Description', { exact: true }).fill('A chapter at a time. Together.');
-  await page.getByLabel('Circle icon').selectOption('book');
+  await page.getByRole('combobox', { name: /^Circle icon/ }).selectOption('book');
   await page.getByRole('button', { name: 'Create circle', exact: true }).click();
+  await expect(page).toHaveURL(/\/app\/circles\/[0-9a-f-]+$/);
   await expect(page.getByRole('heading', { name: 'The reading crew', exact: true })).toBeVisible();
   const circleUrl = page.url();
   await page.getByRole('button', { name: 'Invite friends' }).click();
