@@ -94,6 +94,11 @@ test('two friends create a private circle, accept immutable rules and activate a
       }
     await page.getByRole('button', { name: 'Light', exact: true }).click();
     await page.getByRole('button', { name: 'Electric lime', exact: true }).click();
+    // Selection is committed after the account save, not when the click is dispatched.
+    await expect(page.getByRole('button', { name: 'Electric lime', exact: true })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
     await page.reload();
     await expect(page.getByRole('button', { name: 'Light', exact: true })).toHaveAttribute(
       'aria-pressed',

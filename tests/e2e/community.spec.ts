@@ -149,6 +149,6 @@ test('Russian account preferences, visible accents, chosen grace dates and priva
     page.getByRole('heading', { name: 'Эта страница не нашла свой круг.' }),
   ).toBeVisible();
   await page.getByRole('link', { name: 'На главную StakeUp' }).click();
-  await expect(page.getByRole('heading', { name: /Большие цели/ })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Личная ответственность/ })).toBeVisible();
   expect(errors).toEqual([]);
 });

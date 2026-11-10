@@ -288,8 +288,13 @@ export function EvidencePage() {
       {challenge.error || evidence.error || grace.error ? (
         <ErrorMessage message={challenge.error || evidence.error || grace.error} />
       ) : null}
+      <nav className="kinetic-tabs" aria-label={t('Proof workspace')}>
+        <a href="#submit-proof">01 / {t('Submit proof')}</a>
+        <a href="#proof-review">02 / {t('Review & history')}</a>
+        <a href="#grace-planner">03 / {t('Grace days')}</a>
+      </nav>
       <div className="evidence-layout">
-        <aside className="evidence-submit">
+        <aside className="evidence-submit" id="submit-proof">
           <h2>{t('Your next small win.')}</h2>
           <p>{c?.rules.evidenceRequirements}</p>
           {c ? (
@@ -389,7 +394,7 @@ export function EvidencePage() {
             })}
           </details>
         </aside>
-        <section className="evidence-stream">
+        <section className="evidence-stream" id="proof-review">
           <div className="stream-intro">
             <span className="eyebrow">{t('CIRCLE CONTACT SHEET')}</span>
             <p>

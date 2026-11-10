@@ -12,6 +12,7 @@ import { Landing } from './pages/landing';
 import './styles.css';
 import './themes.css';
 import './social.css';
+import './kinetic.css';
 import { AppearanceProvider } from './lib/appearance';
 import { afterSignIn } from './lib/social';
 const CompetitionPage = lazy(() =>

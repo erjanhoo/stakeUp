@@ -85,6 +85,9 @@ export function Shell() {
       </aside>
       <div className="app-body">
         <header className="app-header">
+          <div className="mobile-brand">
+            <Brand />
+          </div>
           <div className="breadcrumb">
             <Mountain size={17} />
             <span>{t('Your space')}</span>
@@ -93,6 +96,12 @@ export function Shell() {
           </div>
           <div className="header-actions">
             {mode === 'local' ? <span className="dev-indicator">{t('LOCAL DEV')}</span> : null}
+            <Link className="header-invite" to="/join">
+              {t('Join circle')}
+            </Link>
+            <Link className="header-create" to="/app/circles/new">
+              + {t('Create circle')}
+            </Link>
             <NotificationBell />
             <span className="header-divider" />
             <Link

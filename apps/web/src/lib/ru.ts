@@ -1,4 +1,42 @@
-const text = `{amount} distributed. Remaining pool: 0.00 VC.|Распределено: {amount}. Остаток копилки: 0,00 ВК.
+const text = `PRIVATE CIRCLES. SHARED INTENTION.|ЗАКРЫТЫЕ КРУГИ. ОБЩАЯ ЦЕЛЬ.
+Private accountability.|Личная ответственность.
+Real social stakes.|Дружеский азарт.
+I have an invitation|У меня есть приглашение
+Real-money payments|Реальных платежей
+Reward eligibility|Допуск к награде
+Illustration|Пример
+THE SHARED PROMISE|ОБЩЕЕ ОБЕЩАНИЕ
+virtual|виртуально
+No deposits. No withdrawals. Just a reason to keep your word.|Без пополнений и вывода денег. Просто причина держать слово.
+Private by default.|Закрыто по умолчанию.
+People make the decision.|Решение принимают люди.
+The accountability rhythm.|Ритм ответственности.
+Form a private Circle|Создайте закрытый круг
+Invite your people. Your challenges, photos and progress stay inside your Circle.|Пригласите друзей. Испытания, фото и прогресс остаются внутри вашего круга.
+Accept the same rules|Примите общие правила
+Choose the days, upload window and virtual penalty. Each participant accepts before the roster locks.|Выберите дни, окно отправки и виртуальный штраф. Каждый принимает правила до закрепления состава.
+Show the effort|Покажите усилия
+Submit a private photo and context during your window. A photo is evidence, not a guarantee of completion.|Отправьте закрытое фото и пояснение в своё окно. Снимок — свидетельство, а не гарантия выполнения.
+Review fairly|Проверяйте справедливо
+Independent peers review the proof. Uncertain decisions stay open, and disputed penalties wait for resolution.|Доказательства оценивают независимые участники. Неясные случаи остаются открытыми, спорные штрафы ждут решения.
+Eligible finishers share virtual penalty credits according to transparent discipline scores. No real money.|Допущенные участники делят виртуальные штрафные баллы по прозрачным показателям дисциплины. Без реальных денег.
+A few good questions.|Несколько хороших вопросов.
+Can I exchange credits for real money?|Можно обменять баллы на деньги?
+No. VC are simulated points with no cash value. There are no deposits, payments or withdrawals.|Нет. ВК — условные баллы без денежной ценности. Пополнений, платежей и вывода денег нет.
+Who sees my proof?|Кто видит мои доказательства?
+Only current members of your private Circle can view its submitted photos. There is no public feed.|Отправленные фото видят только текущие участники вашего закрытого круга. Публичной ленты нет.
+Does AI verify my activity?|ИИ подтверждает мои действия?
+The current development mock checks image readability only. It does not analyze the photo or prove completion. Peers make review decisions.|Тестовый провайдер проверяет только читаемость изображения. Он не анализирует фото и не доказывает выполнение. Решения принимают участники.
+What if I need a rest day?|Что если мне нужен день отдыха?
+New challenges let you reserve a scheduled grace day before its upload deadline, within your accepted allowance.|В новых испытаниях можно забронировать день отдыха до срока отправки в пределах принятого лимита.
+YOUR CIRCLE. YOUR NEXT STEP.|ВАШ КРУГ. ВАШ СЛЕДУЮЩИЙ ШАГ.
+Proof workspace|Доказательства
+Submit proof|Отправка
+Review & history|Проверки и история
+Competition sections|Разделы соревнования
+Standings|Рейтинг
+Rules|Правила
+{amount} distributed. Remaining pool: 0.00 VC.|Распределено: {amount}. Остаток копилки: 0,00 ВК.
 Use at least 8 characters.|Используйте не менее 8 символов.
 Use lowercase letters, numbers and underscores; start with a letter.|Используйте строчные латинские буквы, цифры и подчёркивания. Начните с буквы.
 Invalid email address|Неверный адрес почты

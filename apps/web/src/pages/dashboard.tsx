@@ -128,37 +128,27 @@ export function DashboardPage() {
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="banner-copy">
-          <div className="banner-kicker">
-            <span /> {t('THIS IS YOUR STARTING LINE')}{' '}
-          </div>
-          <h2>
-            {t('Big things start')} <br />
-            {t('with a small promise.')}{' '}
-          </h2>
+          <span className="eyebrow">{t('YOUR CIRCLE. YOUR NEXT STEP.')}</span>
+          <h2>{t(data?.circleCount ? 'Keep the momentum' : 'Find your people')}</h2>
           <p>
-            {data?.circleCount
-              ? t('Your people are here. Pick the next promise you’ll keep together.')
-              : t(
-                  'Your profile is ready. Bring a circle of friends who make showing up feel good.',
-                )}
+            {t(
+              data?.circleCount
+                ? 'Your people are here. Pick the next promise you’ll keep together.'
+                : 'Your profile is ready. Bring a circle of friends who make showing up feel good.',
+            )}
           </p>
-          <Button variant="secondary" asChild>
-            <Link to="/app/circles">
-              {t('Find your people')} <ArrowUpRight size={17} />
-            </Link>
-          </Button>
+          <div className="heading-actions">
+            <Button asChild>
+              <Link to="/app/circles/new">
+                {t('Create circle')}
+                <ArrowUpRight size={16} />
+              </Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link to="/join">{t('Join circle')}</Link>
+            </Button>
+          </div>
         </div>
-        <div className="banner-art" aria-hidden="true">
-          <div className="banner-orbit" />
-          <div className="banner-orbit second" />
-          <span className="banner-asterisk">✳</span>
-          <span className="banner-art-label">
-            {t('GOOD THINGS')} <br />
-            {t('TAKE TOGETHER.')}{' '}
-          </span>
-          <span className="banner-plus">+</span>
-        </div>
-        <span className="banner-number">{t('01 — THE BEGINNING')}</span>
       </motion.section>
       {error ? (
         <div className="retry-error">

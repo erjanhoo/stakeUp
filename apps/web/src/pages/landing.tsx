@@ -1,308 +1,247 @@
-import { useI18n } from '../lib/i18n';
-import './landing-trail.css';
+import { Link } from 'react-router-dom';
 import {
   ArrowUpRight,
   ArrowRight,
-  Check,
-  Camera,
-  Flame,
-  Users,
   ShieldCheck,
-  MoveUpRight,
+  Users,
+  Camera,
+  ClipboardCheck,
+  PiggyBank,
+  KeyRound,
+  Check,
+  Lock,
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Brand } from '../components/common';
 import { Button } from '../components/ui/button';
 import { useAuth } from '../lib/auth';
-
+import { useI18n } from '../lib/i18n';
+import './kinetic-landing.css';
 export function Landing() {
   const { t } = useI18n();
-
   const { profile } = useAuth();
   const destination = profile ? '/app' : '/register';
+  const steps = [
+    {
+      icon: Users,
+      title: 'Form a private Circle',
+      text: 'Invite your people. Your challenges, photos and progress stay inside your Circle.',
+    },
+    {
+      icon: ClipboardCheck,
+      title: 'Accept the same rules',
+      text: 'Choose the days, upload window and virtual penalty. Each participant accepts before the roster locks.',
+    },
+    {
+      icon: Camera,
+      title: 'Show the effort',
+      text: 'Submit a private photo and context during your window. A photo is evidence, not a guarantee of completion.',
+    },
+    {
+      icon: ShieldCheck,
+      title: 'Review fairly',
+      text: 'Independent peers review the proof. Uncertain decisions stay open, and disputed penalties wait for resolution.',
+    },
+    {
+      icon: PiggyBank,
+      title: 'Make consistency count',
+      text: 'Eligible finishers share virtual penalty credits according to transparent discipline scores. No real money.',
+    },
+  ];
   return (
-    <div className="landing">
-      <header className="landing-nav">
+    <div className="kinetic-landing">
+      <header className="kl-header">
         <Brand />
         <nav aria-label={t('Main navigation')}>
           <a href="#how-it-works">{t('The idea')}</a>
-          <a href="#why-together">{t('Why together?')}</a>
+          <Link to="/join">{t('Join circle')}</Link>
         </nav>
-        <Button asChild variant="outline" size="sm">
+        <Button asChild size="sm" variant="outline">
           <Link to={profile ? '/app' : '/login'}>
-            {profile ? t('Open your space') : t('Log in')} <ArrowUpRight size={16} />
+            {t(profile ? 'Open your space' : 'Log in')}
+            <ArrowUpRight size={15} />
           </Link>
         </Button>
       </header>
       <main>
-        <section className="hero">
+        <section className="kl-hero">
           <motion.div
-            className="hero-copy"
-            initial={{ opacity: 0, y: 18 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65 }}
+            transition={{ duration: 0.45 }}
           >
-            <div className="hero-label">
-              <span className="status-dot" /> {t('BETTER HABITS. BETTER COMPANY.')}{' '}
-            </div>
+            <span className="eyebrow">
+              <span className="status-dot" /> {t('PRIVATE CIRCLES. SHARED INTENTION.')}
+            </span>
             <h1>
-              {t('Big goals.')} <br />
-              {t('Small steps.')} <br />
-              <span>{t('Your people.')}</span>
-              <span className="heading-star">✳</span>
+              {t('Private accountability.')}
+              <br />
+              <em>{t('Real social stakes.')}</em>
             </h1>
-            <p>
-              {t('You’ve got the ambition. Bring the accountability.')}{' '}
-              <br className="desktop-break" />{' '}
-              {t('Make a commitment, show up, and grow with friends who get it.')}{' '}
-            </p>
-            <div className="hero-actions">
+            <p>{t('Make a commitment, show up, and grow with friends who get it.')}</p>
+            <div className="kl-actions">
               <Button asChild>
                 <Link to={destination}>
-                  {t('Find your momentum')} <ArrowUpRight size={19} />
+                  {t('Find your momentum')}
+                  <ArrowUpRight size={18} />
                 </Link>
               </Button>
-              <span>
-                {t('Less “one day.”')} <br />
-                <strong>{t('More day one.')}</strong>
-              </span>
+              <Link className="kl-invite" to="/join">
+                <KeyRound size={16} />
+                {t('I have an invitation')}
+              </Link>
             </div>
-            <div className="hero-fine">
-              <ShieldCheck size={15} />{' '}
-              {t('Private circles. Friendly stakes. Always virtual.')}{' '}
+            <div className="kl-facts">
+              <div>
+                <strong>01</strong>
+                <span>{t('One shared version of the rules.')}</span>
+              </div>
+              <div>
+                <strong>0</strong>
+                <span>{t('Real-money payments')}</span>
+              </div>
+              <div>
+                <strong>80%</strong>
+                <span>{t('Reward eligibility')}</span>
+              </div>
             </div>
           </motion.div>
-          <div
-            className="hero-art"
-            aria-label={t('An illustration of friends building consistent habits')}
-          >
-            <div className="orbit orbit-one" />
-            <div className="orbit orbit-two" />
-            <div className="orbit orbit-three" />
-            <div className="art-coordinate top-coordinate">{t('THE SHOW-UP EFFECT ↗')}</div>
-            <div className="commitment-card">
-              <div className="illustration-label">
-                <span className="tiny-icon">
-                  <Flame size={18} />
-                </span>{' '}
-                {t('THE DAILY PROMISE')} <span>01 / 03</span>
-              </div>
-              <h2>
-                {t('Show up.')} <br />
-                {t('Stack wins.')}{' '}
-              </h2>
-              <div className="habit-line">
-                <span>{t('Commit to something good')}</span>
-                <span className="illustration-check">
-                  <Check size={15} />
-                </span>
-              </div>
-              <div className="habit-line">
-                <span>{t('Keep each other going')}</span>
-                <span className="illustration-check">
-                  <Check size={15} />
-                </span>
-              </div>
-              <div className="habit-line">
-                <span>{t('Make consistency your thing')}</span>
-                <span className="illustration-check">
-                  <Check size={15} />
-                </span>
-              </div>
-              <div className="art-week">
-                {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, i) => (
-                  <span key={i} className={i < 5 ? 'day-done' : ''}>
-                    {i < 5 ? <Check size={17} /> : day}
-                  </span>
-                ))}
-              </div>
-              <div className="illustration-caption">
-                {t('A little progress. A lot of possibility.')}
-              </div>
+          <div className="kl-pool">
+            <div className="kl-pool-head">
+              <PiggyBank size={24} />
+              <span>{t('Virtual credits · no cash value')}</span>
+              <span className="pill">{t('Illustration')}</span>
             </div>
-            <div className="floating-proof">
-              <span className="proof-camera">
-                <Camera size={23} />
-              </span>
-              <div>
-                <strong>{t('A little proof.')}</strong>
-                <span>{t('A big commitment.')}</span>
-              </div>
-              <MoveUpRight size={17} />
-            </div>
-            <div className="together-sticker">
-              <Users size={26} />
-              <span>
-                {t('IN GOOD')} <br />
-                <strong>{t('COMPANY.')}</strong>
-              </span>
-            </div>
-            <div className="art-coordinate bottom-coordinate">
-              {t('CONSISTENCY LOOKS GOOD ON YOU.')}
-            </div>
-          </div>
-        </section>
-        <div className="manifesto-strip">
-          <span>{t('FOR THE EARLY RISERS')}</span>
-          <span>✳</span>
-          <span>{t('THE ONE-MORE-REP PEOPLE')}</span>
-          <span>✳</span>
-          <span>{t('THE CHAPTER-A-DAY CREW')}</span>
-          <span>✳</span>
-          <span>{t('AND THE JUST-GETTING-STARTED')}</span>
-        </div>
-        <section className="how-section" id="how-it-works">
-          <div className="section-heading">
-            <div>
-              <span className="eyebrow">{t('A SIMPLE IDEA. A STRONGER YOU.')}</span>
-              <h2>{t('Your goals need a circle.')}</h2>
-            </div>
-            <p>
-              {t('Motivation comes and goes.')} <br />
-              {t('Your people keep showing up.')}{' '}
-            </p>
-          </div>
-          <div className="commitment-trail">
-            <svg
-              className="trail-thread"
-              viewBox="0 0 1000 700"
-              preserveAspectRatio="none"
-              aria-hidden="true"
-            >
-              <motion.path
-                d="M70 40 C 900 -60, 1000 280, 420 300 S -180 540, 930 650"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeDasharray="5 10"
-                initial={{ pathLength: 0 }}
-                whileInView={{ pathLength: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.8 }}
-              />
-            </svg>
-            <motion.article
-              className="trail-scene scene-people"
-              initial={{ opacity: 0, y: 35 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.7 }}
-            >
-              <div className="people-sculpture" aria-hidden="true">
-                <span>{t('YOU')}</span>
-                <span>
-                  {t('YOUR')} <br />
-                  {t('PEOPLE')}{' '}
-                </span>
-                <i>↗</i>
-              </div>
-              <div className="trail-copy">
-                <span className="trail-index">{t('01 / FIND YOUR CORNER')}</span>
-                <h3>
-                  {t('Good company.')} <br />
-                  <em>{t('Great momentum.')}</em>
-                </h3>
-                <p>
-                  {t(
-                    'One private circle. A shared ambition. Friends who notice when you show up—and help you get back to it when you don’t.',
-                  )}{' '}
-                </p>
-              </div>
-            </motion.article>
-            <motion.article
-              className="trail-scene scene-proof"
-              initial={{ opacity: 0, y: 35 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.7 }}
-            >
-              <div className="trail-copy">
-                <span className="trail-index">{t('02 / LEAVE A LITTLE EVIDENCE')}</span>
-                <h3>
-                  {t('Less promising.')} <br />
-                  <em>{t('More doing.')}</em>
-                </h3>
-                <p>
-                  {t(
-                    'A photo. A little context. Your circle sees the effort and reviews it honestly. Progress has a paper trail.',
-                  )}{' '}
-                </p>
-              </div>
-              <div className="proof-sculpture" aria-hidden="true">
-                <div className="proof-print">
-                  <div className="print-sun" />
-                  <div className="print-hill" />
-                  <span>{t('THE SMALL WIN / TODAY')}</span>
-                </div>
-                <span className="proof-stamp">
-                  {t('SHOWED')} <br />
-                  {t('UP ↗')}{' '}
-                </span>
-              </div>
-            </motion.article>
-            <motion.article
-              className="trail-scene scene-stakes"
-              initial={{ opacity: 0, y: 35 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.7 }}
-            >
-              <div className="stakes-sculpture" aria-hidden="true">
-                <span>✳</span>
-                <div>
-                  {t('ALL IN.')} <br />
-                  <em>{t('TOGETHER.')}</em>
-                </div>
-                <small>{t('VIRTUAL STAKES. REAL INTENTION.')}</small>
-              </div>
-              <div className="trail-copy">
-                <span className="trail-index">{t('03 / KEEP IT FRIENDLY')}</span>
-                <h3>
-                  {t('A reason to')} <br />
-                  <em>{t('keep your word.')}</em>
-                </h3>
-                <p>
-                  {t(
-                    'Agree on the stakes before day one. Always virtual, always transparent. No deposits or payments—just a shared promise worth keeping.',
-                  )}{' '}
-                </p>
-                <span className="field-hint">
-                  {t('Virtual accounting arrives in the next milestone.')}{' '}
-                </span>
-              </div>
-            </motion.article>
-          </div>
-        </section>
-        <section className="together-section" id="why-together">
-          <div className="together-symbol" aria-hidden="true">
-            ✳
-          </div>
-          <div>
-            <span className="eyebrow">{t('ACCOUNTABILITY, WITHOUT THE GUILT TRIP.')}</span>
+            <span className="eyebrow">{t('THE SHARED PROMISE')}</span>
             <h2>
-              {t('You don’t need more willpower.')} <br />
-              {t('You need someone in your corner.')}{' '}
+              {t('Good habits.')}
+              <br />
+              {t('Great company.')}
             </h2>
+            <div className="kl-score">
+              <span>VC</span>
+              <strong>
+                100%<small>{t('virtual')}</small>
+              </strong>
+            </div>
+            <p>{t('No deposits. No withdrawals. Just a reason to keep your word.')}</p>
+            <div className="kl-proof">
+              <div className="kl-proof-icon">
+                <Camera size={20} />
+              </div>
+              <div>
+                <strong>{t('Private by default.')}</strong>
+                <p>{t('Your people, your promise')}</p>
+              </div>
+              <Lock size={15} />
+            </div>
+            <div className="kl-proof">
+              <div className="kl-proof-icon orange">
+                <ShieldCheck size={20} />
+              </div>
+              <div>
+                <strong>{t('People make the decision.')}</strong>
+                <p>{t('Encouragement never counts as a review vote.')}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="why-together" className="kl-statement">
+          <div>
+            <span className="eyebrow">{t('PROGRESS IS A TEAM SPORT.')}</span>
+            <h2>{t('Your goals need a circle.')}</h2>
             <p>
               {t(
-                'Built for encouragement, transparent rules, and the kind of competition that brings everyone up.',
-              )}{' '}
+                'One private circle. A shared ambition. Friends who notice when you show up—and help you get back to it when you don’t.',
+              )}
             </p>
-            <Button asChild variant="secondary">
+          </div>
+          <div className="kl-emblem" aria-hidden="true">
+            <Users size={72} strokeWidth={1} />
+            <span>STAKEUP / TOGETHER</span>
+          </div>
+        </section>
+        <section id="how-it-works" className="kl-process">
+          <div className="kl-section-heading">
+            <div>
+              <span className="eyebrow">{t('ONE DAY AT A TIME')}</span>
+              <h2>{t('The accountability rhythm.')}</h2>
+            </div>
+            <p>{t('Clear rules. Friendly stakes. No real money.')}</p>
+          </div>
+          <div className="kl-steps">
+            {steps.map((step, index) => (
+              <motion.article
+                className="trail-scene"
+                key={step.title}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.3, delay: index * 0.04 }}
+              >
+                <div>
+                  <span>0{index + 1}</span>
+                  <step.icon size={21} />
+                </div>
+                <h3>{t(step.title)}</h3>
+                <p>{t(step.text)}</p>
+              </motion.article>
+            ))}
+          </div>
+        </section>
+        <section className="kl-bottom">
+          <div className="kl-faq">
+            <span className="eyebrow">{t('THE RULES, IN PLAIN SIGHT')}</span>
+            <h2>{t('A few good questions.')}</h2>
+            {[
+              [
+                'Can I exchange credits for real money?',
+                'No. VC are simulated points with no cash value. There are no deposits, payments or withdrawals.',
+              ],
+              [
+                'Who sees my proof?',
+                'Only current members of your private Circle can view its submitted photos. There is no public feed.',
+              ],
+              [
+                'Does AI verify my activity?',
+                'The current development mock checks image readability only. It does not analyze the photo or prove completion. Peers make review decisions.',
+              ],
+              [
+                'What if I need a rest day?',
+                'New challenges let you reserve a scheduled grace day before its upload deadline, within your accepted allowance.',
+              ],
+            ].map(([question, answer]) => (
+              <details key={question}>
+                <summary>{t(question)}</summary>
+                <p>{t(answer)}</p>
+              </details>
+            ))}
+          </div>
+          <div className="kl-start">
+            <PiggyBank size={38} />
+            <h2>
+              {t('Your people.')}
+              <br />
+              {t('Your next small win.')}
+            </h2>
+            <p>{t('Just you, your people, and a promise to show up.')}</p>
+            <Button asChild>
               <Link to={destination}>
-                {t('Make this your day one')} <ArrowRight size={18} />
+                {t('Make this your day one')}
+                <ArrowRight size={17} />
               </Link>
             </Button>
+            <span>
+              <Check size={14} />
+              {t('All stakes are virtual. Always.')}
+            </span>
           </div>
         </section>
       </main>
-      <footer className="landing-footer">
+      <footer className="kl-footer">
         <Brand />
-        <span>{t('Show up. Together.')}</span>
-        <span>
-          © {new Date().getFullYear()} {t('StakeUp · All stakes are virtual.')}
-        </span>
+        <span>{t('PROGRESS IS A TEAM SPORT.')}</span>
+        <span>{t('All stakes are virtual. Always.')}</span>
       </footer>
     </div>
   );

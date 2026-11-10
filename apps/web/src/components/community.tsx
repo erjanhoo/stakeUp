@@ -195,7 +195,7 @@ export function GracePlanner({
     }
   }
   return (
-    <section className="grace-planner">
+    <section className="grace-planner" id="grace-planner">
       <h2>
         <CalendarHeart size={23} />
         {t('Make room for a rest day.')}{' '}

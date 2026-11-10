@@ -9,7 +9,7 @@ test('landing → register → onboarding → dashboard → saved settings → l
   const email = `qa-${suffix}@example.test`;
   const password = 'stakeup test password 123';
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: /Big goals/ })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Private accountability/ })).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath('landing.png'), fullPage: true });
   await expect(
     page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),

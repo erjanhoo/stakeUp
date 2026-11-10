@@ -42,12 +42,18 @@ export function CompetitionPage() {
         </h1>
         <p>{t('Virtual credits only. No deposits, charges or withdrawals.')}</p>
       </div>
+      <nav className="kinetic-tabs" aria-label={t('Competition sections')}>
+        <a href="#standings">{t('Standings')}</a>
+        <a href="#virtual-pool">{t('Virtual prize pool')}</a>
+        <a href="#virtual-ledger">{t('Virtual ledger')}</a>
+        <a href="#reward-rules">{t('Rules')}</a>
+      </nav>
       {error || actionError ? <ErrorMessage message={error || actionError} /> : null}
       {loading && !data ? <Loading /> : null}
       {data ? (
         <>
           {data.status === 'settled' ? <CompletionCelebration /> : null}
-          <section className="competition-pool">
+          <section className="competition-pool" id="virtual-pool">
             <div>
               <span className="eyebrow">
                 {data.status === 'settled' ? t('SETTLED POOL') : t('PROVISIONAL POOL')}
@@ -86,7 +92,7 @@ export function CompetitionPage() {
               ) : null}
             </div>
           </section>
-          <div className="leaderboard-scroll">
+          <div className="leaderboard-scroll" id="standings">
             <table className="leaderboard">
               <caption>
                 {t(
@@ -118,7 +124,7 @@ export function CompetitionPage() {
                         {r.eligible ? t('Eligible') : t('Below threshold')}
                       </small>
                     </th>
-                    <td>
+                    <td data-label={t('Completion')}>
                       {r.successful} / {r.scheduled - r.grace}
                       <small>
                         {r.scheduled - r.grace
@@ -127,20 +133,20 @@ export function CompetitionPage() {
                         %
                       </small>
                     </td>
-                    <td>
+                    <td data-label={t('Streak')}>
                       {r.streak} {t('days')}
                     </td>
-                    <td>
+                    <td data-label={t('Missed / grace')}>
                       {r.missed} / {r.grace}
                     </td>
-                    <td>{credits(r.penaltyMinor, language)}</td>
-                    <td>{credits(r.rewardMinor, language)}</td>
+                    <td data-label={t('Virtual penalty')}>{credits(r.penaltyMinor, language)}</td>
+                    <td data-label={t('Reward / refund')}>{credits(r.rewardMinor, language)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <section className="settlement-rules">
+          <section className="settlement-rules" id="reward-rules">
             <h2>{t('The rules behind the numbers.')}</h2>
             <p>
               {t(
@@ -158,7 +164,7 @@ export function CompetitionPage() {
               )}{' '}
             </p>
           </section>
-          <section className="ledger-history">
+          <section className="ledger-history" id="virtual-ledger">
             <h2>{t('Virtual ledger')}</h2>
             {data.ledger.length ? (
               data.ledger.map((e) => (
