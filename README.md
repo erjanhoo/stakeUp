@@ -2,7 +2,7 @@
 
 **Show up. Together.** Private social accountability with friendly, entirely virtual stakes.
 
-The repository contains foundation, social-challenge and evidence milestones: authentication, onboarding, profiles, saved dark/light appearance with orange/electric-lime accents, private Circles, expiring invitations, challenge proposals, explicit rule acceptance and locked timezone-aware schedules. Dashboard counts come from actual memberships and enrollment. Private proof uploads, an honest mock review provider, peer decisions and disputes are implemented in milestone 3; configurable upload windows and virtual competition are implemented in the next release. No real payments exist.
+The repository contains foundation, social-challenge and evidence milestones: authentication, onboarding, profiles, saved dark/light appearance with orange/electric-lime accents, private Circles, expiring invitations, challenge proposals, explicit rule acceptance and locked timezone-aware schedules. Dashboard counts come from actual memberships and enrollment. Private proof uploads, an honest mock review provider, peer decisions and disputes are implemented in milestone 3; configurable upload windows and virtual competition are now deployed. No real payments exist.
 
 Public preview: **https://stakeup-olive.vercel.app**. Foundation and social challenges are live; the user has verified signup emails, Circle creation and invitation joining. Milestone 3 and the animated landing-page redesign are now deployed. The evidence migration is applied, and API/web public checks pass. SMTP is not a current blocker for these verified users; revisit delivery limits as usage grows.
 
