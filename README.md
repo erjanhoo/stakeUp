@@ -2,7 +2,7 @@
 
 **Show up. Together.** Private social accountability with friendly, entirely virtual stakes.
 
-The repository contains foundation, social-challenge and evidence milestones: authentication, onboarding, profiles, saved dark/light appearance with orange/electric-lime accents, private Circles, expiring invitations, challenge proposals, explicit rule acceptance and locked timezone-aware schedules. Dashboard counts come from actual memberships and enrollment. Private proof uploads, an honest mock review provider, peer decisions and disputes are implemented in milestone 3; configurable upload windows and virtual competition are now deployed. No real payments exist.
+The repository includes foundation, social challenges, evidence, competition and community features: authentication, onboarding, profiles, saved dark/light appearance with orange/electric-lime accents, private Circles, expiring invitations, challenge proposals, explicit rule acceptance and locked timezone-aware schedules. Dashboard counts come from actual memberships and enrollment. Private proof uploads, an honest mock review provider, peer decisions and disputes are implemented in milestone 3; configurable upload windows and virtual competition are now deployed. Russian/English settings, chosen grace days on new challenges, in-app notifications, proof conversations/reactions, achievements and monthly recaps are implemented. No real payments exist.
 
 Public preview: **https://stakeup-olive.vercel.app**. Foundation and social challenges are live; the user has verified signup emails, Circle creation and invitation joining. Milestone 3 and the animated landing-page redesign are now deployed. The evidence migration is applied, and API/web public checks pass. SMTP is not a current blocker for these verified users; revisit delivery limits as usage grows.
 
@@ -29,6 +29,7 @@ Stop development with Ctrl+C. No paid service is needed for this mode.
 - [Supabase and Vercel setup](docs/DEPLOYMENT.md)
 - [Foundation verification and known limitations](docs/VERIFICATION.md)
 - [Upload windows and virtual competition](docs/COMPETITION.md)
+- [Community, Russian localization and chosen grace days](docs/COMMUNITY.md)
 - [Evidence, review rules and upload security](docs/EVIDENCE.md)
 - [Social challenges: rules, boundaries and acceptance checks](docs/SOCIAL_CHALLENGES.md)
 
@@ -54,4 +55,4 @@ npm run test:e2e
 
 ## Next milestone
 
-Notifications, social comments/reactions, accessible celebrations, recaps and broader launch hardening. The competition release includes provisional penalties, exact final ledger/rewards and completed challenges. See docs/COMPETITION.md for release status and remaining boundaries.
+Community features and localization are implemented; see docs/COMMUNITY.md for the migration and release status. Next is launch hardening: real-device camera checks, live scheduled-job monitoring, retention/account deletion, pagination and abuse controls. Paid vision and push remain separate integrations.

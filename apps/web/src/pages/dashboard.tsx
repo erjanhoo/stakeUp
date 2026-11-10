@@ -1,3 +1,5 @@
+import { useI18n } from '../lib/i18n';
+import { PersonalProgress, PoolMark } from '../components/community';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -7,6 +9,7 @@ import {
   UsersRound,
   CircleCheck,
   Coins,
+  PiggyBank,
   Check,
   Sprout,
   Flag,
@@ -63,6 +66,8 @@ const activityLabels: Record<Activity['kind'], { title: string; detail: string }
   },
 };
 export function ActivityList({ activities }: { activities: Activity[] }) {
+  const { t, language } = useI18n();
+
   const { profile } = useAuth();
   return (
     <div className="activity-list">
@@ -73,11 +78,11 @@ export function ActivityList({ activities }: { activities: Activity[] }) {
               {event.kind === 'account_created' ? <Sprout size={18} /> : <Check size={18} />}
             </span>
             <div>
-              <strong>{activityLabels[event.kind]?.title ?? 'Account activity'}</strong>
-              <p>{activityLabels[event.kind]?.detail}</p>
+              <strong>{t(activityLabels[event.kind]?.title ?? 'Account activity')}</strong>
+              <p>{t(activityLabels[event.kind]?.detail ?? '')}</p>
             </div>
             <time dateTime={event.createdAt}>
-              {new Intl.DateTimeFormat('en', {
+              {new Intl.DateTimeFormat(language, {
                 month: 'short',
                 day: 'numeric',
                 timeZone: profile?.timezone ?? 'UTC',
@@ -86,15 +91,17 @@ export function ActivityList({ activities }: { activities: Activity[] }) {
           </div>
         ))
       ) : (
-        <p className="muted">Your first small win will appear here.</p>
+        <p className="muted">{t('Your first small win will appear here.')}</p>
       )}
     </div>
   );
 }
 export function DashboardPage() {
+  const { t, language } = useI18n();
+
   const { profile } = useAuth();
   const { data, error, retry } = useDashboard();
-  const date = new Intl.DateTimeFormat('en', {
+  const date = new Intl.DateTimeFormat(language, {
     weekday: 'long',
     month: 'long',
     day: 'numeric',
@@ -106,13 +113,13 @@ export function DashboardPage() {
         <div>
           <span className="eyebrow">{date.toUpperCase()}</span>
           <h1>
-            Hey, {profile?.displayName.split(' ')[0]}
-            <span className="orange-text">.</span> Let’s show up.
+            {t('Hey,')} {profile?.displayName.split(' ')[0]}
+            <span className="orange-text">.</span> {t('Let’s show up.')}{' '}
           </h1>
-          <p>A little better every day. Even better together.</p>
+          <p>{t('A little better every day. Even better together.')}</p>
         </div>
         <span className="day-one-badge">
-          <span className="status-dot" /> YOUR NEXT CHAPTER
+          <span className="status-dot" /> {t('YOUR NEXT CHAPTER')}{' '}
         </span>
       </div>
       <motion.section
@@ -122,21 +129,22 @@ export function DashboardPage() {
       >
         <div className="banner-copy">
           <div className="banner-kicker">
-            <span /> THIS IS YOUR STARTING LINE
+            <span /> {t('THIS IS YOUR STARTING LINE')}{' '}
           </div>
           <h2>
-            Big things start
-            <br />
-            with a small promise.
+            {t('Big things start')} <br />
+            {t('with a small promise.')}{' '}
           </h2>
           <p>
             {data?.circleCount
-              ? 'Your people are here. Pick the next promise you’ll keep together.'
-              : 'Your profile is ready. Bring a circle of friends who make showing up feel good.'}
+              ? t('Your people are here. Pick the next promise you’ll keep together.')
+              : t(
+                  'Your profile is ready. Bring a circle of friends who make showing up feel good.',
+                )}
           </p>
           <Button variant="secondary" asChild>
             <Link to="/app/circles">
-              Find your people <ArrowUpRight size={17} />
+              {t('Find your people')} <ArrowUpRight size={17} />
             </Link>
           </Button>
         </div>
@@ -145,23 +153,22 @@ export function DashboardPage() {
           <div className="banner-orbit second" />
           <span className="banner-asterisk">✳</span>
           <span className="banner-art-label">
-            GOOD THINGS
-            <br />
-            TAKE TOGETHER.
+            {t('GOOD THINGS')} <br />
+            {t('TAKE TOGETHER.')}{' '}
           </span>
           <span className="banner-plus">+</span>
         </div>
-        <span className="banner-number">01 — THE BEGINNING</span>
+        <span className="banner-number">{t('01 — THE BEGINNING')}</span>
       </motion.section>
       {error ? (
         <div className="retry-error">
           <ErrorMessage message={error} />
           <Button variant="outline" onClick={retry}>
-            Try again
+            {t('Try again')}{' '}
           </Button>
         </div>
       ) : null}
-      <section className="stats-grid" aria-label="Your statistics">
+      <section className="stats-grid" aria-label={t('Your statistics')}>
         {[
           {
             icon: Flag,
@@ -182,28 +189,28 @@ export function DashboardPage() {
             foot: 'Small wins add up',
           },
           {
-            icon: Coins,
+            icon: PiggyBank,
             label: 'Virtual prize pool',
             value: data
-              ? (data.virtualPoolMinor / 100).toLocaleString('en', { minimumFractionDigits: 2 })
+              ? (data.virtualPoolMinor / 100).toLocaleString(language, { minimumFractionDigits: 2 })
               : undefined,
             foot: 'Virtual credits · no cash value',
           },
         ].map((stat, i) => (
-          <article className="stat-card" key={stat.label}>
+          <article className="stat-card" key={t(stat.label)}>
             <div>
-              <span>{stat.label}</span>
+              <span>{t(stat.label)}</span>
               <stat.icon size={17} />
             </div>
             {stat.value === undefined ? (
-              <span className="skeleton stat-skeleton" aria-label="Loading statistic" />
+              <span className="skeleton stat-skeleton" aria-label={t('Loading statistic')} />
             ) : (
               <strong>
                 {stat.value}
-                {i === 3 ? <small> VC</small> : null}
+                {i === 3 ? <small> {t('VC')}</small> : null}
               </strong>
             )}
-            <p>{stat.foot}</p>
+            <p>{t(stat.foot)}</p>
           </article>
         ))}
       </section>
@@ -211,10 +218,10 @@ export function DashboardPage() {
         <section className="commitments-panel panel">
           <div className="panel-heading">
             <h2>
-              Today’s commitments{' '}
+              {t('Today’s commitments')}{' '}
               <span className="count-pill">{data?.commitments?.length ?? '—'}</span>
             </h2>
-            <span className="subtle-label">ONE DAY AT A TIME</span>
+            <span className="subtle-label">{t('ONE DAY AT A TIME')}</span>
           </div>
           {data?.commitments?.length ? (
             <div>
@@ -227,8 +234,8 @@ export function DashboardPage() {
                   <div>
                     <strong>{o.title}</strong>
                     <p>
-                      {o.circleName} · deadline{' '}
-                      {new Intl.DateTimeFormat('en', {
+                      {o.circleName} {t('· deadline')}{' '}
+                      {new Intl.DateTimeFormat(language, {
                         timeZone: o.timezone,
                         hour: '2-digit',
                         minute: '2-digit',
@@ -249,34 +256,34 @@ export function DashboardPage() {
                 <i />
                 <i />
               </div>
-              <h3>A little space for a big goal.</h3>
+              <h3>{t('A little space for a big goal.')}</h3>
               <p>
                 {data?.activeChallenges
-                  ? 'No commitments scheduled today.'
-                  : 'Your daily commitments will live here.'}
+                  ? t('No commitments scheduled today.')
+                  : t('Your daily commitments will live here.')}
                 <br />
                 {data?.circleCount
-                  ? 'Explore your circle’s next shared promise.'
-                  : 'First, find the people you want to grow with.'}
+                  ? t('Explore your circle’s next shared promise.')
+                  : t('First, find the people you want to grow with.')}
               </p>
               <Button variant="outline" asChild>
                 <Link to="/app/circles">
-                  Explore your circles <ArrowRight size={16} />
+                  {t('Explore your circles')} <ArrowRight size={16} />
                 </Link>
               </Button>
               <span className="phase-caption">
-                Submit photos and review evidence inside an active challenge.
+                {t('Submit photos and review evidence inside an active challenge.')}{' '}
               </span>
             </div>
           )}
           <div className="commitments-foot">
             <ShieldCheck size={15} />
-            <span>Clear rules. Friendly stakes. No real money.</span>
+            <span>{t('Clear rules. Friendly stakes. No real money.')}</span>
           </div>
         </section>
         <aside className="first-steps panel">
           <div className="panel-heading">
-            <h2>Find your footing</h2>
+            <h2>{t('Find your footing')}</h2>
             <Sprout size={19} />
           </div>
           <span className="steps-progress">
@@ -289,21 +296,21 @@ export function DashboardPage() {
               <Check size={14} />
             </span>
             <div>
-              <strong>Make yourself at home</strong>
-              <p>Your profile is good to go.</p>
+              <strong>{t('Make yourself at home')}</strong>
+              <p>{t('Your profile is good to go.')}</p>
             </div>
           </div>
           <div className={`step-row ${data?.circleCount ? 'completed' : ''}`}>
             <span className="step-indicator">{data?.circleCount ? <Check size={14} /> : 2}</span>
             <div>
-              <strong>Bring your people</strong>
+              <strong>{t('Bring your people')}</strong>
               <p>
                 {data?.circleCount
-                  ? 'Your circle is ready to grow.'
-                  : 'Build your first private circle.'}
+                  ? t('Your circle is ready to grow.')
+                  : t('Build your first private circle.')}
               </p>
               <Link className="text-link" to="/app/circles">
-                Your circles <ArrowUpRight size={13} />
+                {t('Your circles')} <ArrowUpRight size={13} />
               </Link>
             </div>
           </div>
@@ -312,103 +319,90 @@ export function DashboardPage() {
               {data?.activeChallenges ? <Check size={14} /> : 3}
             </span>
             <div>
-              <strong>Make a shared promise</strong>
-              <p>Pick a goal. Agree on the rules.</p>
+              <strong>{t('Make a shared promise')}</strong>
+              <p>{t('Pick a goal. Agree on the rules.')}</p>
             </div>
           </div>
           <div className="first-steps-bottom">
-            <Sparkles size={16} /> Every great streak starts with one.
+            <Sparkles size={16} /> {t('Every great streak starts with one.')}{' '}
           </div>
         </aside>
       </div>
       <section className="panel recent-activity">
         <div className="panel-heading">
-          <h2>A little momentum</h2>
+          <h2>{t('A little momentum')}</h2>
           <Link to="/app/activity" className="text-link">
-            All activity <ArrowUpRight size={15} />
+            {t('All activity')} <ArrowUpRight size={15} />
           </Link>
         </div>
         {data ? (
           <ActivityList activities={data.activities.slice(0, 3)} />
         ) : (
-          <div className="activity-skeleton skeleton" role="status" aria-label="Loading activity" />
+          <div
+            className="activity-skeleton skeleton"
+            role="status"
+            aria-label={t('Loading activity')}
+          />
         )}
       </section>
+      <PersonalProgress />
       <div className="dashboard-bottom-note">
-        <span>✳</span> You don’t have to be perfect. You just have to show up.
+        <span>✳</span> {t('You don’t have to be perfect. You just have to show up.')}{' '}
       </div>
     </>
   );
 }
 export function ActivityPage() {
+  const { t } = useI18n();
+
   const { data, error, retry } = useDashboard();
   return (
     <>
       <div className="page-heading">
-        <span className="eyebrow">SMALL STEPS, RECORDED</span>
+        <span className="eyebrow">{t('SMALL STEPS, RECORDED')}</span>
         <h1>
-          Your momentum<span>.</span>
+          {t('Your momentum')}
+          <span>.</span>
         </h1>
-        <p>Real account activity. The beginning of your story.</p>
+        <p>{t('Real account activity. The beginning of your story.')}</p>
       </div>
       <section className="panel">
         <div className="panel-heading">
-          <h2>Recent activity</h2>
+          <h2>{t('Recent activity')}</h2>
           <Clock3 size={19} />
         </div>
         {error ? (
           <>
             <ErrorMessage message={error} />
             <Button onClick={retry} variant="outline">
-              Try again
+              {t('Try again')}{' '}
             </Button>
           </>
         ) : data ? (
           <ActivityList activities={data.activities} />
         ) : (
-          <div className="activity-skeleton skeleton" role="status" aria-label="Loading activity" />
+          <div
+            className="activity-skeleton skeleton"
+            role="status"
+            aria-label={t('Loading activity')}
+          />
         )}
       </section>
     </>
   );
 }
-export function NotificationsPage() {
-  return (
-    <>
-      <div className="page-heading">
-        <span className="eyebrow">IN THE LOOP</span>
-        <h1>
-          A quieter kind of inbox<span>.</span>
-        </h1>
-        <p>The right nudge, when you need it.</p>
-      </div>
-      <section className="panel feature-empty">
-        <span className="page-icon">
-          <CircleCheck size={28} />
-        </span>
-        <h2>You’re all caught up.</h2>
-        <p>
-          Deadline reminders, circle invitations, and review updates will arrive here when
-          notifications launch in milestone 05.
-        </p>
-        <Button asChild variant="outline">
-          <Link to="/app">
-            Back to your space <ArrowUpRight size={17} />
-          </Link>
-        </Button>
-      </section>
-    </>
-  );
-}
 export function Roadmap() {
+  const { t } = useI18n();
+
   return (
     <>
       <div className="page-heading">
-        <span className="eyebrow">BUILT ONE GOOD STEP AT A TIME</span>
+        <span className="eyebrow">{t('BUILT ONE GOOD STEP AT A TIME')}</span>
         <h1>
-          The road ahead<span>.</span>
+          {t('The road ahead')}
+          <span>.</span>
         </h1>
-        <p>Social challenges are here. Here’s what works now, and what’s next.</p>
+        <p>{t('Social challenges are here. Here’s what works now, and what’s next.')}</p>
       </div>
       <div className="roadmap-list">
         {[
@@ -440,7 +434,7 @@ export function Roadmap() {
             '05',
             'Keep the momentum',
             'In-app notifications, reactions, comments, recaps and final launch testing.',
-            false,
+            true,
           ],
         ].map(([number, title, description, complete]) => (
           <article
@@ -450,8 +444,8 @@ export function Roadmap() {
             <span className="roadmap-number">{number}</span>
             <div>
               <span className="eyebrow">{complete ? 'WORKING NOW' : 'PLANNED'}</span>
-              <h2>{title}</h2>
-              <p>{description}</p>
+              <h2>{t(String(title))}</h2>
+              <p>{t(String(description))}</p>
             </div>
             {complete ? <CircleCheck size={22} /> : <span className="roadmap-marker" />}
           </article>

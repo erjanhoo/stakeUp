@@ -1,3 +1,4 @@
+import { useI18n } from '../lib/i18n';
 import { useEffect, useState, type FormEvent } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
@@ -54,16 +55,20 @@ export function CircleIcon({ icon }: { icon: CircleInput['icon'] }) {
   );
 }
 function Failure({ error, reload }: { error: string; reload: () => void }) {
+  const { t } = useI18n();
+
   return (
     <div className="retry-error">
       <ErrorMessage message={error} />
       <Button variant="outline" onClick={reload}>
-        Try again
+        {t('Try again')}{' '}
       </Button>
     </div>
   );
 }
 function JoinForm({ initial = '', onJoin }: { initial?: string; onJoin?: (id: string) => void }) {
+  const { t } = useI18n();
+
   const [busy, setBusy] = useState(false),
     [error, setError] = useState('');
   const navigate = useNavigate();
@@ -89,40 +94,43 @@ function JoinForm({ initial = '', onJoin }: { initial?: string; onJoin?: (id: st
   return (
     <form className="form-stack" onSubmit={submit}>
       <label>
-        Invitation link or code
+        {t('Invitation link or code')}{' '}
         <Input
           name="invite"
           defaultValue={initial}
-          placeholder="Paste the link your friend sent"
+          placeholder={t('Paste the link your friend sent')}
           required
           autoComplete="off"
         />
       </label>
       {error ? <ErrorMessage message={error} /> : null}
       <Button type="submit" disabled={busy}>
-        {busy ? 'Joining…' : 'Join circle'}
+        {busy ? t('Joining…') : t('Join circle')}
         <ArrowUpRight size={17} />
       </Button>
     </form>
   );
 }
 export function CirclesPage() {
+  const { t } = useI18n();
+
   const { data, error, loading, reload } = useResource<CircleSummary[]>('/circles');
   const [showArchived, setShowArchived] = useState(false);
   return (
     <>
       <div className="page-heading heading-with-action">
         <div>
-          <span className="eyebrow">GOOD COMPANY. SHARED AMBITION.</span>
+          <span className="eyebrow">{t('GOOD COMPANY. SHARED AMBITION.')}</span>
           <h1>
-            Your people. Your circles<span>.</span>
+            {t('Your people. Your circles')}
+            <span>.</span>
           </h1>
-          <p>Private spaces for friends who bring out your better.</p>
+          <p>{t('Private spaces for friends who bring out your better.')}</p>
         </div>
         <Button asChild>
           <Link to="/app/circles/new">
             <Plus size={17} />
-            Create a circle
+            {t('Create a circle')}{' '}
           </Link>
         </Button>
       </div>
@@ -136,19 +144,18 @@ export function CirclesPage() {
               <div className="circle-card-top">
                 <CircleIcon icon={c.icon} />
                 <span className="pill">
-                  {c.archived ? 'Archived' : c.role === 'owner' ? 'Your circle' : 'Member'}
+                  {c.archived ? t('Archived') : c.role === 'owner' ? t('Your circle') : t('Member')}
                 </span>
               </div>
               <h2>{c.name}</h2>
-              <p>{c.description || 'A private corner for your people.'}</p>
+              <p>{c.description || t('A private corner for your people.')}</p>
               <div className="circle-card-foot">
                 <span>
                   <UsersRound size={15} />
                   {c.memberCount} {c.memberCount === 1 ? 'member' : 'members'}
                 </span>
                 <span>
-                  {c.challengeCount} challenges
-                  <ArrowUpRight size={16} />
+                  {c.challengeCount} {t('challenges')} <ArrowUpRight size={16} />
                 </span>
               </div>
             </Link>
@@ -157,15 +164,15 @@ export function CirclesPage() {
       {data?.length === 0 ? (
         <section className="panel feature-empty">
           <CircleIcon icon="sprout" />
-          <h2>Everything’s better with a circle.</h2>
+          <h2>{t('Everything’s better with a circle.')}</h2>
           <p>
-            Start a private group, invite your friends, and turn a shared ambition into a daily
-            promise.
+            {t(
+              'Start a private group, invite your friends, and turn a shared ambition into a daily promise.',
+            )}{' '}
           </p>
           <Button asChild variant="outline">
             <Link to="/app/circles/new">
-              Create your first circle
-              <ArrowUpRight size={17} />
+              {t('Create your first circle')} <ArrowUpRight size={17} />
             </Link>
           </Button>
         </section>
@@ -177,14 +184,14 @@ export function CirclesPage() {
             checked={showArchived}
             onChange={(e) => setShowArchived(e.target.checked)}
           />
-          Show archived circles
+          {t('Show archived circles')}{' '}
         </label>
       ) : null}
       <section className="panel join-panel">
         <div>
-          <span className="eyebrow">GOT AN INVITATION?</span>
-          <h2>Your people are waiting.</h2>
-          <p>Only people with a valid private invitation can join a Circle.</p>
+          <span className="eyebrow">{t('GOT AN INVITATION?')}</span>
+          <h2>{t('Your people are waiting.')}</h2>
+          <p>{t('Only people with a valid private invitation can join a Circle.')}</p>
         </div>
         <JoinForm />
       </section>
@@ -192,43 +199,47 @@ export function CirclesPage() {
   );
 }
 function CircleFields({ initial }: { initial?: CircleInput }) {
+  const { t } = useI18n();
+
   return (
     <>
       <label>
-        Circle name
+        {t('Circle name')}{' '}
         <Input
           name="name"
           required
           minLength={3}
           maxLength={60}
-          placeholder="The morning crew"
+          placeholder={t('The morning crew')}
           defaultValue={initial?.name}
         />
       </label>
       <label>
-        Description
+        {t('Description')}{' '}
         <textarea
           name="description"
           rows={3}
           maxLength={300}
-          placeholder="What brings your people together?"
+          placeholder={t('What brings your people together?')}
           defaultValue={initial?.description}
         />
       </label>
       <label>
-        Circle icon
+        {t('Circle icon')}{' '}
         <select name="icon" defaultValue={initial?.icon ?? 'flame'}>
-          <option value="flame">Flame · consistency</option>
-          <option value="sun">Sun · fresh starts</option>
-          <option value="book">Book · learning</option>
-          <option value="dumbbell">Dumbbell · movement</option>
-          <option value="sprout">Sprout · growth</option>
+          <option value="flame">{t('Flame · consistency')}</option>
+          <option value="sun">{t('Sun · fresh starts')}</option>
+          <option value="book">{t('Book · learning')}</option>
+          <option value="dumbbell">{t('Dumbbell · movement')}</option>
+          <option value="sprout">{t('Sprout · growth')}</option>
         </select>
       </label>
     </>
   );
 }
 export function CreateCircle() {
+  const { t } = useI18n();
+
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false),
     [error, setError] = useState('');
@@ -253,48 +264,51 @@ export function CreateCircle() {
     <>
       <Link className="back-link" to="/app/circles">
         <ArrowLeft size={16} />
-        Your circles
+        {t('Your circles')}{' '}
       </Link>
       <div className="page-heading">
-        <span className="eyebrow">MAKE ROOM FOR GOOD COMPANY</span>
+        <span className="eyebrow">{t('MAKE ROOM FOR GOOD COMPANY')}</span>
         <h1>
-          A little circle. Big possibilities<span>.</span>
+          {t('A little circle. Big possibilities')}
+          <span>.</span>
         </h1>
-        <p>You’ll be the owner. Invite friends with a private, expiring link.</p>
+        <p>{t('You’ll be the owner. Invite friends with a private, expiring link.')}</p>
       </div>
       <section className="panel narrow-panel">
         <form className="form-stack" onSubmit={submit}>
           <CircleFields />
           {error ? <ErrorMessage message={error} /> : null}
           <Button type="submit" disabled={busy}>
-            {busy ? 'Creating…' : 'Create circle'}
+            {busy ? t('Creating…') : t('Create circle')}
             <ArrowUpRight size={17} />
           </Button>
         </form>
         <p className="secure-caption">
-          <LockKeyhole size={15} /> Private by default. No public directory.
+          <LockKeyhole size={15} /> {t('Private by default. No public directory.')}{' '}
         </p>
       </section>
     </>
   );
 }
 function AcceptanceRoster({ challenge }: { challenge: ChallengeSummary }) {
+  const { t } = useI18n();
+
   return (
     <div className="acceptance-roster">
       <p>
         {challenge.status === 'proposed'
-          ? 'Only members who accept will participate. Others may sit out.'
-          : 'The participant list is locked.'}
+          ? t('Only members who accept will participate. Others may sit out.')
+          : t('The participant list is locked.')}
       </p>
       {challenge.acceptances?.map((p) => (
         <div key={p.userId}>
           <span>{p.displayName}</span>
           <span className={p.status === 'accepted' ? 'accepted-label' : 'muted'}>
             {p.status === 'accepted'
-              ? '✓ Rules accepted'
+              ? t('✓ Rules accepted')
               : p.status === 'withdrawn'
-                ? 'Withdrew'
-                : 'Not accepted'}
+                ? t('Withdrew')
+                : t('Not accepted')}
           </span>
         </div>
       ))}
@@ -302,6 +316,8 @@ function AcceptanceRoster({ challenge }: { challenge: ChallengeSummary }) {
   );
 }
 function ChallengeCard({ challenge: c }: { challenge: ChallengeSummary }) {
+  const { t, language } = useI18n();
+
   return (
     <Link className="challenge-card" to={`/app/challenges/${c.id}`}>
       <span className="challenge-card-icon">
@@ -310,19 +326,20 @@ function ChallengeCard({ challenge: c }: { challenge: ChallengeSummary }) {
       <div>
         <span className={`pill ${c.status === 'active' ? 'pill-active' : ''}`}>
           {c.status === 'proposed'
-            ? 'Accepting members'
+            ? t('Accepting members')
             : c.status === 'active'
-              ? 'Active · rules locked'
+              ? t('Active · rules locked')
               : c.status === 'completed'
-                ? 'Completed'
-                : 'Cancelled'}
+                ? t('Completed')
+                : t('Cancelled')}
         </span>
         <h3>{c.rules.title}</h3>
         <p>
           {c.rules.startDate} – {c.rules.endDate} · {c.rules.cutoff} {c.rules.timezone}
         </p>
         <span className="muted">
-          {c.acceptedCount} accepted · {credits(c.rules.penaltyMinor)} per missed day
+          {c.acceptedCount} {t('accepted ·')} {credits(c.rules.penaltyMinor, language)}{' '}
+          {t('per missed day')}{' '}
         </span>
       </div>
       <ArrowUpRight size={19} />
@@ -331,6 +348,8 @@ function ChallengeCard({ challenge: c }: { challenge: ChallengeSummary }) {
   );
 }
 export function CirclePage() {
+  const { t, language } = useI18n();
+
   const { id } = useParams();
   const { data: c, error, loading, reload } = useResource<CircleDetail>(`/circles/${id}`);
   const [invite, setInvite] = useState<Invitation | null>(null),
@@ -381,29 +400,29 @@ export function CirclePage() {
     <>
       <Link className="back-link" to="/app/circles">
         <ArrowLeft size={16} />
-        Your circles
+        {t('Your circles')}{' '}
       </Link>
       <div className="circle-detail-heading">
         <CircleIcon icon={c.icon} />
         <div>
-          <span className="eyebrow">PRIVATE CIRCLE · {c.memberCount} MEMBERS</span>
+          <span className="eyebrow">
+            {t('PRIVATE CIRCLE ·')} {c.memberCount} {t('MEMBERS')}
+          </span>
           <h1>{c.name}</h1>
-          <p>{c.description || 'A little accountability. A lot of possibility.'}</p>
+          <p>{c.description || t('A little accountability. A lot of possibility.')}</p>
         </div>
         {c.archived ? (
-          <span className="pill">Archived</span>
+          <span className="pill">{t('Archived')}</span>
         ) : (
           <div className="heading-actions">
             {c.role === 'owner' ? (
               <Button variant="outline" disabled={busy} onClick={() => void action('invite')}>
-                Invite friends
-                <Plus size={16} />
+                {t('Invite friends')} <Plus size={16} />
               </Button>
             ) : null}
             <Button asChild>
               <Link to={`/app/circles/${c.id}/challenges/new`}>
-                New challenge
-                <ArrowUpRight size={17} />
+                {t('New challenge')} <ArrowUpRight size={17} />
               </Link>
             </Button>
           </div>
@@ -413,16 +432,17 @@ export function CirclePage() {
       {invite ? (
         <section className="panel invite-panel">
           <div className="panel-heading">
-            <h2>A little invitation to something good.</h2>
+            <h2>{t('A little invitation to something good.')}</h2>
             <LockKeyhole size={19} />
           </div>
           <p>
-            Share privately. This link expires {new Date(invite.expiresAt).toLocaleDateString()} and
-            admits up to {invite.maxUses} people.
+            {t('Share privately. This link expires')}{' '}
+            {new Date(invite.expiresAt).toLocaleDateString(language)} {t('and admits up to')}{' '}
+            {invite.maxUses} {t('people.')}{' '}
           </p>
           <div className="copy-row">
             <Input
-              aria-label="Invitation link"
+              aria-label={t('Invitation link')}
               readOnly
               value={link}
               onFocus={(e) => e.currentTarget.select()}
@@ -438,7 +458,7 @@ export function CirclePage() {
                 }
               }}
             >
-              {copied ? <Check size={17} /> : <Copy size={17} />} {copied ? 'Copied' : 'Copy'}
+              {copied ? <Check size={17} /> : <Copy size={17} />} {copied ? t('Copied') : t('Copy')}
             </Button>
           </div>
         </section>
@@ -446,7 +466,7 @@ export function CirclePage() {
       <div className="social-detail-grid">
         <section className="panel">
           <div className="panel-heading">
-            <h2>Shared promises</h2>
+            <h2>{t('Shared promises')}</h2>
             <span className="count-pill">{c.challenges.length}</span>
           </div>
           {c.challenges.length ? (
@@ -456,13 +476,16 @@ export function CirclePage() {
           ) : (
             <div className="small-empty">
               <Flag size={30} />
-              <h3>What will you show up for?</h3>
-              <p>Propose your first challenge. Everyone accepts the same rules before it starts.</p>
+              <h3>{t('What will you show up for?')}</h3>
+              <p>
+                {t(
+                  'Propose your first challenge. Everyone accepts the same rules before it starts.',
+                )}
+              </p>
               {!c.archived ? (
                 <Button asChild variant="outline">
                   <Link to={`/app/circles/${c.id}/challenges/new`}>
-                    Make a shared promise
-                    <ArrowUpRight size={16} />
+                    {t('Make a shared promise')} <ArrowUpRight size={16} />
                   </Link>
                 </Button>
               ) : null}
@@ -471,7 +494,7 @@ export function CirclePage() {
         </section>
         <aside className="panel member-panel">
           <div className="panel-heading">
-            <h2>In your corner</h2>
+            <h2>{t('In your corner')}</h2>
             <UsersRound size={20} />
           </div>
           {c.members.map((member) => (
@@ -481,14 +504,14 @@ export function CirclePage() {
                 <strong>{member.displayName}</strong>
                 <span>@{member.username}</span>
               </div>
-              {member.role === 'owner' ? <span className="pill">Owner</span> : null}
+              {member.role === 'owner' ? <span className="pill">{t('Owner')}</span> : null}
             </div>
           ))}
         </aside>
       </div>
       <section className="panel recent-activity">
         <div className="panel-heading">
-          <h2>Circle activity</h2>
+          <h2>{t('Circle activity')}</h2>
           <Clock3 size={18} />
         </div>
         {c.events.map((event) => (
@@ -498,10 +521,10 @@ export function CirclePage() {
             </span>
             <div>
               <strong>{event.actorName}</strong>
-              <p>{event.title}</p>
+              <p>{t(event.title)}</p>
             </div>
             <time dateTime={event.createdAt}>
-              {new Date(event.createdAt).toLocaleDateString(undefined, {
+              {new Date(event.createdAt).toLocaleDateString(language, {
                 month: 'short',
                 day: 'numeric',
               })}
@@ -513,29 +536,32 @@ export function CirclePage() {
         <section className="circle-management">
           {c.role === 'owner' ? (
             <details className="panel">
-              <summary>Manage circle</summary>
+              <summary>{t('Manage circle')}</summary>
               <form onSubmit={edit} className="form-stack">
                 <CircleFields initial={c} />
                 <Button disabled={busy} type="submit">
-                  Save circle details
+                  {t('Save circle details')}{' '}
                 </Button>
               </form>
               <div className="archive-action">
                 <p>
-                  Archiving preserves history and cancels proposals. Active challenges must be
-                  resolved first.
+                  {t(
+                    'Archiving preserves history and cancels proposals. Active challenges must be resolved first.',
+                  )}{' '}
                 </p>
                 <Button variant="outline" disabled={busy} onClick={() => void action('archive')}>
-                  Archive circle
+                  {t('Archive circle')}{' '}
                 </Button>
               </div>
             </details>
           ) : (
             <div className="leave-note">
-              <p>Active challenge participants must stay until their challenge is resolved.</p>
+              <p>
+                {t('Active challenge participants must stay until their challenge is resolved.')}
+              </p>
               <Button variant="outline" disabled={busy} onClick={() => void action('leave')}>
                 <LogOut size={15} />
-                Leave circle
+                {t('Leave circle')}{' '}
               </Button>
             </div>
           )}
@@ -545,6 +571,8 @@ export function CirclePage() {
   );
 }
 export function JoinCircle() {
+  const { t } = useI18n();
+
   const auth = useAuth();
   const navigate = useNavigate();
   const [token, setToken] = useState(''),
@@ -565,15 +593,15 @@ export function JoinCircle() {
     <div className="onboarding">
       <header>
         <Brand />
-        <span className="eyebrow">AN INVITATION TO SHOW UP</span>
+        <span className="eyebrow">{t('AN INVITATION TO SHOW UP')}</span>
       </header>
       <main>
         <div className="onboarding-heading">
           <span className="page-icon">
             <UsersRound />
           </span>
-          <h1>Good company is waiting.</h1>
-          <p>A private circle. A shared ambition. Your next small step.</p>
+          <h1>{t('Good company is waiting.')}</h1>
+          <p>{t('A private circle. A shared ambition. Your next small step.')}</p>
         </div>
         <section className="panel">
           {auth.loading ? (
@@ -582,27 +610,28 @@ export function JoinCircle() {
             <>
               <ErrorMessage message={error} />
               <Button asChild variant="outline">
-                <Link to="/app/circles">Your circles</Link>
+                <Link to="/app/circles">{t('Your circles')}</Link>
               </Button>
             </>
           ) : !auth.profile ? (
             <>
               <p className="muted">
-                Sign in or create an account to use this invitation. We’ll keep it here while you
-                get settled.
+                {t(
+                  'Sign in or create an account to use this invitation. We’ll keep it here while you get settled.',
+                )}{' '}
               </p>
               <div className="heading-actions">
                 <Button asChild>
-                  <Link to="/login">Log in</Link>
+                  <Link to="/login">{t('Log in')}</Link>
                 </Button>
                 <Button variant="outline" asChild>
-                  <Link to="/register">Create account</Link>
+                  <Link to="/register">{t('Create account')}</Link>
                 </Button>
               </div>
             </>
           ) : !auth.profile.onboardingCompleted ? (
             <Button asChild>
-              <Link to="/onboarding">Finish your profile</Link>
+              <Link to="/onboarding">{t('Finish your profile')}</Link>
             </Button>
           ) : token ? (
             <JoinForm initial={token} onJoin={(id) => navigate(`/app/circles/${id}`)} />
@@ -613,6 +642,8 @@ export function JoinCircle() {
   );
 }
 export function CreateChallenge() {
+  const { t } = useI18n();
+
   const { id } = useParams();
   const { profile } = useAuth();
   const { data: circle, error: circleError } = useResource<CircleDetail>(`/circles/${id}`);
@@ -652,45 +683,46 @@ export function CreateChallenge() {
     <>
       <Link className="back-link" to={`/app/circles/${id}`}>
         <ArrowLeft size={16} />
-        {circle?.name ?? 'Back to circle'}
+        {circle?.name ?? t('Back to circle')}
       </Link>
       <div className="page-heading">
-        <span className="eyebrow">A PROMISE WORTH KEEPING</span>
+        <span className="eyebrow">{t('A PROMISE WORTH KEEPING')}</span>
         <h1>
-          What will you show up for<span>?</span>
+          {t('What will you show up for')}
+          <span>?</span>
         </h1>
-        <p>Publish clear rules, then let your people choose to join.</p>
+        <p>{t('Publish clear rules, then let your people choose to join.')}</p>
       </div>
       {circleError ? <ErrorMessage message={circleError} /> : null}
       <form className="challenge-form" onSubmit={submit}>
         <section className="panel form-stack">
-          <h2>01 · The shared ambition</h2>
+          <h2>{t('01 · The shared ambition')}</h2>
           <label>
-            Challenge title
+            {t('Challenge title')}{' '}
             <Input
               name="title"
               required
               minLength={3}
               maxLength={80}
-              placeholder="Read 20 pages a day"
+              placeholder={t('Read 20 pages a day')}
             />
           </label>
           <label>
-            Description
+            {t('Description')}{' '}
             <textarea
               name="description"
               rows={3}
               maxLength={1000}
-              placeholder="Why does this matter to your circle?"
+              placeholder={t('Why does this matter to your circle?')}
             />
           </label>
           <div className="form-row">
             <label>
-              Start date
+              {t('Start date')}{' '}
               <Input name="startDate" type="date" defaultValue={start} min={start} required />
             </label>
             <label>
-              End date
+              {t('End date')}{' '}
               <Input
                 name="endDate"
                 type="date"
@@ -701,7 +733,7 @@ export function CreateChallenge() {
             </label>
           </div>
           <label>
-            Challenge timezone
+            {t('Challenge timezone')}{' '}
             <select name="timezone" defaultValue={profile?.timezone ?? 'UTC'}>
               {['UTC', ...Intl.supportedValuesOf('timeZone')]
                 .filter((v, i, a) => a.indexOf(v) === i)
@@ -711,60 +743,64 @@ export function CreateChallenge() {
             </select>
           </label>
           <fieldset>
-            <legend>Scheduled weekdays</legend>
+            <legend>{t('Scheduled weekdays')}</legend>
             <div className="weekday-options">
               {weekdays.map((day, i) => (
                 <label key={day}>
                   <input type="checkbox" name="weekdays" value={i} defaultChecked />
-                  <span>{day}</span>
+                  <span>{t(day)}</span>
                 </label>
               ))}
             </div>
           </fieldset>
           <label>
-            Upload window opens
+            {t('Upload window opens')}{' '}
             <Input name="opening" type="time" defaultValue="00:00" required />
           </label>
           <label>
-            Upload window closes
+            {t('Upload window closes')}{' '}
             <Input name="cutoff" type="time" defaultValue="20:00" required />
           </label>
           <p className="field-hint">
-            Start tomorrow or later. Up to 90 days. On DST overlaps the later instant is used;
-            skipped times move forward by the clock-change gap.
+            {t(
+              'Start tomorrow or later. Up to 90 days. On DST overlaps the later instant is used; skipped times move forward by the clock-change gap.',
+            )}{' '}
           </p>
         </section>
         <section className="panel form-stack">
-          <h2>02 · What showing up looks like</h2>
+          <h2>{t('02 · What showing up looks like')}</h2>
           <label>
-            Evidence requirements
+            {t('Evidence requirements')}{' '}
             <textarea
               name="evidenceRequirements"
               required
               minLength={10}
               maxLength={500}
               rows={4}
-              placeholder="Describe the photo and notes your circle will expect. Be honest about what a photo can and cannot show."
+              placeholder={t(
+                'Describe the photo and notes your circle will expect. Be honest about what a photo can and cannot show.',
+              )}
             />
           </label>
           <label>
-            Allowed photo source
+            {t('Allowed photo source')}{' '}
             <select name="capturePolicy" defaultValue="camera_or_upload">
-              <option value="camera_or_upload">Camera or uploaded photo</option>
-              <option value="camera_only">Camera capture only</option>
+              <option value="camera_or_upload">{t('Camera or uploaded photo')}</option>
+              <option value="camera_only">{t('Camera capture only')}</option>
             </select>
           </label>
           <div className="quiet-info">
             <ShieldCheck size={19} />
             <p>
-              A plausible photo cannot prove that an action happened. Evidence is reviewed by peers.
-              AI does not prove completion.
+              {t(
+                'A plausible photo cannot prove that an action happened. Evidence is reviewed by peers. AI does not prove completion.',
+              )}{' '}
             </p>
           </div>
-          <h2>03 · Keep the stakes friendly</h2>
+          <h2>{t('03 · Keep the stakes friendly')}</h2>
           <div className="form-row">
             <label>
-              Virtual penalty per missed day
+              {t('Virtual penalty per missed day')}{' '}
               <Input
                 name="penalty"
                 inputMode="decimal"
@@ -774,7 +810,7 @@ export function CreateChallenge() {
               />
             </label>
             <label>
-              Maximum total penalty
+              {t('Maximum total penalty')}{' '}
               <Input
                 name="cap"
                 inputMode="decimal"
@@ -785,33 +821,34 @@ export function CreateChallenge() {
             </label>
           </div>
           <label>
-            Grace days
+            {t('Grace days')}{' '}
             <Input name="graceDays" type="number" min={0} max={7} defaultValue={1} required />
           </label>
           <p className="field-hint">
-            VC are virtual credits with no cash value. No payments are collected. Virtual accounting
-            launches in milestone 04.
+            {t('Virtual credits only. No deposits, charges or withdrawals.')}{' '}
           </p>
           <div className="reward-policy">
-            <strong>Discipline rewards · policy v1</strong>
+            <strong>{t('Discipline rewards · policy v2')}</strong>
             <p>
-              80% completion eligibility. Rewards proportional to discipline scores. Grace days
-              exclude the earliest misses. Remainder credits follow a deterministic tie-break.
+              {t(
+                'Chosen grace days are excused. Reserve them before the upload deadline. Unused days are not assigned automatically.',
+              )}{' '}
             </p>
           </div>
         </section>
         <section className="panel publish-panel">
           <LockKeyhole size={22} />
           <div>
-            <h3>One shared version of the rules.</h3>
+            <h3>{t('One shared version of the rules.')}</h3>
             <p>
-              Publishing fixes these rules. You and your friends must each accept them. Activation
-              locks the roster and creates deadlines.
+              {t(
+                'Publishing fixes these rules. You and your friends must each accept them. Activation locks the roster and creates deadlines.',
+              )}{' '}
             </p>
           </div>
           {error ? <ErrorMessage message={error} /> : null}
           <Button disabled={busy || !!circleError || circle?.archived} type="submit">
-            {busy ? 'Publishing…' : 'Publish proposal'}
+            {busy ? t('Publishing…') : t('Publish proposal')}
             <ArrowUpRight size={18} />
           </Button>
         </section>
@@ -820,6 +857,8 @@ export function CreateChallenge() {
   );
 }
 export function ChallengePage() {
+  const { t, language } = useI18n();
+
   const { id } = useParams();
   const { data: c, error, loading, reload } = useResource<ChallengeDetail>(`/challenges/${id}`);
   const [agreed, setAgreed] = useState(false),
@@ -869,11 +908,11 @@ export function ChallengePage() {
       {['active', 'completed'].includes(c.status) ? (
         <div className="heading-actions" style={{ marginBottom: 24 }}>
           <Button asChild>
-            <Link to={`/app/challenges/${c.id}/evidence`}>Submit & review proof</Link>
+            <Link to={`/app/challenges/${c.id}/evidence`}>{t('Submit & review proof')}</Link>
           </Button>
           <Button asChild variant="outline">
             <Link to={`/app/challenges/${c.id}/competition`}>
-              {c.status === 'completed' ? 'Final results' : 'Standings & virtual pool'}
+              {c.status === 'completed' ? t('Final results') : t('Standings & virtual pool')}
             </Link>
           </Button>
         </div>
@@ -882,61 +921,70 @@ export function ChallengePage() {
       <div className="social-detail-grid">
         <section className="panel rules-panel">
           <div className="panel-heading">
-            <h2>The rules, in plain sight</h2>
+            <h2>{t('The rules, in plain sight')}</h2>
             <ShieldCheck size={21} />
           </div>
           <dl className="rules-grid">
             <div>
-              <dt>Challenge dates</dt>
+              <dt>{t('Challenge dates')}</dt>
               <dd>
                 {r.startDate} → {r.endDate}
               </dd>
             </div>
             <div>
-              <dt>Daily upload window</dt>
+              <dt>{t('Daily upload window')}</dt>
               <dd>
                 {r.opening ?? '00:00'}–{r.cutoff} · {r.timezone}
               </dd>
             </div>
             <div>
-              <dt>Scheduled days</dt>
-              <dd>{r.weekdays.map((d) => weekdays[d]).join(' · ')}</dd>
+              <dt>{t('Scheduled days')}</dt>
+              <dd>{r.weekdays.map((d) => t(weekdays[d])).join(' · ')}</dd>
             </div>
             <div>
-              <dt>Grace days</dt>
+              <dt>{t('Grace days')}</dt>
               <dd>{r.graceDays}</dd>
             </div>
             <div>
-              <dt>Per missed day</dt>
-              <dd>{credits(r.penaltyMinor)}</dd>
+              <dt>{t('Per missed day')}</dt>
+              <dd>{credits(r.penaltyMinor, language)}</dd>
             </div>
             <div>
-              <dt>Your maximum</dt>
-              <dd>{credits(r.maxPenaltyMinor)}</dd>
+              <dt>{t('Your maximum')}</dt>
+              <dd>{credits(r.maxPenaltyMinor, language)}</dd>
             </div>
           </dl>
-          <h3>What counts as evidence</h3>
+          <h3>{t('What counts as evidence')}</h3>
           <p className="evidence-requirement">{r.evidenceRequirements}</p>
           <span className="pill">
-            {r.capturePolicy === 'camera_only' ? 'Camera capture only' : 'Camera or upload'}
+            {r.capturePolicy === 'camera_only' ? t('Camera capture only') : t('Camera or upload')}
           </span>
           <div className="reward-policy">
-            <strong>Proportional discipline rewards · v1</strong>
+            <strong>
+              {t(
+                r.rewardPolicy === 'discipline_v1'
+                  ? 'Proportional discipline rewards · v1'
+                  : 'Discipline rewards · policy v2',
+              )}
+            </strong>
             <p>
-              80% completion eligibility. No real money. Grace days excuse the earliest misses;
-              accepted days count toward your discipline score.
+              {t(
+                (r.gracePolicy ?? 'automatic_v1') === 'automatic_v1'
+                  ? '80% completion eligibility. No real money. Grace days excuse the earliest misses; accepted days count toward your discipline score.'
+                  : 'Chosen grace days are excused. Reserve them before the upload deadline. Unused days are not assigned automatically.',
+              )}{' '}
             </p>
-            <p>Virtual penalties and rewards are not processed in this milestone.</p>
+            <p>{t('See standings and the virtual pool for current projections.')}</p>
           </div>
           <details className="rule-version">
-            <summary>View the immutable rule fingerprint</summary>
+            <summary>{t('View the immutable rule fingerprint')}</summary>
             <code>{c.rulesHash}</code>
-            <p>Each acceptance records this exact server-issued rule version.</p>
+            <p>{t('Each acceptance records this exact server-issued rule version.')}</p>
           </details>
         </section>
         <aside className="panel">
           <div className="panel-heading">
-            <h2>Showing up together</h2>
+            <h2>{t('Showing up together')}</h2>
             <span className="count-pill">{c.acceptedCount}</span>
           </div>
           {c.participants
@@ -946,22 +994,26 @@ export function ChallengePage() {
                 <Avatar name={p.displayName} />
                 <div>
                   <strong>{p.displayName}</strong>
-                  <span>Accepted {new Date(p.acceptedAt).toLocaleDateString()}</span>
+                  <span>
+                    {t('Accepted')} {new Date(p.acceptedAt).toLocaleDateString(language)}
+                  </span>
                 </div>
                 <Check size={17} />
               </div>
             ))}
           <AcceptanceRoster challenge={c} />
-          {!c.acceptedCount ? <p className="muted">Be the first to make the promise.</p> : null}
+          {!c.acceptedCount ? (
+            <p className="muted">{t('Be the first to make the promise.')}</p>
+          ) : null}
           {c.status === 'proposed' ? (
             c.ownStatus === 'accepted' ? (
               <div className="acceptance-box">
                 <span className="pill pill-active">
                   <Check size={14} />
-                  You accepted these rules
+                  {t('You accepted these rules')}{' '}
                 </span>
                 <Button variant="ghost" disabled={busy} onClick={() => void action('withdraw')}>
-                  Withdraw before activation
+                  {t('Withdraw before activation')}{' '}
                 </Button>
               </div>
             ) : (
@@ -972,11 +1024,12 @@ export function ChallengePage() {
                     checked={agreed}
                     onChange={(e) => setAgreed(e.target.checked)}
                   />
-                  I accept these dates, upload window, evidence rules, grace days, virtual penalties
-                  and cap.
+                  {t(
+                    'I accept these dates, upload window, evidence rules, grace days, virtual penalties and cap.',
+                  )}{' '}
                 </label>
                 <Button disabled={!agreed || busy} onClick={() => void action('accept')}>
-                  {busy ? 'Saving…' : 'Accept rules & join'}
+                  {busy ? t('Saving…') : t('Accept rules & join')}
                   <Check size={17} />
                 </Button>
               </div>
@@ -985,20 +1038,20 @@ export function ChallengePage() {
           {c.canManage && c.status === 'proposed' ? (
             <div className="activation-box">
               <LockKeyhole size={21} />
-              <h3>Ready for day one?</h3>
+              <h3>{t('Ready for day one?')}</h3>
               <p>
-                At least two people must accept. Only accepted members participate; unaccepted
-                Circle members sit out. Activation locks the rules and roster. No one can enroll or
-                withdraw afterward.
+                {t(
+                  'At least two people must accept. Only accepted members participate; unaccepted Circle members sit out. Activation locks the rules and roster. No one can enroll or withdraw afterward.',
+                )}{' '}
               </p>
               <Button
                 disabled={busy || c.acceptedCount < 2}
                 onClick={() => void action('activate')}
               >
-                Activate & lock roster
+                {t('Activate & lock roster')}{' '}
               </Button>
               <Button variant="ghost" disabled={busy} onClick={() => void action('cancel')}>
-                Cancel proposal
+                {t('Cancel proposal')}{' '}
               </Button>
             </div>
           ) : null}
@@ -1006,9 +1059,9 @@ export function ChallengePage() {
             <div className="quiet-info">
               <LockKeyhole size={21} />
               <div>
-                <p>The shared promise is locked.</p>
+                <p>{t('The shared promise is locked.')}</p>
                 <Link className="text-link" to={`/app/challenges/${c.id}/evidence`}>
-                  Submit & review proof →
+                  {t('Submit & review proof →')}{' '}
                 </Link>
               </div>
             </div>
@@ -1018,19 +1071,19 @@ export function ChallengePage() {
       {c.obligations.length ? (
         <section className="panel schedule-panel">
           <div className="panel-heading">
-            <h2>Your frozen schedule</h2>
+            <h2>{t('Your frozen schedule')}</h2>
             <CalendarDays size={21} />
           </div>
           <p>
-            Server-generated deadlines follow {r.timezone}. Your timestamps are fixed across clock
-            changes.
+            {t('Server-generated deadlines follow')} {r.timezone}
+            {t('. Your timestamps are fixed across clock changes.')}{' '}
           </p>
           <div className="schedule-list">
             {c.obligations.map((o) => (
               <div className="schedule-row" key={o.id}>
                 <span>{o.localDate}</span>
                 <strong>
-                  {new Intl.DateTimeFormat('en', {
+                  {new Intl.DateTimeFormat(language, {
                     timeZone: r.timezone,
                     hour: '2-digit',
                     minute: '2-digit',
@@ -1038,7 +1091,7 @@ export function ChallengePage() {
                   }).format(new Date(o.deadlineAt))}
                 </strong>
                 <span className="pill">
-                  {new Date(o.deadlineAt) > new Date() ? 'Scheduled' : 'Window closed'}
+                  {new Date(o.deadlineAt) > new Date() ? t('Scheduled') : t('Window closed')}
                 </span>
               </div>
             ))}

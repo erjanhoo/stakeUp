@@ -64,4 +64,5 @@ export function addDays(value: string, days: number) {
   date.setUTCDate(date.getUTCDate() + days);
   return date.toISOString().slice(0, 10);
 }
-export const credits = (minor: number) => `${(minor / 100).toFixed(2)} VC`;
+export const credits = (minor: number, language = 'en') =>
+  `${(minor / 100).toLocaleString(language, { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: false })} ${language === 'ru' ? 'ВК' : 'VC'}`;

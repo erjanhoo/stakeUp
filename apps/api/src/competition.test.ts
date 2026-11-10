@@ -20,6 +20,7 @@ const rules: ChallengeRules = {
   penaltyMinor: 251,
   maxPenaltyMinor: 501,
   graceDays: 0,
+  gracePolicy: 'automatic_v1' as const,
   rewardPolicy: 'discipline_v1',
 };
 function fixture() {

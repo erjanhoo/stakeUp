@@ -1,3 +1,4 @@
+import { useI18n } from '../lib/i18n';
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowUpRight, Check, Globe2, ShieldCheck, UserRound } from 'lucide-react';
@@ -12,6 +13,8 @@ import { afterSignIn } from '../lib/social';
 
 const timezones = Intl.supportedValuesOf('timeZone');
 export function ProfileForm({ onboarding = false }: { onboarding?: boolean }) {
+  const { t } = useI18n();
+
   const { profile, update } = useAuth();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
@@ -49,13 +52,13 @@ export function ProfileForm({ onboarding = false }: { onboarding?: boolean }) {
       <div className="profile-identity">
         <Avatar name={profile.displayName} large />
         <div>
-          <strong>Your corner of StakeUp</strong>
-          <span>Initials for now. Photo uploads arrive with evidence.</span>
+          <strong>{t('Your corner of StakeUp')}</strong>
+          <span>{t('Initials for now. Photo uploads arrive with evidence.')}</span>
         </div>
       </div>
       <div className="form-row">
         <label>
-          Display name
+          {t('Display name')}{' '}
           <Input
             name="displayName"
             defaultValue={profile.displayName}
@@ -65,7 +68,7 @@ export function ProfileForm({ onboarding = false }: { onboarding?: boolean }) {
           />
         </label>
         <label>
-          Username
+          {t('Username')}{' '}
           <Input
             name="username"
             defaultValue={profile.username}
@@ -77,7 +80,7 @@ export function ProfileForm({ onboarding = false }: { onboarding?: boolean }) {
         </label>
       </div>
       <label>
-        <span id="timezone-label">Timezone</span>
+        <span id="timezone-label">{t('Timezone')}</span>
         <span className="select-wrap">
           <Globe2 size={18} />
           <select
@@ -94,16 +97,17 @@ export function ProfileForm({ onboarding = false }: { onboarding?: boolean }) {
           </select>
         </span>
         <span id="timezone-hint" className="field-hint">
-          Future deadlines will show in your preferred timezone. Each challenge keeps its own agreed
-          timezone.
+          {t(
+            'Future deadlines will show in your preferred timezone. Each challenge keeps its own agreed timezone.',
+          )}{' '}
         </span>
       </label>
       <label>
-        A little about you <span className="muted optional">optional</span>
+        {t('A little about you')} <span className="muted optional">{t('optional')}</span>
         <textarea
           name="bio"
           defaultValue={profile.bio}
-          placeholder="What are you working toward?"
+          placeholder={t('What are you working toward?')}
           maxLength={240}
           rows={3}
         />
@@ -111,42 +115,46 @@ export function ProfileForm({ onboarding = false }: { onboarding?: boolean }) {
       {error ? <ErrorMessage message={error} /> : null}
       {saved ? (
         <div className="success-message" role="status">
-          <Check size={17} /> Your changes are saved.
+          <Check size={17} /> {t('Your changes are saved.')}{' '}
         </div>
       ) : null}
       <Button disabled={busy} type="submit">
-        {busy ? 'Saving…' : onboarding ? 'Make yourself at home' : 'Save changes'}
+        {busy ? t('Saving…') : onboarding ? t('Make yourself at home') : t('Save changes')}
         <ArrowUpRight size={18} />
       </Button>
     </form>
   );
 }
 export function Onboarding() {
+  const { t } = useI18n();
+
   return (
     <div className="onboarding">
       <header>
         <Brand />
-        <span className="eyebrow">YOUR FIRST SMALL STEP</span>
+        <span className="eyebrow">{t('YOUR FIRST SMALL STEP')}</span>
       </header>
       <main>
         <div className="onboarding-heading">
           <span className="page-icon">
             <UserRound />
           </span>
-          <h1>Let’s make this yours.</h1>
-          <p>What should your circle call you? Set up your profile and find your footing.</p>
+          <h1>{t('Let’s make this yours.')}</h1>
+          <p>{t('What should your circle call you? Set up your profile and find your footing.')}</p>
         </div>
         <div className="panel">
           <ProfileForm onboarding />
         </div>
         <p className="secure-caption">
-          <ShieldCheck size={16} /> Your profile stays within the circles you join.
+          <ShieldCheck size={16} /> {t('Your profile stays within the circles you join.')}{' '}
         </p>
       </main>
     </div>
   );
 }
 export function Settings() {
+  const { t } = useI18n();
+
   const { profile, mode, signOut } = useAuth();
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -166,46 +174,48 @@ export function Settings() {
   return (
     <>
       <div className="page-heading">
-        <span className="eyebrow">A LITTLE MORE YOU</span>
+        <span className="eyebrow">{t('A LITTLE MORE YOU')}</span>
         <h1>
-          Your profile & settings<span>.</span>
+          {t('Your profile & settings')}
+          <span>.</span>
         </h1>
-        <p>A familiar face. A fresh ambition. Make yourself at home.</p>
+        <p>{t('A familiar face. A fresh ambition. Make yourself at home.')}</p>
       </div>
       <div className="settings-grid">
         <section className="panel">
-          <h2>Personal details</h2>
+          <h2>{t('Personal details')}</h2>
           <ProfileForm />
         </section>
         <aside className="settings-aside">
           <AppearanceSettings />
           <div className="panel">
             <ShieldCheck className="accent" size={25} />
-            <h3>Your account</h3>
-            <span className="eyebrow">EMAIL ADDRESS</span>
+            <h3>{t('Your account')}</h3>
+            <span className="eyebrow">{t('EMAIL ADDRESS')}</span>
             <p className="break-anywhere">{profile?.email}</p>
             <span className="pill">
-              {mode === 'local' ? 'Local development account' : 'Supabase authenticated'}
+              {mode === 'local' ? t('Local development account') : t('Supabase authenticated')}
             </span>
             <div className="account-actions">
               <Button asChild variant="ghost">
                 <Link to="/forgot-password">
-                  Reset your password <ArrowUpRight size={15} />
+                  {t('Reset your password')} <ArrowUpRight size={15} />
                 </Link>
               </Button>
               <Button variant="outline" disabled={busy} onClick={logout}>
-                {busy ? 'Signing out…' : 'Log out of this account'}
+                {busy ? t('Signing out…') : t('Log out of this account')}
               </Button>
               {error ? <ErrorMessage message={error} /> : null}
             </div>
           </div>
           <div className="quiet-note">
-            <h3>Made for your circle.</h3>
+            <h3>{t('Made for your circle.')}</h3>
             <p>
-              Your details aren’t public. Your circles share your display name, username and
-              challenge participation with members. Your email stays private.
+              {t(
+                'Your details aren’t public. Your circles share your display name, username and challenge participation with members. Your email stays private.',
+              )}{' '}
             </p>
-            <p>All stakes are virtual. There are no payment details to add.</p>
+            <p>{t('All stakes are virtual. There are no payment details to add.')}</p>
           </div>
         </aside>
       </div>

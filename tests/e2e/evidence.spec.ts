@@ -156,6 +156,26 @@ test('private photo → peer rejection → owner appeal → two-peer resolution'
     }
     await page.reload();
     await expect(page.getByRole('heading', { name: 'accepted', exact: true })).toBeVisible();
+    await friend.reload();
+    await friend.getByText('Encouragement & conversation', { exact: true }).click();
+    await friend.getByRole('button', { name: 'Encourage', exact: true }).click();
+    await expect(friend.getByRole('button', { name: 'Encourage', exact: true })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    await friend.getByText('Circle conversation ·', { exact: false }).click();
+    await friend.getByLabel('Add encouragement').fill('Small steps count. Great effort!');
+    await friend.getByRole('button', { name: 'Post comment' }).click();
+    await expect(
+      friend.getByText('Small steps count. Great effort!', { exact: true }),
+    ).toBeVisible();
+    await page.reload();
+    await page.getByText('Encouragement & conversation', { exact: true }).click();
+    await page.getByText('Circle conversation ·', { exact: false }).click();
+    await expect(page.getByText('Small steps count. Great effort!', { exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Remove my comment' })).toHaveCount(0);
+    await friend.getByRole('button', { name: 'Remove my comment' }).click();
+    await expect(friend.getByText('Comment removed', { exact: true })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );

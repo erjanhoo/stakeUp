@@ -55,6 +55,7 @@ export const resetPasswordSchema = z.object({
 export type ProfileInput = z.infer<typeof profileSchema>;
 export interface Profile extends ProfileInput {
   appearance: Appearance;
+  language?: 'en' | 'ru';
   id: string;
   email: string;
   createdAt: string;
@@ -106,9 +107,20 @@ export const challengeSchema = z
     penaltyMinor: z.number().int().min(0).max(100_000),
     maxPenaltyMinor: z.number().int().min(0).max(1_000_000),
     graceDays: z.number().int().min(0).max(7),
-    rewardPolicy: z.literal('discipline_v1').default('discipline_v1'),
+    rewardPolicy: z.enum(['discipline_v1', 'discipline_v2']).default('discipline_v2'),
+    gracePolicy: z.enum(['automatic_v1', 'chosen_v1']).optional(),
   })
   .refine((v) => v.opening < v.cutoff, 'Opening time must be before the deadline on the same day.')
+  .transform((v) => ({
+    ...v,
+    gracePolicy:
+      v.gracePolicy ??
+      (v.rewardPolicy === 'discipline_v1' ? ('automatic_v1' as const) : ('chosen_v1' as const)),
+  }))
+  .refine(
+    (v) => (v.rewardPolicy === 'discipline_v1') === (v.gracePolicy === 'automatic_v1'),
+    'Reward and grace policies must match.',
+  )
   .refine((v) => v.endDate >= v.startDate, 'End date must be on or after the start date.')
   .refine(
     (v) => v.maxPenaltyMinor >= v.penaltyMinor,
@@ -285,4 +297,37 @@ export interface Competition {
   ledger: VirtualEntry[];
   settlementId: string | null;
   appealClosesAt: string;
+}
+export interface GraceChoice {
+  obligationId: string;
+  challengeId: string;
+  userId: string;
+  chosenAt: string;
+}
+export interface AppNotification {
+  id: string;
+  kind: string;
+  challengeId: string | null;
+  circleId: string | null;
+  createdAt: string;
+  readAt: string | null;
+  payload: Record<string, string | number>;
+}
+export interface ProofComment {
+  id: string;
+  userId: string;
+  name: string;
+  body: string;
+  createdAt: string;
+  deleted: boolean;
+}
+export interface ProofSocial {
+  comments: ProofComment[];
+  reactions: { emoji: 'clap' | 'fire' | 'heart'; count: number; own: boolean }[];
+}
+export interface PersonalRecap {
+  accepted: number;
+  submitted: number;
+  completed: number;
+  achievements: string[];
 }

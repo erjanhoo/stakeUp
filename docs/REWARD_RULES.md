@@ -1,4 +1,4 @@
-# Virtual reward policy v1
+# Virtual reward policies
 
 All amounts are integer virtual cents. No real monetary value. Phase 2 records `rewardPolicy: discipline_v1` in the hashed immutable rules snapshot and explicit acceptance record. This version fixes the 80% threshold and rules below; changing them requires a new version and a new proposal. Accounting is implemented in the competition milestone; see COMPETITION.md for release status.
 
@@ -12,3 +12,7 @@ All amounts are integer virtual cents. No real monetary value. Phase 2 records `
 - Settlement locks the challenge, requires every obligation and dispute finalized, posts balanced virtual entries and a unique distribution record in one transaction. Sum of reward/refund allocations equals the entire pool. After settlement, the challenge pool balance is zero.
 
 Amounts are provisional until final settlement, which also waits at least 24 hours after the last deadline/review event. Tests cover conservation, caps, no eligible participants, exact ties, zero pools, retries, worker processing and unresolved disputes. Real concurrent multi-session stress tests remain part of broader launch hardening.
+
+## Chosen grace policy v2
+
+New proposals use discipline_v2/chosen_v1. Participants reserve scheduled dates before their deadline; those dates are excused and excluded from the score denominator. No automatic allocation of unused allowance. Existing v1 snapshots retain their accepted automatic policy. All other rules above remain unchanged. See COMMUNITY.md for ownership, upload locking and cancellation rules.

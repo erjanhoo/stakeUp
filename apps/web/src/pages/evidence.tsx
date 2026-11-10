@@ -1,7 +1,14 @@
+import { useI18n } from '../lib/i18n';
+import { ProofConversation, GracePlanner } from '../components/community';
 import { useEffect, useState, type FormEvent } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Camera, ArrowLeft, ImagePlus, Check, ShieldCheck } from 'lucide-react';
-import type { ChallengeDetail, EvidencePage as EvidenceData, Proof } from '@stakeup/contracts';
+import type {
+  ChallengeDetail,
+  EvidencePage as EvidenceData,
+  Proof,
+  GraceChoice,
+} from '@stakeup/contracts';
 import { useResource } from '../lib/social';
 import { api, message, supabase } from '../lib/api';
 import { useAuth } from '../lib/auth';
@@ -72,6 +79,8 @@ function Review({
   reload: () => Promise<void>;
   closed: boolean;
 }) {
+  const { t, language } = useI18n();
+
   const { profile } = useAuth();
   const [busy, setBusy] = useState(false),
     [error, setError] = useState(''),
@@ -100,10 +109,10 @@ function Review({
           <span className="eyebrow">
             {s.localDate} · {s.name}
           </span>
-          <h2>{s.status.replace('_', ' ')}</h2>
+          <h2>{t(s.status.replace('_', ' '))}</h2>
         </div>
         <span className="pill">
-          {s.receivedAt ? new Date(s.receivedAt).toLocaleString() : 'Upload incomplete'}
+          {s.receivedAt ? new Date(s.receivedAt).toLocaleString(language) : t('Upload incomplete')}
         </span>
       </div>
       {s.receivedAt ? <Photo challengeId={challengeId} proof={s} /> : null}
@@ -112,24 +121,27 @@ function Review({
         <div className="verification-note">
           <ShieldCheck size={20} />
           <div>
-            <strong>Development review · human judgment needed</strong>
-            {[...s.review.observations, ...s.review.unverified].map((t) => (
-              <p key={t}>{t}</p>
+            <strong>{t('Development review · human judgment needed')}</strong>
+            {[...s.review.observations, ...s.review.unverified].map((text) => (
+              <p key={text}>{t(text)}</p>
             ))}
           </div>
         </div>
       ) : null}
       <details>
-        <summary>Review history · {s.events.length} events</summary>
+        <summary>
+          {t('Review history ·')} {s.events.length} {t('events')}
+        </summary>
         {s.events.map((e, i) => (
           <p key={i}>
-            <time>{new Date(e.createdAt).toLocaleString()}</time> · {e.kind.replaceAll('_', ' ')}{' '}
-            {e.reason}
+            <time>{new Date(e.createdAt).toLocaleString(language)}</time> ·{' '}
+            {t(e.kind.replaceAll('_', ' '))}{' '}
+            {['ai_reviewed', 'accepted', 'rejected'].includes(e.kind) ? t(e.reason) : e.reason}
           </p>
         ))}
         {s.votes.map((v) => (
           <p key={`${v.userId}-${v.round}`}>
-            {v.name}: {v.decision} — {v.reason} (round {v.round + 1})
+            {v.name}: {t(v.decision)} — {v.reason} {t('(round')} {v.round + 1})
           </p>
         ))}
       </details>
@@ -139,12 +151,12 @@ function Review({
       !s.votes.some((v) => v.userId === profile?.id && v.round === s.round) ? (
         <div className="review-actions">
           <label>
-            Your review
+            {t('Your review')}{' '}
             <textarea
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               maxLength={500}
-              placeholder="What did you observe? Explain your decision."
+              placeholder={t('What did you observe? Explain your decision.')}
             />
           </label>
           <div className="heading-actions">
@@ -153,14 +165,14 @@ function Review({
               onClick={() => void act('vote', 'accept')}
             >
               <Check size={16} />
-              Endorse proof
+              {t('Endorse proof')}{' '}
             </Button>
             <Button
               variant="outline"
               disabled={busy || reason.trim().length < 5}
               onClick={() => void act('vote', 'reject')}
             >
-              Flag as invalid
+              {t('Flag as invalid')}{' '}
             </Button>
           </div>
         </div>
@@ -170,9 +182,9 @@ function Review({
       ((own && s.status === 'rejected') ||
         (!own && ['accepted', 'rejected'].includes(s.status))) ? (
         <details className="review-actions">
-          <summary>{own ? 'Appeal this rejection' : 'Dispute the decision'}</summary>
+          <summary>{own ? t('Appeal this rejection') : t('Dispute the decision')}</summary>
           <label>
-            Explain the dispute
+            {t('Explain the dispute')}{' '}
             <textarea value={reason} onChange={(e) => setReason(e.target.value)} maxLength={500} />
           </label>
           <Button
@@ -180,15 +192,18 @@ function Review({
             disabled={busy || reason.trim().length < 10}
             onClick={() => void act('dispute')}
           >
-            Open dispute
+            {t('Open dispute')}{' '}
           </Button>
         </details>
       ) : null}
+      <ProofConversation challengeId={challengeId} proofId={s.id} />
       {error ? <ErrorMessage message={error} /> : null}
     </article>
   );
 }
 export function EvidencePage() {
+  const { t, language } = useI18n();
+
   const { id } = useParams();
   const challenge = useResource<ChallengeDetail>(`/challenges/${id}`),
     evidence = useResource<EvidenceData>(`/challenges/${id}/evidence`);
@@ -202,6 +217,7 @@ export function EvidencePage() {
     const timer = setInterval(() => setClock(Date.now()), 15000);
     return () => clearInterval(timer);
   }, []);
+  const grace = useResource<GraceChoice[]>(`/challenges/${id}/grace`);
   const c = challenge.data;
   const today = c
     ? new Intl.DateTimeFormat('en-CA', {
@@ -213,6 +229,7 @@ export function EvidencePage() {
     : '';
   const open = c?.obligations.find(
     (o) =>
+      !grace.data?.some((g) => g.obligationId === o.id) &&
       o.localDate === today &&
       new Date(o.deadlineAt).getTime() >= clock &&
       (!o.opensAt || new Date(o.opensAt).getTime() <= clock),
@@ -256,37 +273,43 @@ export function EvidencePage() {
     <>
       <Link className="back-link" to={`/app/challenges/${id}`}>
         <ArrowLeft size={16} />
-        Back to challenge
+        {t('Back to challenge')}{' '}
       </Link>
       <div className="page-heading">
-        <span className="eyebrow">SHOW THE EFFORT. KEEP THE CONTEXT.</span>
+        <span className="eyebrow">{t('SHOW THE EFFORT. KEEP THE CONTEXT.')}</span>
         <h1>
-          Proof, with perspective<span>.</span>
+          {t('Proof, with perspective')}
+          <span>.</span>
         </h1>
         <p>
           {c?.rules.title} · {c?.rules.timezone}
         </p>
       </div>
-      {challenge.error || evidence.error ? (
-        <ErrorMessage message={challenge.error || evidence.error} />
+      {challenge.error || evidence.error || grace.error ? (
+        <ErrorMessage message={challenge.error || evidence.error || grace.error} />
       ) : null}
       <div className="evidence-layout">
         <aside className="evidence-submit">
-          <h2>Your next small win.</h2>
+          <h2>{t('Your next small win.')}</h2>
           <p>{c?.rules.evidenceRequirements}</p>
+          {c ? (
+            <GracePlanner challenge={c} choices={grace.data ?? []} reload={grace.reload} />
+          ) : null}
           {open && !submitted ? (
             <form onSubmit={submit} className="form-stack">
               <p>
-                Opens {open.opensAt ? new Date(open.opensAt).toLocaleString() : 'at midnight'} ·
-                Submit by <strong>{new Date(open.deadlineAt).toLocaleString()}</strong> in your
-                device timezone. Server receipt time is authoritative.
+                {t('Opens')}{' '}
+                {open.opensAt ? new Date(open.opensAt).toLocaleString(language) : t('at midnight')}{' '}
+                {t('· Submit by')}{' '}
+                <strong>{new Date(open.deadlineAt).toLocaleString(language)}</strong>{' '}
+                {t('in your device timezone. Server receipt time is authoritative.')}{' '}
               </p>
               <div className="capture-options">
                 <label className="button button-outline">
                   <Camera size={18} />
-                  Take a photo
+                  {t('Take a photo')}{' '}
                   <input
-                    aria-label="Take a photo"
+                    aria-label={t('Take a photo')}
                     type="file"
                     accept="image/jpeg,image/png,image/webp"
                     capture="environment"
@@ -297,9 +320,9 @@ export function EvidencePage() {
                 {c?.rules.capturePolicy === 'camera_or_upload' ? (
                   <label className="button button-outline">
                     <ImagePlus size={18} />
-                    Choose photo
+                    {t('Choose photo')}{' '}
                     <input
-                      aria-label="Choose photo"
+                      aria-label={t('Choose photo')}
                       type="file"
                       accept="image/jpeg,image/png,image/webp"
                       disabled={busy}
@@ -312,49 +335,54 @@ export function EvidencePage() {
                 <img
                   className="photo-preview"
                   src={`data:image/jpeg;base64,${photo}`}
-                  alt="Your selected proof preview"
+                  alt={t('Your selected proof preview')}
                 />
               ) : null}
               <label>
-                Context for your circle
+                {t('Context for your circle')}{' '}
                 <textarea
                   name="note"
                   maxLength={500}
                   rows={3}
-                  placeholder="What did you do? What can this photo show?"
+                  placeholder={t('What did you do? What can this photo show?')}
                 />
               </label>
               <Button disabled={!photo || busy} type="submit">
-                {busy ? 'Preparing proof…' : 'Submit private proof'}
+                {busy ? t('Preparing proof…') : t('Submit private proof')}
               </Button>
             </form>
           ) : (
             <p className="quiet-info">
               {submitted
-                ? 'Your proof for today has been submitted.'
-                : 'No submission window is open right now. Check the schedule below.'}
+                ? t('Your proof for today has been submitted.')
+                : t('No submission window is open right now. Check the schedule below.')}
             </p>
           )}
           <p className="field-hint">
-            Photos are private to your Circle. GPS metadata is removed. Camera capture is a
-            requested source, not proof of when a photo was taken. JPEG, PNG and WebP are supported;
-            photos are resized before upload.
+            {t(
+              'Photos are private to your Circle. GPS metadata is removed. Camera capture is a requested source, not proof of when a photo was taken. JPEG, PNG and WebP are supported; photos are resized before upload.',
+            )}{' '}
           </p>
           {error ? <ErrorMessage message={error} /> : null}
-          {notice ? <p role="status">{notice}</p> : null}
+          {notice ? <p role="status">{t(notice)}</p> : null}
           <details>
-            <summary>Your submission windows</summary>
+            <summary>{t('Your submission windows')}</summary>
             {c?.obligations.map((o) => {
               const s = evidence.data?.proofs.find((s) => s.obligationId === o.id);
               return (
                 <p key={o.id}>
                   {o.localDate} ·{' '}
-                  {s?.status.replace('_', ' ') ??
-                    (new Date(o.deadlineAt) < new Date() ? 'Expired — no proof' : 'Scheduled')}
+                  {grace.data?.some((g) => g.obligationId === o.id)
+                    ? t('Excused')
+                    : s
+                      ? t(s.status.replace('_', ' '))
+                      : new Date(o.deadlineAt) < new Date()
+                        ? t('Expired — no proof')
+                        : t('Scheduled')}
                   <br />
                   <small>
-                    {o.opensAt ? new Date(o.opensAt).toLocaleTimeString() : '00:00'}–
-                    {new Date(o.deadlineAt).toLocaleString()}
+                    {o.opensAt ? new Date(o.opensAt).toLocaleTimeString(language) : '00:00'}–
+                    {new Date(o.deadlineAt).toLocaleString(language)}
                   </small>
                 </p>
               );
@@ -363,19 +391,19 @@ export function EvidencePage() {
         </aside>
         <section className="evidence-stream">
           <div className="stream-intro">
-            <span className="eyebrow">CIRCLE CONTACT SHEET</span>
+            <span className="eyebrow">{t('CIRCLE CONTACT SHEET')}</span>
             <p>
-              AI never decides completion. Decisions require a strict majority of eligible peers.
-              Rejection and dispute resolution need at least two independent reviewers. If your
-              Circle is too small, review stays unresolved; no penalty is finalized.
+              {t(
+                'AI never decides completion. Decisions require a strict majority of eligible peers. Rejection and dispute resolution need at least two independent reviewers. If your Circle is too small, review stays unresolved; no penalty is finalized.',
+              )}{' '}
             </p>
           </div>
           {evidence.loading && !evidence.data ? <Loading /> : null}
           {evidence.data?.proofs.length === 0 ? (
             <div className="proof-empty">
               <Camera size={42} />
-              <h2>A little effort belongs here.</h2>
-              <p>Your Circle’s submitted photos and review history will appear here.</p>
+              <h2>{t('A little effort belongs here.')}</h2>
+              <p>{t('Your Circle’s submitted photos and review history will appear here.')}</p>
             </div>
           ) : null}
           {evidence.data?.proofs.map((s) => (

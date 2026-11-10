@@ -96,6 +96,7 @@ export async function configureApp(app: FastifyInstance, config: Config) {
         mode: row.theme_mode === 'light' ? 'light' : 'dark',
         accent: row.theme_accent === 'lime' ? 'lime' : 'orange',
       },
+      language: row.language === 'ru' ? 'ru' : 'en',
       createdAt: String(row.created_at),
     };
   }
@@ -162,6 +163,72 @@ export async function configureApp(app: FastifyInstance, config: Config) {
     return { ok: true };
   });
   app.get('/api/me', async (request) => (await authenticate(request)).profile);
+  app.patch('/api/me/language', async (req) => {
+    const { language } = z.object({ language: z.enum(['en', 'ru']) }).parse(req.body);
+    const { profile, db } = await authenticate(req);
+    if (local) return local.language(profile.id, language);
+    const r = await db!
+      .from('profiles')
+      .update({ language })
+      .eq('id', profile.id)
+      .select('*')
+      .single();
+    if (r.error) dbError(r.error);
+    return mapProfile(r.data!, profile.email);
+  });
+  async function community(
+    req: Parameters<typeof authenticate>[0],
+    action: string,
+    p: Record<string, unknown> = {},
+  ) {
+    const { profile, db } = await authenticate(req);
+    if (local) return local.community(profile.id, action, p);
+    const r = await db!.rpc('stakeup_community', { p_action: action, p_payload: p });
+    if (r.error)
+      throw new AppError(
+        r.error.code === '42501' ? 403 : 409,
+        ['P0001', '42501'].includes(r.error.code) ? r.error.message : 'Unable to update this item.',
+      );
+    return r.data;
+  }
+  app.get('/api/notifications', (req) => community(req, 'notifications'));
+  app.post('/api/notifications/read', (req) =>
+    community(req, 'read', z.object({ id: z.uuid().optional() }).parse(req.body)),
+  );
+  app.get('/api/me/recap', (req) => community(req, 'recap'));
+  app.get<{ Params: { id: string } }>('/api/challenges/:id/grace', (req) =>
+    community(req, 'grace_list', { challengeId: z.uuid().parse(req.params.id) }),
+  );
+  for (const name of ['choose', 'cancel'])
+    app.post<{ Params: { id: string } }>(`/api/challenges/:id/grace/${name}`, (req) =>
+      community(req, 'grace_' + name, {
+        ...z.object({ obligationId: z.uuid() }).parse(req.body),
+        challengeId: z.uuid().parse(req.params.id),
+      }),
+    );
+  app.get<{ Params: { id: string; proofId: string } }>(
+    '/api/challenges/:id/evidence/:proofId/social',
+    (req) =>
+      community(req, 'social', {
+        challengeId: z.uuid().parse(req.params.id),
+        proofId: z.uuid().parse(req.params.proofId),
+      }),
+  );
+  for (const action of ['comment', 'react', 'delete_comment'])
+    app.post<{ Params: { id: string; proofId: string } }>(
+      `/api/challenges/:id/evidence/:proofId/${action}`,
+      (req) =>
+        community(req, action, {
+          ...(action === 'comment'
+            ? z.object({ body: z.string().trim().min(1).max(1000) })
+            : action === 'react'
+              ? z.object({ emoji: z.enum(['clap', 'fire', 'heart']) })
+              : z.object({ id: z.uuid() })
+          ).parse(req.body),
+          challengeId: z.uuid().parse(req.params.id),
+          proofId: z.uuid().parse(req.params.proofId),
+        }),
+    );
   app.patch('/api/me/appearance', async (request) => {
     const appearance = appearanceSchema.parse(request.body);
     const { profile, db } = await authenticate(request);

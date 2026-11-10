@@ -1,3 +1,8 @@
+import {
+  communityCommand,
+  emitCommunityNotifications,
+  type CommunityState,
+} from './local-community.js';
 import { competitionCommand } from './local-competition.js';
 import { evidenceCommand, type EvidenceState } from './local-evidence.js';
 import {
@@ -71,6 +76,7 @@ export class LocalStore {
       state.sessions = state.sessions.filter((s) => s.expires > Date.now());
       state.resets = state.resets.filter((s) => s.expires > Date.now());
       const result = await fn(state);
+      emitCommunityNotifications(state);
       await mkdir(dirname(this.file), { recursive: true });
       await writeFile(`${this.file}.tmp`, JSON.stringify(state), { mode: 0o600 });
       await rename(`${this.file}.tmp`, this.file);
@@ -171,6 +177,16 @@ export class LocalStore {
   }
   social(userId: string, action: SocialAction, payload: Record<string, unknown> = {}) {
     return this.transact((state) => socialCommand(state, userId, action, payload));
+  }
+  community(uid: string, action: string, p: Record<string, unknown> = {}) {
+    return this.transact((state) => communityCommand(state, uid, action, p));
+  }
+  language(uid: string, language: 'en' | 'ru') {
+    return this.transact((state) => {
+      const profile = state.accounts.find((a) => a.profile.id === uid)!.profile;
+      profile.language = language;
+      return profile;
+    });
   }
   projectedPools(uid: string) {
     return this.transact((state) =>

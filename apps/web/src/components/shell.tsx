@@ -1,3 +1,5 @@
+import { useI18n } from '../lib/i18n';
+import { NotificationBell } from './community';
 import { useState } from 'react';
 import { NavLink, Outlet, Link, useNavigate } from 'react-router-dom';
 import {
@@ -22,6 +24,8 @@ const links = [
   { to: '/app/settings', label: 'Settings', icon: Settings2 },
 ];
 export function Shell() {
+  const { t } = useI18n();
+
   const { profile, signOut, mode } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState('');
@@ -40,12 +44,12 @@ export function Shell() {
   return (
     <div className="app-shell">
       <a href="#main-content" className="skip-link">
-        Skip to content
+        {t('Skip to content')}{' '}
       </a>
       <aside className="sidebar">
         <Brand />
-        <div className="sidebar-label">YOUR SPACE</div>
-        <nav aria-label="Your space">
+        <div className="sidebar-label">{t('YOUR SPACE')}</div>
+        <nav aria-label={t('Your space')}>
           {links.map((link) => (
             <NavLink
               end={link.end}
@@ -54,28 +58,28 @@ export function Shell() {
               className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
             >
               <link.icon size={19} />
-              <span>{link.label}</span>
+              <span>{t(link.label)}</span>
             </NavLink>
           ))}
         </nav>
         <div className="sidebar-bottom">
           <div className="sidebar-promise">
             <span className="small-star">✳</span>
-            <h3>Better, together.</h3>
+            <h3>{t('Better, together.')}</h3>
             <p>
-              A little accountability.
-              <br />A lot of possibility.
+              {t('A little accountability.')} <br />
+              {t('A lot of possibility.')}{' '}
             </p>
             <Link to="/app/roadmap">
-              The road ahead <ArrowUpRight size={15} />
+              {t('The road ahead')} <ArrowUpRight size={15} />
             </Link>
           </div>
           <div className="virtual-caption">
-            <span className="status-dot" /> VIRTUAL STAKES ONLY
+            <span className="status-dot" /> {t('VIRTUAL STAKES ONLY')}{' '}
           </div>
           <button className="logout-button" disabled={busy} onClick={logout}>
             <LogOut size={17} />
-            {busy ? 'Signing out…' : 'Log out'}
+            {busy ? t('Signing out…') : t('Log out')}
           </button>
         </div>
       </aside>
@@ -83,22 +87,18 @@ export function Shell() {
         <header className="app-header">
           <div className="breadcrumb">
             <Mountain size={17} />
-            <span>Your space</span>
+            <span>{t('Your space')}</span>
             <span>/</span>
             <strong>StakeUp</strong>
           </div>
           <div className="header-actions">
-            {mode === 'local' ? <span className="dev-indicator">LOCAL DEV</span> : null}
-            <Button variant="ghost" size="icon" asChild>
-              <Link to="/app/notifications" aria-label="Notifications">
-                <Bell size={20} />
-              </Link>
-            </Button>
+            {mode === 'local' ? <span className="dev-indicator">{t('LOCAL DEV')}</span> : null}
+            <NotificationBell />
             <span className="header-divider" />
             <Link
               className="profile-chip"
               to="/app/settings"
-              aria-label="Your profile and settings"
+              aria-label={t('Your profile and settings')}
             >
               <Avatar name={profile?.displayName ?? 'You'} />
               <span>{profile?.displayName}</span>
@@ -111,15 +111,15 @@ export function Shell() {
           <Outlet />
         </main>
         <footer className="app-footer">
-          <span>PROGRESS IS A TEAM SPORT.</span>
-          <span>All stakes are virtual. Always.</span>
+          <span>{t('PROGRESS IS A TEAM SPORT.')}</span>
+          <span>{t('All stakes are virtual. Always.')}</span>
         </footer>
       </div>
-      <nav className="mobile-nav" aria-label="Mobile navigation">
+      <nav className="mobile-nav" aria-label={t('Mobile navigation')}>
         {links.map((link) => (
           <NavLink end={link.end} to={link.to} key={link.to}>
             <link.icon size={20} />
-            <span>{link.label === 'Overview' ? 'Home' : link.label}</span>
+            <span>{link.label === 'Overview' ? t('Home') : t(link.label)}</span>
           </NavLink>
         ))}
       </nav>

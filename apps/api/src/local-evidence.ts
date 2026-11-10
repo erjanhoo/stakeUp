@@ -13,6 +13,16 @@ export function evidenceCommand(
   now = new Date(),
 ) {
   const all = (state.proofs ??= []);
+  if (['reserve', 'finish'].includes(action)) {
+    const oid =
+      action === 'reserve' ? p.obligationId : all.find((s) => s.id === p.proofId)?.obligationId;
+    if (
+      (state as import('./local-competition.js').FinanceState).graceChoices?.some(
+        (g) => g.obligationId === oid,
+      )
+    )
+      throw new AppError(409, 'This day is excused. Cancel the grace day before submitting proof.');
+  }
   const h = state.challenges.find((h) => h.id === p.challengeId);
   if (!h || !state.members.some((m) => m.circleId === h.circleId && m.userId === uid && !m.leftAt))
     throw new AppError(404, 'Challenge not found.');

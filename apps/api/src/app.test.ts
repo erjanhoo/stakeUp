@@ -51,6 +51,43 @@ describe('foundation HTTP boundary', () => {
         .statusCode,
     ).toBe(403);
   });
+  it('saves language per account and protects community endpoints', async () => {
+    const { cookie } = await register();
+    const change = await app.inject({
+      method: 'PATCH',
+      url: '/api/me/language',
+      headers: { origin },
+      cookies: { stakeup_session: cookie },
+      payload: { language: 'ru' },
+    });
+    expect(change.statusCode).toBe(200);
+    expect(change.json().language).toBe('ru');
+    expect(
+      (await app.inject({ url: '/api/me', cookies: { stakeup_session: cookie } })).json().language,
+    ).toBe('ru');
+    expect(
+      (
+        await app.inject({
+          method: 'PATCH',
+          url: '/api/me/language',
+          headers: { origin },
+          cookies: { stakeup_session: cookie },
+          payload: { language: 'invalid' },
+        })
+      ).statusCode,
+    ).toBe(400);
+    for (const url of [
+      '/api/notifications',
+      '/api/me/recap',
+      '/api/challenges/70000000-0000-4000-8000-000000000011/grace',
+    ])
+      expect((await app.inject(url)).statusCode).toBe(401);
+    expect(
+      (
+        await app.inject({ url: '/api/notifications', cookies: { stakeup_session: cookie } })
+      ).json(),
+    ).toEqual([]);
+  });
   it('persists private accounts, hashes credentials, and returns honest zero statistics', async () => {
     const a = await register();
     const b = await register({ ...account, email: 'other@example.test', username: 'other' });

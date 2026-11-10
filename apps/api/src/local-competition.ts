@@ -1,9 +1,10 @@
 import { randomUUID } from 'node:crypto';
-import type { Competition, CompetitionRow, VirtualEntry } from '@stakeup/contracts';
+import type { Competition, CompetitionRow, VirtualEntry, GraceChoice } from '@stakeup/contracts';
 import type { EvidenceState } from './local-evidence.js';
 import { AppError } from './errors.js';
 import { allocate } from './domain/rewards.js';
 export interface FinanceState extends EvidenceState {
+  graceChoices?: GraceChoice[];
   settlements?: {
     id: string;
     challengeId: string;
@@ -63,6 +64,10 @@ export function competitionCommand(
       .filter((o) => o.userId === p.userId)
       .sort((a, b) => a.localDate.localeCompare(b.localDate))) {
       r.scheduled++;
+      if (state.graceChoices?.some((g) => g.obligationId === o.id)) {
+        r.grace++;
+        continue;
+      }
       const s = proofs.find((s) => s.obligationId === o.id);
       if (s?.status === 'accepted') {
         r.successful++;
@@ -74,13 +79,16 @@ export function competitionCommand(
         (s?.receivedAt && !['accepted', 'rejected'].includes(s.status))
       ) {
         r.pending++;
-        if(new Date(o.deadlineAt)<=now)r.streak=0;
+        if (new Date(o.deadlineAt) <= now) r.streak = 0;
         continue;
       }
 
       r.missed++;
       r.streak = 0;
-      if (r.grace < h.rules.graceDays) {
+      if (
+        (h.rules.gracePolicy ?? 'automatic_v1') === 'automatic_v1' &&
+        r.grace < h.rules.graceDays
+      ) {
         r.grace++;
         continue;
       }

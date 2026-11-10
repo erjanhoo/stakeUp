@@ -10,6 +10,7 @@ interface AuthState {
   signOut: () => Promise<void>;
   update: (input: ProfileInput) => Promise<void>;
   updateAppearance: (appearance: Appearance) => Promise<void>;
+  updateLanguage: (language: 'en' | 'ru') => Promise<void>;
 }
 const AuthContext = createContext<AuthState | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -78,9 +79,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await api<Profile>('/me/appearance', { method: 'PATCH', body: JSON.stringify(appearance) }),
     );
   }
+  async function updateLanguage(language: 'en' | 'ru') {
+    setProfile(
+      await api<Profile>('/me/language', { method: 'PATCH', body: JSON.stringify({ language }) }),
+    );
+  }
   return (
     <AuthContext.Provider
-      value={{ profile, mode, loading, error, refresh, signOut, update, updateAppearance }}
+      value={{
+        profile,
+        mode,
+        loading,
+        error,
+        refresh,
+        signOut,
+        update,
+        updateAppearance,
+        updateLanguage,
+      }}
     >
       {children}
     </AuthContext.Provider>

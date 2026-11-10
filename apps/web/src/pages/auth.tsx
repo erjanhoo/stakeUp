@@ -1,3 +1,4 @@
+import { useI18n } from '../lib/i18n';
 import { useState, type FormEvent } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { ArrowUpRight, Eye, EyeOff, ArrowLeft, ShieldCheck } from 'lucide-react';
@@ -15,6 +16,8 @@ import { useAuth } from '../lib/auth';
 import { afterSignIn } from '../lib/social';
 
 export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot' | 'reset' }) {
+  const { t } = useI18n();
+
   const auth = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState('');
@@ -119,18 +122,16 @@ export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot'
       <aside className="auth-story">
         <Brand />
         <div>
-          <span className="eyebrow">THE FIRST STEP IS YOURS.</span>
+          <span className="eyebrow">{t('THE FIRST STEP IS YOURS.')}</span>
           <h1>
-            Good habits.
-            <br />
-            Great company.
-            <br />
-            <em>Let’s go.</em>
+            {t('Good habits.')} <br />
+            {t('Great company.')} <br />
+            <em>{t('Let’s go.')}</em>
           </h1>
-          <p>You’re one small commitment away from something good.</p>
+          <p>{t('You’re one small commitment away from something good.')}</p>
         </div>
         <span className="auth-footnote">
-          <ShieldCheck size={17} /> All stakes are virtual. Your circle stays private.
+          <ShieldCheck size={17} /> {t('All stakes are virtual. Your circle stays private.')}{' '}
         </span>
         <span className="auth-star" aria-hidden="true">
           ✳
@@ -138,48 +139,49 @@ export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot'
       </aside>
       <main className="auth-main">
         <Link className="back-link" to="/">
-          <ArrowLeft size={17} /> Back to StakeUp
+          <ArrowLeft size={17} /> {t('Back to StakeUp')}{' '}
         </Link>
         <div className="auth-form-wrap">
           <span className="eyebrow">
             {variant === 'register' ? 'WELCOME TO THE CIRCLE' : 'MAKE ROOM FOR PROGRESS'}
           </span>
-          <h2>{titles[variant]}</h2>
-          <p>{descriptions[variant]}</p>
+          <h2>{t(titles[variant])}</h2>
+          <p>{t(descriptions[variant])}</p>
           {auth.mode === 'local' ? (
             <div className="local-badge">
-              <span className="status-dot" /> Local development · data stays on this computer
+              <span className="status-dot" />{' '}
+              {t('Local development · data stays on this computer')}{' '}
             </div>
           ) : null}
           {auth.error ? <ErrorMessage message={auth.error} /> : null}
           <form onSubmit={submit} className="form-stack">
             {variant === 'register' ? (
               <label>
-                <span id="username-label">Username</span>
+                <span id="username-label">{t('Username')}</span>
                 <Input
                   name="username"
                   aria-labelledby="username-label"
                   aria-describedby="username-hint"
                   autoComplete="username"
-                  placeholder="your_next_chapter"
+                  placeholder={t('your_next_chapter')}
                   required
                   minLength={3}
                   maxLength={24}
                   pattern="[a-zA-Z][a-zA-Z0-9_]*"
                 />
                 <span id="username-hint" className="field-hint">
-                  3–24 letters, numbers or underscores.
+                  {t('3–24 letters, numbers or underscores.')}{' '}
                 </span>
               </label>
             ) : null}
             {variant !== 'reset' ? (
               <label>
-                Email address
+                {t('Email address')}{' '}
                 <Input
                   name="email"
                   type="email"
                   autoComplete="email"
-                  placeholder="you@example.com"
+                  placeholder={t('you@example.com')}
                   required
                   maxLength={254}
                 />
@@ -188,8 +190,10 @@ export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot'
             {variant !== 'forgot' ? (
               <div className="form-field">
                 <span className="label-line">
-                  <label htmlFor="password">Password</label>
-                  {variant === 'login' ? <Link to="/forgot-password">Forgot password?</Link> : null}
+                  <label htmlFor="password">{t('Password')}</label>
+                  {variant === 'login' ? (
+                    <Link to="/forgot-password">{t('Forgot password?')}</Link>
+                  ) : null}
                 </span>
                 <span className="password-field">
                   <Input
@@ -197,7 +201,9 @@ export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot'
                     name="password"
                     type={showPassword ? 'text' : 'password'}
                     autoComplete={variant === 'login' ? 'current-password' : 'new-password'}
-                    placeholder={variant === 'login' ? 'Your password' : 'At least 8 characters'}
+                    placeholder={
+                      variant === 'login' ? t('Your password') : t('At least 8 characters')
+                    }
                     required
                     minLength={variant === 'login' ? 1 : 8}
                     maxLength={128}
@@ -205,7 +211,7 @@ export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot'
                   <button
                     type="button"
                     className="password-toggle"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    aria-label={showPassword ? t('Hide password') : t('Show password')}
                     onClick={() => setShowPassword((v) => !v)}
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -216,43 +222,44 @@ export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot'
             {error ? <ErrorMessage message={error} /> : null}
             {notice ? (
               <div className="success-message" role="status">
-                {notice}
+                {t(notice)}
               </div>
             ) : null}
             {recoveryUrl ? (
               <a className="recovery-link" href={recoveryUrl}>
-                Open local recovery mailbox link ↗
+                {t('Open local recovery mailbox link ↗')}{' '}
               </a>
             ) : null}
             <Button disabled={busy || !!auth.error} type="submit">
               {busy
-                ? 'One moment…'
-                : {
-                    login: 'Let’s get back to it',
-                    register: 'Create your account',
-                    forgot: 'Send recovery link',
-                    reset: 'Update password',
-                  }[variant]}
+                ? t('One moment…')
+                : t(
+                    {
+                      login: 'Let’s get back to it',
+                      register: 'Create your account',
+                      forgot: 'Send recovery link',
+                      reset: 'Update password',
+                    }[variant],
+                  )}
               <ArrowUpRight size={18} />
             </Button>
           </form>
           <p className="auth-switch">
             {variant === 'login' ? (
               <>
-                New around here? <Link to="/register">Make a fresh start</Link>
+                {t('New around here?')} <Link to="/register">{t('Make a fresh start')}</Link>
               </>
             ) : variant === 'register' ? (
               <>
-                Already part of the circle? <Link to="/login">Log in</Link>
+                {t('Already part of the circle?')} <Link to="/login">{t('Log in')}</Link>
               </>
             ) : (
-              <Link to="/login">Back to login</Link>
+              <Link to="/login">{t('Back to login')}</Link>
             )}
           </p>
           <p className="auth-privacy">
-            No real-money stakes. No public shaming.
-            <br />
-            Just you, your people, and a promise to show up.
+            {t('No real-money stakes. No public shaming.')} <br />
+            {t('Just you, your people, and a promise to show up.')}{' '}
           </p>
         </div>
       </main>

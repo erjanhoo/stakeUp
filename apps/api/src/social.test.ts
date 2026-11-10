@@ -21,6 +21,7 @@ const rules = {
   penaltyMinor: 500,
   maxPenaltyMinor: 3500,
   graceDays: 1,
+  gracePolicy: 'automatic_v1' as const,
   rewardPolicy: 'discipline_v1' as const,
 };
 describe('social challenge HTTP flow', () => {
