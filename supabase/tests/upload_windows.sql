@@ -1,0 +1,32 @@
+begin;
+insert into auth.users(id,email,raw_user_meta_data)select ('70000000-0000-4000-8000-00000000000'||n)::uuid,'window'||n||'@example.test',jsonb_build_object('username','window_'||n)from generate_series(1,3)n;
+insert into public.circles(id,creator_id,name)values('70000000-0000-4000-8000-000000000010','70000000-0000-4000-8000-000000000001','Window crew');
+insert into public.memberships(circle_id,user_id)select '70000000-0000-4000-8000-000000000010',id from public.profiles where username in('window_1','window_2','window_3');
+insert into public.challenges(id,circle_id,created_by,rules,rules_hash,status)values('70000000-0000-4000-8000-000000000011','70000000-0000-4000-8000-000000000010','70000000-0000-4000-8000-000000000001','{"title":"Window check","timezone":"UTC","opening":"08:00","cutoff":"09:00","capturePolicy":"camera_or_upload"}','hash','active');
+insert into public.challenge_participants(challenge_id,user_id,status,rules_hash)select '70000000-0000-4000-8000-000000000011',id,'accepted','hash'from public.profiles where username in('window_1','window_2');
+insert into public.daily_obligations(id,challenge_id,user_id,local_date,deadline_at)values('70000000-0000-4000-8000-000000000012','70000000-0000-4000-8000-000000000011','70000000-0000-4000-8000-000000000001',(clock_timestamp()at time zone'UTC')::date,((clock_timestamp()at time zone'UTC')::date+time'09:00')at time zone'UTC');
+update public.daily_obligations set opens_at=clock_timestamp()+interval'1 hour',deadline_at=clock_timestamp()+interval'2 hours'where id='70000000-0000-4000-8000-000000000012';
+set local role authenticated;
+select set_config('request.jwt.claim.sub','70000000-0000-4000-8000-000000000001',true);
+do $$declare rejected boolean:=false;r jsonb;begin
+ r:=public.stakeup_social('circle','{"circleId":"70000000-0000-4000-8000-000000000010"}');
+ if jsonb_array_length(r->'challenges'->0->'acceptances')<>3 then raise exception 'Missing Circle acceptance statuses';end if;
+ if not exists(select 1 from jsonb_array_elements(r->'challenges'->0->'acceptances')x where x->>'status'='not_accepted')then raise exception 'Missing unaccepted Circle member';end if;
+ begin perform public.stakeup_evidence('reserve','{"challengeId":"70000000-0000-4000-8000-000000000011","obligationId":"70000000-0000-4000-8000-000000000012","source":"camera","note":""}');exception when raise_exception then rejected:=true;end;
+ if not rejected then raise exception 'Early submission accepted';end if;
+ if private.can_upload_evidence('70000000-0000-4000-8000-000000000001/forged.jpg')then raise exception 'Unreserved upload allowed';end if;
+end;$$;
+reset role;
+update public.daily_obligations set opens_at=clock_timestamp()-interval'1 minute',deadline_at=clock_timestamp()+interval'1 hour'where id='70000000-0000-4000-8000-000000000012';
+set local role authenticated;
+do $$declare r jsonb;begin
+ r:=public.stakeup_evidence('reserve','{"challengeId":"70000000-0000-4000-8000-000000000011","obligationId":"70000000-0000-4000-8000-000000000012","source":"camera","note":""}');
+ if r->>'status'<>'pending'then raise exception 'Open window rejected';end if;
+ if not private.can_upload_evidence(r->>'path')then raise exception 'Open reserved upload blocked';end if;
+ r:=public.stakeup_social('challenge','{"challengeId":"70000000-0000-4000-8000-000000000011"}');if r->'obligations'->0->>'opensAt'is null then raise exception 'Frozen opening not returned';end if;
+end;$$;
+reset role;
+update public.daily_obligations set deadline_at=clock_timestamp()-interval'1 second'where id='70000000-0000-4000-8000-000000000012';
+set local role authenticated;
+do $$declare path text;begin select e.path into path from public.evidence_submissions e where e.challenge_id='70000000-0000-4000-8000-000000000011';if private.can_upload_evidence(path)then raise exception 'Late upload permitted';end if;end;$$;
+rollback;

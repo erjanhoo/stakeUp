@@ -173,7 +173,8 @@
   margin-inline: auto;
 }
 .challenge-card {
-  display: flex;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 20px;
   gap: 14px;
   padding: 20px 0;
   border-top: 1px solid var(--line);
@@ -574,4 +575,25 @@
   .circle-card:hover {
     transform: none;
   }
+}
+.acceptance-roster {
+  grid-column: 1/-1;
+  margin-top: 16px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  width: 100%;
+  font-size: 12px;
+}
+.acceptance-roster > p {
+  color: var(--muted);
+  font-size: 11px;
+}
+.acceptance-roster > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 7px 0;
+}
+.accepted-label {
+  color: var(--accent-ink);
 }

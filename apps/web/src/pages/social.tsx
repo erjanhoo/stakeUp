@@ -278,6 +278,29 @@ export function CreateCircle() {
     </>
   );
 }
+function AcceptanceRoster({ challenge }: { challenge: ChallengeSummary }) {
+  return (
+    <div className="acceptance-roster">
+      <p>
+        {challenge.status === 'proposed'
+          ? 'Only members who accept will participate. Others may sit out.'
+          : 'The participant list is locked.'}
+      </p>
+      {challenge.acceptances?.map((p) => (
+        <div key={p.userId}>
+          <span>{p.displayName}</span>
+          <span className={p.status === 'accepted' ? 'accepted-label' : 'muted'}>
+            {p.status === 'accepted'
+              ? '✓ Rules accepted'
+              : p.status === 'withdrawn'
+                ? 'Withdrew'
+                : 'Not accepted'}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
 function ChallengeCard({ challenge: c }: { challenge: ChallengeSummary }) {
   return (
     <Link className="challenge-card" to={`/app/challenges/${c.id}`}>
@@ -290,7 +313,9 @@ function ChallengeCard({ challenge: c }: { challenge: ChallengeSummary }) {
             ? 'Accepting members'
             : c.status === 'active'
               ? 'Active · rules locked'
-              : 'Cancelled'}
+              : c.status === 'completed'
+                ? 'Completed'
+                : 'Cancelled'}
         </span>
         <h3>{c.rules.title}</h3>
         <p>
@@ -301,6 +326,7 @@ function ChallengeCard({ challenge: c }: { challenge: ChallengeSummary }) {
         </span>
       </div>
       <ArrowUpRight size={19} />
+      <AcceptanceRoster challenge={c} />
     </Link>
   );
 }
@@ -696,7 +722,11 @@ export function CreateChallenge() {
             </div>
           </fieldset>
           <label>
-            Daily submission deadline
+            Upload window opens
+            <Input name="opening" type="time" defaultValue="00:00" required />
+          </label>
+          <label>
+            Upload window closes
             <Input name="cutoff" type="time" defaultValue="20:00" required />
           </label>
           <p className="field-hint">
@@ -826,7 +856,9 @@ export function ChallengePage() {
             ? 'ACTIVE · RULES AND ROSTER LOCKED'
             : c.status === 'proposed'
               ? 'A SHARED PROMISE · OPEN FOR ACCEPTANCE'
-              : 'CANCELLED PROPOSAL'}
+              : c.status === 'completed'
+                ? 'COMPLETED · RESULTS FINAL'
+                : 'CANCELLED PROPOSAL'}
         </span>
         <h1>
           {r.title}
@@ -834,6 +866,18 @@ export function ChallengePage() {
         </h1>
         <p>{r.description}</p>
       </div>
+      {['active', 'completed'].includes(c.status) ? (
+        <div className="heading-actions" style={{ marginBottom: 24 }}>
+          <Button asChild>
+            <Link to={`/app/challenges/${c.id}/evidence`}>Submit & review proof</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link to={`/app/challenges/${c.id}/competition`}>
+              {c.status === 'completed' ? 'Final results' : 'Standings & virtual pool'}
+            </Link>
+          </Button>
+        </div>
+      ) : null}
       {actionError ? <ErrorMessage message={actionError} /> : null}
       <div className="social-detail-grid">
         <section className="panel rules-panel">
@@ -849,9 +893,9 @@ export function ChallengePage() {
               </dd>
             </div>
             <div>
-              <dt>Daily deadline</dt>
+              <dt>Daily upload window</dt>
               <dd>
-                {r.cutoff} · {r.timezone}
+                {r.opening ?? '00:00'}–{r.cutoff} · {r.timezone}
               </dd>
             </div>
             <div>
@@ -907,6 +951,7 @@ export function ChallengePage() {
                 <Check size={17} />
               </div>
             ))}
+          <AcceptanceRoster challenge={c} />
           {!c.acceptedCount ? <p className="muted">Be the first to make the promise.</p> : null}
           {c.status === 'proposed' ? (
             c.ownStatus === 'accepted' ? (
@@ -927,7 +972,8 @@ export function ChallengePage() {
                     checked={agreed}
                     onChange={(e) => setAgreed(e.target.checked)}
                   />
-                  I accept these dates, evidence rules, grace days, virtual penalties and cap.
+                  I accept these dates, upload window, evidence rules, grace days, virtual penalties
+                  and cap.
                 </label>
                 <Button disabled={!agreed || busy} onClick={() => void action('accept')}>
                   {busy ? 'Saving…' : 'Accept rules & join'}
@@ -941,8 +987,9 @@ export function ChallengePage() {
               <LockKeyhole size={21} />
               <h3>Ready for day one?</h3>
               <p>
-                At least two people must accept. Activation locks the rules and roster. No one can
-                enroll or withdraw afterward.
+                At least two people must accept. Only accepted members participate; unaccepted
+                Circle members sit out. Activation locks the rules and roster. No one can enroll or
+                withdraw afterward.
               </p>
               <Button
                 disabled={busy || c.acceptedCount < 2}
@@ -991,7 +1038,7 @@ export function ChallengePage() {
                   }).format(new Date(o.deadlineAt))}
                 </strong>
                 <span className="pill">
-                  {new Date(o.deadlineAt) > new Date() ? 'Scheduled' : 'Awaiting evidence features'}
+                  {new Date(o.deadlineAt) > new Date() ? 'Scheduled' : 'Window closed'}
                 </span>
               </div>
             ))}

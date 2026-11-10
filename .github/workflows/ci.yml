@@ -38,8 +38,12 @@ jobs:
           -f supabase/migrations/202611090001_foundation.sql
           -f supabase/migrations/20261109173728_social_challenges.sql
           -f supabase/migrations/20261110000100_evidence.sql
+          -f supabase/migrations/20261110000200_upload_windows.sql
+          -f supabase/migrations/20261110000300_competition.sql
           -f supabase/tests/foundation.sql
           -f supabase/tests/social_challenges.sql
           -f supabase/tests/evidence.sql
+          -f supabase/tests/upload_windows.sql
+          -f supabase/tests/competition.sql
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e

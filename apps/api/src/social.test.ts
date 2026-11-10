@@ -13,6 +13,7 @@ const rules = {
   endDate: '2027-03-20',
   timezone: 'America/New_York',
   weekdays: [0, 1, 2, 3, 4, 5, 6],
+  opening: '00:00',
   cutoff: '02:30',
   evidenceRequirements:
     'Share a photo of your reading notes. A photo alone cannot prove pages read.',

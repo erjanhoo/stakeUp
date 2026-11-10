@@ -433,8 +433,8 @@ export function Roadmap() {
           [
             '04',
             'Make consistency count',
-            'Virtual penalties, transparent ledgers, leaderboards and deterministic rewards.',
-            false,
+            'Provisional virtual penalties, balanced ledgers, standings and exact final rewards.',
+            true,
           ],
           [
             '05',

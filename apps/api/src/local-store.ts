@@ -1,3 +1,4 @@
+import { competitionCommand } from './local-competition.js';
 import { evidenceCommand, type EvidenceState } from './local-evidence.js';
 import {
   randomBytes,
@@ -170,6 +171,22 @@ export class LocalStore {
   }
   social(userId: string, action: SocialAction, payload: Record<string, unknown> = {}) {
     return this.transact((state) => socialCommand(state, userId, action, payload));
+  }
+  projectedPools(uid: string) {
+    return this.transact((state) =>
+      state.challenges
+        .filter(
+          (c) =>
+            c.status === 'active' &&
+            state.enrollments.some(
+              (e) => e.challengeId === c.id && e.userId === uid && e.status === 'accepted',
+            ),
+        )
+        .reduce((sum, c) => sum + competitionCommand(state, uid, c.id).poolMinor, 0),
+    );
+  }
+  competition(uid: string, id: string, settle = false) {
+    return this.transact((state) => competitionCommand(state, uid, id, settle));
   }
   acceptedProofDays(userId: string) {
     return this.transact(

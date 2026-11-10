@@ -42,6 +42,7 @@ export function evidenceCommand(
       throw new AppError(403, 'Only enrolled participants can submit their own proof.');
     if (
       now > new Date(o.deadlineAt) ||
+      (o.opensAt && now < new Date(o.opensAt)) ||
       new Intl.DateTimeFormat('en-CA', {
         timeZone: h.rules.timezone,
         year: 'numeric',
@@ -96,6 +97,8 @@ export function evidenceCommand(
   }
   if (!participants.some((e) => e.userId === uid))
     throw new AppError(403, 'Only enrolled participants can review.');
+  if (h.status !== 'active')
+    throw new AppError(409, 'This challenge is completed; review is closed.');
   if (action === 'dispute') {
     if (!['accepted', 'rejected'].includes(s.status))
       throw new AppError(409, 'Only a decided proof can be disputed.');

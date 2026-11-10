@@ -96,6 +96,10 @@ export const challengeSchema = z
       .min(1)
       .max(7)
       .refine((v) => new Set(v).size === v.length, 'Choose each weekday only once.'),
+    opening: z
+      .string()
+      .regex(/^([01]\d|2[0-3]):[0-5]\d$/)
+      .default('00:00'),
     cutoff: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'Use a valid 24-hour deadline.'),
     evidenceRequirements: z.string().trim().min(10).max(500),
     capturePolicy: z.enum(['camera_only', 'camera_or_upload']),
@@ -104,6 +108,7 @@ export const challengeSchema = z
     graceDays: z.number().int().min(0).max(7),
     rewardPolicy: z.literal('discipline_v1').default('discipline_v1'),
   })
+  .refine((v) => v.opening < v.cutoff, 'Opening time must be before the deadline on the same day.')
   .refine((v) => v.endDate >= v.startDate, 'End date must be on or after the start date.')
   .refine(
     (v) => v.maxPenaltyMinor >= v.penaltyMinor,
@@ -161,8 +166,13 @@ export interface ChallengeSummary {
   createdBy: string;
   rules: ChallengeRules;
   rulesHash: string;
-  status: 'proposed' | 'active' | 'cancelled';
+  status: 'proposed' | 'active' | 'cancelled' | 'completed';
   acceptedCount: number;
+  acceptances?: {
+    userId: string;
+    displayName: string;
+    status: 'accepted' | 'withdrawn' | 'not_accepted';
+  }[];
   ownStatus: 'accepted' | 'withdrawn' | null;
 }
 export interface Participant {
@@ -179,6 +189,7 @@ export interface Obligation {
   circleName: string;
   localDate: string;
   deadlineAt: string;
+  opensAt?: string;
   timezone: string;
   status: 'pending';
 }
@@ -242,4 +253,36 @@ export interface Proof {
 export interface EvidencePage {
   proofs: Proof[];
   eligibleReviewers: number;
+}
+export interface CompetitionRow {
+  userId: string;
+  name: string;
+  successful: number;
+  missed: number;
+  pending: number;
+  grace: number;
+  scheduled: number;
+  streak: number;
+  penaltyMinor: number;
+  rewardMinor: number;
+  eligible: boolean;
+  rank: number;
+}
+export interface VirtualEntry {
+  id: string;
+  userId: string;
+  kind: 'penalty' | 'reward' | 'refund';
+  amountMinor: number;
+  reason: string;
+  obligationId?: string;
+  createdAt: string;
+}
+export interface Competition {
+  status: 'provisional' | 'blocked' | 'ready' | 'settled';
+  rows: CompetitionRow[];
+  poolMinor: number;
+  distributedMinor: number;
+  ledger: VirtualEntry[];
+  settlementId: string | null;
+  appealClosesAt: string;
 }

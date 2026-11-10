@@ -104,6 +104,15 @@ export function socialCommand(
   });
   const challengeSummary = (c: Challenge): ChallengeSummary => ({
     ...c,
+    acceptances: state.members
+      .filter((m) => m.circleId === c.circleId && !m.leftAt)
+      .map((m) => ({
+        userId: m.userId,
+        displayName: person(m.userId).displayName,
+        status:
+          state.enrollments.find((e) => e.challengeId === c.id && e.userId === m.userId)?.status ??
+          'not_accepted',
+      })),
     circleName: state.circles.find((g) => g.id === c.circleId)!.name,
     acceptedCount: state.enrollments.filter(
       (e) => e.challengeId === c.id && e.status === 'accepted',

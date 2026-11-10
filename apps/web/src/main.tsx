@@ -12,6 +12,9 @@ import './themes.css';
 import './social.css';
 import { AppearanceProvider } from './lib/appearance';
 import { afterSignIn } from './lib/social';
+const CompetitionPage = lazy(() =>
+  import('./pages/competition').then((m) => ({ default: m.CompetitionPage })),
+);
 const EvidencePage = lazy(() =>
   import('./pages/evidence').then((m) => ({ default: m.EvidencePage })),
 );
@@ -105,6 +108,7 @@ function App() {
                       <Route path="circles/:id" element={<CirclePage />} />
                       <Route path="circles/:id/challenges/new" element={<CreateChallenge />} />
                       <Route path="challenges/:id" element={<ChallengePage />} />
+                      <Route path="challenges/:id/competition" element={<CompetitionPage />} />
                       <Route path="challenges/:id/evidence" element={<EvidencePage />} />
                       <Route path="activity" element={<ActivityPage />} />
                       <Route path="notifications" element={<NotificationsPage />} />

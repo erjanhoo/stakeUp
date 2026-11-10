@@ -46,7 +46,8 @@ export async function buildApp(config: Config) {
 export async function configureApp(app: FastifyInstance, config: Config) {
   await app.register(cookie);
   await app.register(helmet);
-  await app.register(rateLimit, { max: 100, timeWindow: '1 minute' });
+  const e2e = config.mode === 'local' && process.env.STAKEUP_E2E === '1';
+  await app.register(rateLimit, { max: e2e ? 1000 : 100, timeWindow: '1 minute' });
   const local = config.mode === 'local' ? new LocalStore(config.dataFile) : null;
   app.addHook('onRequest', async (request, reply) => {
     reply.header('Cache-Control', 'no-store');
@@ -113,7 +114,7 @@ export async function configureApp(app: FastifyInstance, config: Config) {
     if (result.error) dbError(result.error);
     return { profile: mapProfile(result.data!, data.user.email ?? ''), db };
   }
-  const authOptions = { config: { rateLimit: { max: 12, timeWindow: '1 minute' } } };
+  const authOptions = { config: { rateLimit: { max: e2e ? 120 : 12, timeWindow: '1 minute' } } };
   const setSession = (reply: FastifyReply, token: string) =>
     reply.setCookie('stakeup_session', token, {
       httpOnly: true,
@@ -226,8 +227,10 @@ export async function configureApp(app: FastifyInstance, config: Config) {
       commitments: Dashboard['commitments'];
     };
     Object.assign(dashboard, social);
-    if (local) dashboard.acceptedDays = await local.acceptedProofDays(profile.id);
-    else {
+    if (local) {
+      dashboard.acceptedDays = await local.acceptedProofDays(profile.id);
+      dashboard.virtualPoolMinor = await local.projectedPools(profile.id);
+    } else {
       const accepted = await db!
         .from('evidence_submissions')
         .select('id', { count: 'exact', head: true })
@@ -235,6 +238,9 @@ export async function configureApp(app: FastifyInstance, config: Config) {
         .eq('status', 'accepted');
       if (accepted.error) dbError(accepted.error);
       dashboard.acceptedDays = accepted.count ?? 0;
+      const totals = await db!.rpc('stakeup_competition_totals');
+      if (totals.error) dbError(totals.error);
+      dashboard.virtualPoolMinor = Number(totals.data ?? 0);
     }
     return dashboard;
   });
@@ -313,6 +319,22 @@ export async function configureApp(app: FastifyInstance, config: Config) {
           : {};
       const { profile, db } = await authenticate(request);
       return socialData(profile.id, db, action, { challengeId, ...input });
+    });
+  for (const method of ['GET', 'POST'] as const)
+    app.route<{ Params: { id: string } }>({
+      method,
+      url: '/api/challenges/:id/competition',
+      handler: async (req) => {
+        const { profile, db } = await authenticate(req);
+        const id = z.uuid().parse(req.params.id);
+        if (local) return local.competition(profile.id, id, method === 'POST');
+        const r = await db!.rpc('stakeup_competition', {
+          p_challenge: id,
+          p_settle: method === 'POST',
+        });
+        if (r.error) throw new AppError(r.error.code === '42501' ? 403 : 409, r.error.message);
+        return r.data;
+      },
     });
   evidenceRoutes(app, config, local, authenticate);
   return app;

@@ -65,10 +65,12 @@ function Review({
   proof: s,
   challengeId,
   reload,
+  closed,
 }: {
   proof: Proof;
   challengeId: string;
   reload: () => Promise<void>;
+  closed: boolean;
 }) {
   const { profile } = useAuth();
   const [busy, setBusy] = useState(false),
@@ -131,7 +133,8 @@ function Review({
           </p>
         ))}
       </details>
-      {!own &&
+      {!closed &&
+      !own &&
       ['ai_reviewed', 'disputed'].includes(s.status) &&
       !s.votes.some((v) => v.userId === profile?.id && v.round === s.round) ? (
         <div className="review-actions">
@@ -162,7 +165,8 @@ function Review({
           </div>
         </div>
       ) : null}
-      {s.round === 0 &&
+      {!closed &&
+      s.round === 0 &&
       ((own && s.status === 'rejected') ||
         (!own && ['accepted', 'rejected'].includes(s.status))) ? (
         <details className="review-actions">
@@ -193,6 +197,11 @@ export function EvidencePage() {
     [error, setError] = useState(''),
     [busy, setBusy] = useState(false),
     [notice, setNotice] = useState('');
+  const [clock, setClock] = useState(Date.now);
+  useEffect(() => {
+    const timer = setInterval(() => setClock(Date.now()), 15000);
+    return () => clearInterval(timer);
+  }, []);
   const c = challenge.data;
   const today = c
     ? new Intl.DateTimeFormat('en-CA', {
@@ -200,10 +209,13 @@ export function EvidencePage() {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
-      }).format(new Date())
+      }).format(new Date(clock))
     : '';
   const open = c?.obligations.find(
-    (o) => o.localDate === today && new Date(o.deadlineAt) >= new Date(),
+    (o) =>
+      o.localDate === today &&
+      new Date(o.deadlineAt).getTime() >= clock &&
+      (!o.opensAt || new Date(o.opensAt).getTime() <= clock),
   );
   const submitted =
     open && evidence.data?.proofs.some((s) => s.obligationId === open.id && s.receivedAt);
@@ -265,6 +277,7 @@ export function EvidencePage() {
           {open && !submitted ? (
             <form onSubmit={submit} className="form-stack">
               <p>
+                Opens {open.opensAt ? new Date(open.opensAt).toLocaleString() : 'at midnight'} ·
                 Submit by <strong>{new Date(open.deadlineAt).toLocaleString()}</strong> in your
                 device timezone. Server receipt time is authoritative.
               </p>
@@ -339,7 +352,10 @@ export function EvidencePage() {
                   {s?.status.replace('_', ' ') ??
                     (new Date(o.deadlineAt) < new Date() ? 'Expired — no proof' : 'Scheduled')}
                   <br />
-                  <small>{new Date(o.deadlineAt).toLocaleString()}</small>
+                  <small>
+                    {o.opensAt ? new Date(o.opensAt).toLocaleTimeString() : '00:00'}–
+                    {new Date(o.deadlineAt).toLocaleString()}
+                  </small>
                 </p>
               );
             })}
@@ -363,7 +379,13 @@ export function EvidencePage() {
             </div>
           ) : null}
           {evidence.data?.proofs.map((s) => (
-            <Review key={s.id} proof={s} challengeId={id!} reload={evidence.reload} />
+            <Review
+              key={s.id}
+              proof={s}
+              challengeId={id!}
+              reload={evidence.reload}
+              closed={c?.status === 'completed'}
+            />
           ))}
         </section>
       </div>

@@ -12,6 +12,7 @@ export default defineConfig({
     timeout: 60000,
     env: {
       AUTH_MODE: 'local',
+      STAKEUP_E2E: '1',
       APP_ORIGIN: 'http://localhost:5173',
       LOCAL_DATA_FILE: `.local/e2e-${Date.now()}.json`,
     },
