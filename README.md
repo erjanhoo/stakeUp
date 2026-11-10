@@ -30,6 +30,7 @@ Stop development with Ctrl+C. No paid service is needed for this mode.
 - [Foundation verification and known limitations](docs/VERIFICATION.md)
 - [Upload windows and virtual competition](docs/COMPETITION.md)
 - [Community, Russian localization and chosen grace days](docs/COMMUNITY.md)
+- [Google Stitch redesign brief with exact pages, actions and permissions](docs/STITCH_DESIGN_BRIEF.md)
 - [Evidence, review rules and upload security](docs/EVIDENCE.md)
 - [Social challenges: rules, boundaries and acceptance checks](docs/SOCIAL_CHALLENGES.md)
 
@@ -55,4 +56,4 @@ npm run test:e2e
 
 ## Next milestone
 
-Community features and localization are implemented; see docs/COMMUNITY.md for the migration and release status. Next is launch hardening: real-device camera checks, live scheduled-job monitoring, retention/account deletion, pagination and abuse controls. Paid vision and push remain separate integrations.
+Community features and localization are deployed; see docs/COMMUNITY.md for release verification and limitations. Next is launch hardening: real-device camera checks, live scheduled-job monitoring, retention/account deletion, pagination and abuse controls. Paid vision and push remain separate integrations.
