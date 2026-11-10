@@ -9,25 +9,15 @@
 - API project: `stakeup-api` / `prj_eQG65mLRJ5wJTof5TipVqDCDew7V`
 - Supabase project: `bwtpxrjcubvvsvnsjigm`, Tokyo region, Free plan.
 
-The foundation migration was applied to this new project through the Supabase SQL editor. The transactional two-user authorization test in `supabase/tests/foundation.sql` completed without errors; test fixtures were rolled back. Site URL and exact onboarding/password-reset callback URLs point to the public web origin. Email confirmation stays enabled. The live minimum password length is still 12 and secure password change is enabled. The application in this branch now requires 8; the Auth setting must be changed during the next release.
+Foundation and social migrations are applied. The user set the live password minimum to 8 and verified real signup confirmation, Circle creation and invitation joining. Both Vercel projects are connected to GitHub and production tracks erjanhoo/social-challenges. Public health/config/auth routing checks passed for commit 1373003.
 
-## Pending milestone 2 release
+## Evidence release
 
-The new code is locally tested but not deployed. Computer Use stopped because it could not reliably determine the current browser URL on Windows; no further browser actions were attempted. The remote schema and password setting were left unchanged, and the earlier foundation stays online.
+The user applied 20261110000100_evidence.sql through the Supabase SQL Editor on 2026-11-10 and reported Success. It adds a private bucket, submission/vote/event tables and authenticated RPCs. Local PostgreSQL checks pass with minimal Auth/Storage metadata fixtures. Deploy API before web; verify the managed Storage service after deployment. No service-role secret or paid AI API key is required. The mock is explicitly labeled and always requests peer review.
 
-Release in this order, once Supabase access is restored:
+Never rerun this CREATE migration or the earlier ones. For CLI deployment, reconcile the manually applied migration history first. Do not run the plain PostgreSQL bootstrap in Supabase.
 
-1. Check the target project reference above. Reconcile the manually applied foundation migration history before using CLI migration push; do not rerun its CREATE statements. Apply only `20261109173728_social_challenges.sql` to the existing project. It is additive and compatible with the running foundation.
-2. Run both transactional authorization scripts on a disposable/staging project first. The migration and scripts already pass on local PostgreSQL 17 with real roles/RLS; staging must also verify Supabase Auth and PostgREST.
-3. Set Authentication's minimum password length to **8**. Keep email confirmation and secure password change enabled. Configure custom SMTP before opening public registration; do not disable confirmation to work around delivery.
-4. Deploy the API source with its current environment and verify health/configuration/401 responses. Then deploy the web source. Both projects require the shared workspace contracts; pushing Git alone does not deploy under the current integration.
-5. Verify with two authorized real accounts: confirmation → onboarding → invitation → challenge proposal → explicit acceptance → activation → frozen schedule; save all appearance combinations and reload. Check email recovery and a new eight-character password. Do not send synthetic signup emails to third parties.
-
-If deployment fails after the migration, the earlier foundation remains compatible with the additive tables/columns. Roll back the application deployment rather than deleting accepted challenge data.
-
-**Email launch limitation:** custom SMTP is not configured. Supabase's default email service is restricted and is not suitable for general public registration. Configure a production email provider in Supabase Authentication → Emails → SMTP Settings before inviting friends to create accounts. Email confirmation and end-to-end recovery delivery have not been verified. The public landing, auth screens, API and database are deployed; unrestricted email signup is not ready.
-
-**Git deployment limitation:** the current Vercel GitHub integration could not access `erjanhoo/stakeUp`. These releases were uploaded from the checked-out repository using Vercel's source-file deployment API. Changes are committed to GitHub, but a Git push does not currently trigger a Vercel deployment. Connect the repository in each Vercel project's Git settings to enable that workflow. Keep its production branch aligned with the intended branch.
+Custom SMTP has not been configured by this work, but the user confirmed delivery to multiple accounts including a friend. It is not a current blocker. Monitor limits and delivery as usage grows; keep email confirmation enabled.
 
 ## Vercel configuration
 

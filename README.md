@@ -2,9 +2,9 @@
 
 **Show up. Together.** Private social accountability with friendly, entirely virtual stakes.
 
-The repository contains foundation and social-challenge milestones: authentication, onboarding, profiles, saved dark/light appearance with orange/electric-lime accents, private Circles, expiring invitations, challenge proposals, explicit rule acceptance and locked timezone-aware schedules. Dashboard counts come from actual memberships and enrollment. Evidence and virtual accounting follow in later milestones; no real payments exist.
+The repository contains foundation, social-challenge and evidence milestones: authentication, onboarding, profiles, saved dark/light appearance with orange/electric-lime accents, private Circles, expiring invitations, challenge proposals, explicit rule acceptance and locked timezone-aware schedules. Dashboard counts come from actual memberships and enrollment. Private proof uploads, an honest mock review provider, peer decisions and disputes are implemented in milestone 3; virtual accounting remains next. No real payments exist.
 
-Public preview: **https://stakeup-olive.vercel.app** currently runs the earlier foundation release. The new milestone is not deployed: its Supabase migration and the live eight-character password policy still need applying. Custom SMTP is also required before general public email signup. See the deployment guide for the release sequence.
+Public preview: **https://stakeup-olive.vercel.app**. Foundation and social challenges are live; the user has verified signup emails, Circle creation and invitation joining. This branch adds milestone 3 plus the animated landing-page redesign. Its evidence migration has been applied; deploy the API before the new web release. SMTP is not a current blocker for these verified users; revisit delivery limits as usage grows.
 
 ## Run locally
 
@@ -28,6 +28,7 @@ Stop development with Ctrl+C. No paid service is needed for this mode.
 - [Proposed virtual reward rules](docs/REWARD_RULES.md)
 - [Supabase and Vercel setup](docs/DEPLOYMENT.md)
 - [Foundation verification and known limitations](docs/VERIFICATION.md)
+- [Evidence, review rules and upload security](docs/EVIDENCE.md)
 - [Social challenges: rules, boundaries and acceptance checks](docs/SOCIAL_CHALLENGES.md)
 
 ```text
@@ -52,4 +53,4 @@ npm run test:e2e
 
 ## Next milestone
 
-Private photo uploads, evidence history, verification abstraction with a development mock, cautious AI analysis and peer disputes. Profile and Circle photos ship with this secure upload pipeline; current avatars use initials or icons. Virtual ledgers, distributions, social reactions and notifications follow afterward. See the architecture document for acceptance criteria and boundaries.
+Virtual penalties, grace-day allocation, capped integer ledger entries, leaderboards and deterministic settlement. Evidence disputes must be resolved before financial outcomes. Profile/Circle photo controls, real vision provider integration and notifications remain explicitly deferred in docs/EVIDENCE.md.

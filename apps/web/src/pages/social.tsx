@@ -325,8 +325,7 @@ export function CirclePage() {
       if (kind === 'invite') {
         setInvite(result);
         setCopied(false);
-      }
-      else if (kind === 'leave') navigate('/app/circles');
+      } else if (kind === 'leave') navigate('/app/circles');
       else await reload();
     } catch (e) {
       setActionError(message(e));
@@ -728,8 +727,8 @@ export function CreateChallenge() {
           <div className="quiet-info">
             <ShieldCheck size={19} />
             <p>
-              A plausible photo cannot prove that an action happened. Evidence uploads and reviews
-              arrive in milestone 03.
+              A plausible photo cannot prove that an action happened. Evidence is reviewed by peers.
+              AI does not prove completion.
             </p>
           </div>
           <h2>03 · Keep the stakes friendly</h2>
@@ -959,7 +958,12 @@ export function ChallengePage() {
           {c.status === 'active' ? (
             <div className="quiet-info">
               <LockKeyhole size={21} />
-              <p>The shared promise is locked. Uploading evidence arrives in milestone 03.</p>
+              <div>
+                <p>The shared promise is locked.</p>
+                <Link className="text-link" to={`/app/challenges/${c.id}/evidence`}>
+                  Submit & review proof →
+                </Link>
+              </div>
             </div>
           ) : null}
         </aside>

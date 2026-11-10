@@ -37,7 +37,9 @@ jobs:
           -f supabase/tests/bootstrap-local.sql
           -f supabase/migrations/202611090001_foundation.sql
           -f supabase/migrations/20261109173728_social_challenges.sql
+          -f supabase/migrations/20261110000100_evidence.sql
           -f supabase/tests/foundation.sql
           -f supabase/tests/social_challenges.sql
+          -f supabase/tests/evidence.sql
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e

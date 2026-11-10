@@ -12,6 +12,9 @@ import './themes.css';
 import './social.css';
 import { AppearanceProvider } from './lib/appearance';
 import { afterSignIn } from './lib/social';
+const EvidencePage = lazy(() =>
+  import('./pages/evidence').then((m) => ({ default: m.EvidencePage })),
+);
 const AuthPage = lazy(() => import('./pages/auth').then((m) => ({ default: m.AuthPage })));
 const DashboardPage = lazy(() =>
   import('./pages/dashboard').then((m) => ({ default: m.DashboardPage })),
@@ -102,6 +105,7 @@ function App() {
                       <Route path="circles/:id" element={<CirclePage />} />
                       <Route path="circles/:id/challenges/new" element={<CreateChallenge />} />
                       <Route path="challenges/:id" element={<ChallengePage />} />
+                      <Route path="challenges/:id/evidence" element={<EvidencePage />} />
                       <Route path="activity" element={<ActivityPage />} />
                       <Route path="notifications" element={<NotificationsPage />} />
                       <Route path="settings" element={<Settings />} />

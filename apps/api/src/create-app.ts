@@ -1,3 +1,4 @@
+import { evidenceRoutes } from './evidence-routes.js';
 import Fastify, {
   type FastifyReply,
   type FastifyInstance,
@@ -225,6 +226,16 @@ export async function configureApp(app: FastifyInstance, config: Config) {
       commitments: Dashboard['commitments'];
     };
     Object.assign(dashboard, social);
+    if (local) dashboard.acceptedDays = await local.acceptedProofDays(profile.id);
+    else {
+      const accepted = await db!
+        .from('evidence_submissions')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', profile.id)
+        .eq('status', 'accepted');
+      if (accepted.error) dbError(accepted.error);
+      dashboard.acceptedDays = accepted.count ?? 0;
+    }
     return dashboard;
   });
   async function socialData(
@@ -303,5 +314,6 @@ export async function configureApp(app: FastifyInstance, config: Config) {
       const { profile, db } = await authenticate(request);
       return socialData(profile.id, db, action, { challengeId, ...input });
     });
+  evidenceRoutes(app, config, local, authenticate);
   return app;
 }

@@ -222,7 +222,7 @@ export function DashboardPage() {
                 <Link
                   key={o.id}
                   className="today-commitment"
-                  to={`/app/challenges/${o.challengeId}`}
+                  to={`/app/challenges/${o.challengeId}/evidence`}
                 >
                   <div>
                     <strong>{o.title}</strong>
@@ -264,7 +264,9 @@ export function DashboardPage() {
                   Explore your circles <ArrowRight size={16} />
                 </Link>
               </Button>
-              <span className="phase-caption">Proof uploads arrive in milestone 03.</span>
+              <span className="phase-caption">
+                Submit photos and review evidence inside an active challenge.
+              </span>
             </div>
           )}
           <div className="commitments-foot">
@@ -425,8 +427,8 @@ export function Roadmap() {
           [
             '03',
             'Show your effort',
-            'Private photo evidence, cautious AI-assisted review, human review and fair disputes.',
-            false,
+            'Private photo evidence, honest mock review, peer review and fair disputes.',
+            true,
           ],
           [
             '04',

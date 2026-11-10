@@ -1,3 +1,4 @@
+import { evidenceCommand, type EvidenceState } from './local-evidence.js';
 import {
   randomBytes,
   randomUUID,
@@ -169,6 +170,17 @@ export class LocalStore {
   }
   social(userId: string, action: SocialAction, payload: Record<string, unknown> = {}) {
     return this.transact((state) => socialCommand(state, userId, action, payload));
+  }
+  acceptedProofDays(userId: string) {
+    return this.transact(
+      (state) =>
+        ((state as EvidenceState).proofs ?? []).filter(
+          (p) => p.userId === userId && p.status === 'accepted',
+        ).length,
+    );
+  }
+  evidence(userId: string, action: string, payload: Record<string, unknown>) {
+    return this.transact((state) => evidenceCommand(state, userId, action, payload));
   }
   requestReset(email: string) {
     return this.transact((state) => {

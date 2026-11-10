@@ -199,3 +199,47 @@ export function creditsToMinor(value: string): number {
   const [whole, fraction = ''] = value.split('.');
   return Number(whole) * 100 + Number(fraction.padEnd(2, '0'));
 }
+export type ProofStatus =
+  'pending' | 'ai_reviewed' | 'accepted' | 'rejected' | 'disputed' | 'expired';
+export interface EvidenceReview {
+  provider: string;
+  observations: string[];
+  unverified: string[];
+  recommendation: 'peer_review';
+}
+export interface ProofVote {
+  userId: string;
+  name: string;
+  decision: 'accept' | 'reject';
+  reason: string;
+  round: number;
+  createdAt: string;
+}
+export interface ProofEvent {
+  kind: string;
+  actorId: string;
+  reason: string;
+  createdAt: string;
+}
+export interface Proof {
+  id: string;
+  obligationId: string;
+  challengeId: string;
+  userId: string;
+  name: string;
+  localDate: string;
+  deadlineAt: string;
+  receivedAt: string | null;
+  status: ProofStatus;
+  note: string;
+  source: 'camera' | 'upload';
+  path: string;
+  review: EvidenceReview | null;
+  votes: ProofVote[];
+  events: ProofEvent[];
+  round: number;
+}
+export interface EvidencePage {
+  proofs: Proof[];
+  eligibleReviewers: number;
+}

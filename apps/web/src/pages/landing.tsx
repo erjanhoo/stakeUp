@@ -1,3 +1,4 @@
+import './landing-trail.css';
 import {
   ArrowUpRight,
   ArrowRight,
@@ -7,7 +8,6 @@ import {
   Users,
   ShieldCheck,
   MoveUpRight,
-  Zap,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
@@ -161,36 +161,118 @@ export function Landing() {
               Your people keep showing up.
             </p>
           </div>
-          <div className="how-grid">
-            {[
-              {
-                number: '01',
-                icon: Users,
-                title: 'Bring your people.',
-                copy: 'A private space for friends with a shared ambition. Small circles. Big encouragement.',
-              },
-              {
-                number: '02',
-                icon: Camera,
-                title: 'Put in the proof.',
-                copy: 'Make the rules together, then show your daily effort. Honest progress beats perfect promises.',
-              },
-              {
-                number: '03',
-                icon: Zap,
-                title: 'Keep the stakes friendly.',
-                copy: 'Virtual penalties make commitments feel real. No deposits, no payments. Just a reason to show up.',
-              },
-            ].map((item) => (
-              <article className="how-card" key={item.number}>
-                <div className="how-card-top">
-                  <item.icon size={23} />
-                  <span>{item.number}</span>
+          <div className="commitment-trail">
+            <svg
+              className="trail-thread"
+              viewBox="0 0 1000 700"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <motion.path
+                d="M70 40 C 900 -60, 1000 280, 420 300 S -180 540, 930 650"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeDasharray="5 10"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.8 }}
+              />
+            </svg>
+            <motion.article
+              className="trail-scene scene-people"
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.7 }}
+            >
+              <div className="people-sculpture" aria-hidden="true">
+                <span>YOU</span>
+                <span>
+                  YOUR
+                  <br />
+                  PEOPLE
+                </span>
+                <i>↗</i>
+              </div>
+              <div className="trail-copy">
+                <span className="trail-index">01 / FIND YOUR CORNER</span>
+                <h3>
+                  Good company.
+                  <br />
+                  <em>Great momentum.</em>
+                </h3>
+                <p>
+                  One private circle. A shared ambition. Friends who notice when you show up—and
+                  help you get back to it when you don’t.
+                </p>
+              </div>
+            </motion.article>
+            <motion.article
+              className="trail-scene scene-proof"
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.7 }}
+            >
+              <div className="trail-copy">
+                <span className="trail-index">02 / LEAVE A LITTLE EVIDENCE</span>
+                <h3>
+                  Less promising.
+                  <br />
+                  <em>More doing.</em>
+                </h3>
+                <p>
+                  A photo. A little context. Your circle sees the effort and reviews it honestly.
+                  Progress has a paper trail.
+                </p>
+              </div>
+              <div className="proof-sculpture" aria-hidden="true">
+                <div className="proof-print">
+                  <div className="print-sun" />
+                  <div className="print-hill" />
+                  <span>THE SMALL WIN / TODAY</span>
                 </div>
-                <h3>{item.title}</h3>
-                <p>{item.copy}</p>
-              </article>
-            ))}
+                <span className="proof-stamp">
+                  SHOWED
+                  <br />
+                  UP ↗
+                </span>
+              </div>
+            </motion.article>
+            <motion.article
+              className="trail-scene scene-stakes"
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.7 }}
+            >
+              <div className="stakes-sculpture" aria-hidden="true">
+                <span>✳</span>
+                <div>
+                  ALL IN.
+                  <br />
+                  <em>TOGETHER.</em>
+                </div>
+                <small>VIRTUAL STAKES. REAL INTENTION.</small>
+              </div>
+              <div className="trail-copy">
+                <span className="trail-index">03 / KEEP IT FRIENDLY</span>
+                <h3>
+                  A reason to
+                  <br />
+                  <em>keep your word.</em>
+                </h3>
+                <p>
+                  Agree on the stakes before day one. Always virtual, always transparent. No
+                  deposits or payments—just a shared promise worth keeping.
+                </p>
+                <span className="field-hint">
+                  Virtual accounting arrives in the next milestone.
+                </span>
+              </div>
+            </motion.article>
           </div>
         </section>
         <section className="together-section" id="why-together">

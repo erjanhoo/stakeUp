@@ -1,0 +1,234 @@
+.commitment-trail {
+  position: relative;
+  padding: 25px 0 50px;
+}
+.trail-thread {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--accent-ink);
+  opacity: 0.25;
+  pointer-events: none;
+}
+.trail-scene {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8%;
+  align-items: center;
+  min-height: 360px;
+  padding: 38px 5%;
+}
+.trail-copy {
+  max-width: 430px;
+}
+.trail-index {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--accent-ink);
+  font-weight: 650;
+}
+.trail-copy h3 {
+  font-size: clamp(30px, 3.6vw, 56px);
+  line-height: 1.08;
+  letter-spacing: -2px;
+  margin: 20px 0;
+}
+.trail-copy h3 em {
+  font-style: normal;
+  font-weight: 400;
+  color: var(--muted);
+}
+.trail-copy p {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--muted);
+}
+.people-sculpture {
+  height: 270px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.people-sculpture > span {
+  width: 190px;
+  aspect-ratio: 1;
+  border: 1px solid var(--accent-ink);
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+  font-size: 24px;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  background: var(--canvas);
+  transform: rotate(-12deg);
+}
+.people-sculpture > span + span {
+  margin-left: -34px;
+  background: var(--accent-ink);
+  color: var(--canvas);
+  transform: rotate(12deg);
+  mix-blend-mode: normal;
+}
+.people-sculpture i {
+  position: absolute;
+  bottom: 5px;
+  left: 48%;
+  font-size: 80px;
+  line-height: 1;
+  color: var(--accent-ink);
+  font-style: normal;
+}
+.proof-sculpture {
+  height: 300px;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.proof-print {
+  width: 215px;
+  height: 255px;
+  background: #f4f0df;
+  color: #26351d;
+  padding: 12px;
+  transform: rotate(9deg);
+  position: relative;
+  box-shadow: 0 15px 50px #0003;
+  overflow: hidden;
+  transition: transform 0.6s;
+}
+.proof-print:before {
+  content: '';
+  display: block;
+  height: 190px;
+  background: #a9bd8b;
+}
+.proof-print > span {
+  position: absolute;
+  bottom: 17px;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+.print-sun {
+  position: absolute;
+  top: 40px;
+  left: 130px;
+  background: #e9ffbc;
+  width: 43px;
+  height: 43px;
+  border-radius: 50%;
+}
+.print-hill {
+  position: absolute;
+  width: 250px;
+  height: 140px;
+  border-radius: 50% 50% 0 0;
+  top: 110px;
+  left: -8px;
+  background: #566f43;
+  transform: rotate(-20deg);
+}
+.proof-stamp {
+  position: absolute;
+  right: 5%;
+  bottom: 12px;
+  border: 2px solid var(--accent-ink);
+  color: var(--accent-ink);
+  padding: 16px;
+  font-size: 21px;
+  font-weight: 750;
+  line-height: 1;
+  transform: rotate(-14deg);
+}
+.scene-proof:hover .proof-print {
+  transform: rotate(0) translateY(-8px);
+}
+.stakes-sculpture {
+  position: relative;
+  padding: 35px 15px;
+  color: var(--accent-ink);
+}
+.stakes-sculpture > span {
+  position: absolute;
+  right: 10%;
+  top: 0;
+  font-size: 100px;
+  line-height: 1;
+  animation: trail-turn 30s linear infinite;
+}
+.stakes-sculpture > div {
+  font-size: clamp(35px, 4.5vw, 65px);
+  font-weight: 850;
+  letter-spacing: -3px;
+  line-height: 0.95;
+  transform: rotate(-6deg);
+}
+.stakes-sculpture em {
+  font-style: normal;
+  -webkit-text-stroke: 1px var(--accent-ink);
+  color: transparent;
+}
+.stakes-sculpture small {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 2px;
+  margin-top: 35px;
+}
+.scene-stakes {
+  padding-bottom: 60px;
+}
+@keyframes trail-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (max-width: 700px) {
+  .trail-scene {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 30px 0 55px;
+    min-height: 0;
+  }
+  .trail-copy {
+    max-width: 100%;
+  }
+  .trail-copy h3 {
+    font-size: 38px;
+    letter-spacing: -1.5px;
+  }
+  .people-sculpture {
+    height: 230px;
+  }
+  .people-sculpture > span {
+    width: 160px;
+  }
+  .scene-proof .trail-copy {
+    order: 2;
+  }
+  .proof-sculpture {
+    height: 290px;
+  }
+  .stakes-sculpture {
+    min-height: 210px;
+    padding-top: 50px;
+  }
+  .trail-thread {
+    opacity: 0.12;
+  }
+  .trail-copy p {
+    font-size: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stakes-sculpture > span {
+    animation: none;
+  }
+  .proof-print {
+    transition: none;
+  }
+  .scene-proof:hover .proof-print {
+    transform: rotate(9deg);
+  }
+}
