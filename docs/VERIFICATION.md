@@ -13,7 +13,7 @@ Milestone 3 adds private photo submission, status/history, the honest developmen
 
 ## Release status and limits
 
-The user applied the evidence migration in Supabase and reported Success. Production deployment and managed Storage checks are the remaining release steps. No service-role key is needed. Supabase dashboard auth is unavailable in the in-app browser; Chrome was used by the user for migration.
+The user applied the evidence migration in Supabase and reported Success. API deployment dpl_4ArHkFZ1xN7Z96cR7pgjtV6jEiqk and web deployment dpl_HGro4h1p55ATBnxzv1dFnXgCvRHB reached READY from code commit 972a6b2. Public desktop/mobile trail checks, eight-character form, protected evidence routes/photos, health, Blob CSP and absence of page errors passed. Anonymous database/RPC access and public bucket access were rejected. Managed authenticated upload/download remains to be exercised with real user accounts. No service-role key is needed. Supabase dashboard auth is unavailable in the in-app browser; Chrome was used by the user for migration.
 
 The mock does not analyze image contents and never accepts/rejects proof. Paid vision integration and duplicate/similarity detection are not implemented. Camera capture does not attest time or identity. Two-person circles can endorse ordinary proof but cannot reach rejection or dispute quorum; unresolved reviews cannot finalize penalties.
 

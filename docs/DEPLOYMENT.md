@@ -13,7 +13,7 @@ Foundation and social migrations are applied. The user set the live password min
 
 ## Evidence release
 
-The user applied 20261110000100_evidence.sql through the Supabase SQL Editor on 2026-11-10 and reported Success. It adds a private bucket, submission/vote/event tables and authenticated RPCs. Local PostgreSQL checks pass with minimal Auth/Storage metadata fixtures. Deploy API before web; verify the managed Storage service after deployment. No service-role secret or paid AI API key is required. The mock is explicitly labeled and always requests peer review.
+The user applied 20261110000100_evidence.sql through the Supabase SQL Editor on 2026-11-10 and reported Success. API dpl_4ArHkFZ1xN7Z96cR7pgjtV6jEiqk and web dpl_HGro4h1p55ATBnxzv1dFnXgCvRHB reached READY from commit 972a6b2; public checks passed. The production branch was fast-forwarded to the same tested code. It adds a private bucket, submission/vote/event tables and authenticated RPCs. Local PostgreSQL checks pass with minimal Auth/Storage metadata fixtures. Deploy API before web; verify the managed Storage service after deployment. No service-role secret or paid AI API key is required. The mock is explicitly labeled and always requests peer review.
 
 Never rerun this CREATE migration or the earlier ones. For CLI deployment, reconcile the manually applied migration history first. Do not run the plain PostgreSQL bootstrap in Supabase.
 
