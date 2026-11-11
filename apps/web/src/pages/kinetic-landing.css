@@ -876,7 +876,7 @@
     display: none;
   }
   .kl-bottom {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 40px;
     padding: 0 0 30px;
   }
@@ -942,6 +942,7 @@
     margin: 0;
     text-transform: none;
     font-size: 14px;
+    white-space: normal;
   }
   .kl-footer > .brand,
   .kl-footer > span:first-of-type {

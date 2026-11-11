@@ -895,7 +895,8 @@ No challenges are scheduled for this date.|На эту дату испытани
 Your progress includes all your challenges.|Здесь учтён прогресс во всех ваших испытаниях.
 Your photo and achievements are visible to teammates.|Фото и достижения видят участники ваших команд.
 Your profile|Ваш профиль
-Edit profile and settings|Редактировать профиль и настройки`;
+Edit profile and settings|Редактировать профиль и настройки
+In challenges with chosen grace days, an available pass excuses a scheduled or missed day without a photo. Finalized results stay locked.|В испытаниях с выбором дней отдыха доступный пропуск закрывает будущий или пропущенный день без фото. Подведённые итоги не меняются.`;
 export const ru: Record<string, string> = Object.fromEntries(
   text.split('\n').map((line) => {
     const separator = line.indexOf('|');

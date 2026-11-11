@@ -308,7 +308,7 @@ export function Landing() {
                 ],
                 [
                   'What if I need a rest day?',
-                  'New challenges let you reserve a scheduled grace day before its upload deadline, within your accepted allowance.',
+                  'In challenges with chosen grace days, an available pass excuses a scheduled or missed day without a photo. Finalized results stay locked.',
                 ],
               ].map(([question, answer]) => (
                 <details
