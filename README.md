@@ -31,6 +31,7 @@ Stop development with Ctrl+C. No paid service is needed for this mode.
 - [Upload windows and virtual competition](docs/COMPETITION.md)
 - [Community, Russian localization and chosen grace days](docs/COMMUNITY.md)
 - [Profiles, private avatars, calendar, passes and achievement rewards](docs/PROFILE_CALENDAR.md)
+- [PWA installation, offline privacy and review inbox](docs/PWA_REVIEW_INBOX.md)
 - [Google Stitch redesign brief with exact pages, actions and permissions](docs/STITCH_DESIGN_BRIEF.md)
 - [Evidence, review rules and upload security](docs/EVIDENCE.md)
 - [Social challenges: rules, boundaries and acceptance checks](docs/SOCIAL_CHALLENGES.md)
@@ -57,4 +58,4 @@ npm run test:e2e
 
 ## Next milestone
 
-Community features and localization are deployed; see docs/COMMUNITY.md for release verification and limitations. Next is launch hardening: real-device camera checks, live scheduled-job monitoring, retention/account deletion, pagination and abuse controls. Paid vision and push remain separate integrations.
+Community features and localization are deployed; see docs/COMMUNITY.md for release verification and limitations. Browser installation and the review inbox are implemented; see docs/PWA_REVIEW_INBOX.md. Next is launch hardening: real-device camera checks, live scheduled-job monitoring, retention/account deletion, pagination and abuse controls. Paid vision and push remain separate integrations.

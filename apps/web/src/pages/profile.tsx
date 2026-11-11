@@ -1,5 +1,6 @@
 import { AvatarUpload } from './member';
 import { AchievementLink } from '../components/achievement-link';
+import { InstallCard } from '../components/install-card';
 import { useI18n } from '../lib/i18n';
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -255,6 +256,7 @@ export function Settings() {
           </section>
         </div>
         <aside className="st-settings-right">
+          <InstallCard />
           <AppearanceSettings />
           <section className="st-module st-language-panel">
             <LanguageSettings />

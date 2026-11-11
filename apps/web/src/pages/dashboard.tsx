@@ -221,10 +221,7 @@ const capabilities = [
   ],
 ];
 const planned = [
-  [
-    'Phone & Windows apps',
-    'Installable mobile and Windows experiences built on this shared application.',
-  ],
+  ['App store packages', 'Native iOS and Android packages, signing and store distribution.'],
   ['Real AI assistance', 'Optional vision analysis with honest limitations and human review.'],
   ['Push notifications', 'Opt-in reminders beyond the in-app inbox.'],
 ];
@@ -246,9 +243,19 @@ export function Roadmap() {
               <span />
               {t('Working now')}
             </h2>
-            <small className="st-mono">05</small>
+            <small className="st-mono">06</small>
           </div>
           <div className="roadmap-list">
+            <article className="panel roadmap-row complete">
+              <CircleCheck size={20} />
+              <div>
+                <h2>{t('Installable StakeUp & review inbox')}</h2>
+                <p>{t('Install from your browser and find eligible peer reviews in one place.')}</p>
+                <Link className="st-text-link" to="/install">
+                  {t('Install StakeUp')}
+                </Link>
+              </div>
+            </article>
             {capabilities.map(([title, detail], i) => (
               <article className="panel roadmap-row complete" key={title}>
                 <span className="roadmap-number">0{i + 1} //</span>
@@ -273,7 +280,7 @@ export function Roadmap() {
             <article className="st-module" key={title}>
               <span className="st-status st-status-quiet">{t('Planned')}</span>
               <h2>
-                <small>0{i + 6} / </small>
+                <small>0{i + 7} / </small>
                 {t(title)}
               </h2>
               <p>{t(detail)}</p>

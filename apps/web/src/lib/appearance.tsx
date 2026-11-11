@@ -22,6 +22,7 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     document.documentElement.dataset.mode = appearance.mode;
     document.documentElement.dataset.accent = appearance.accent;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', appearance.mode === 'light' ? '#f5f6f8' : '#111317');
     try {
       localStorage.setItem(KEY, JSON.stringify(appearance));
     } catch {

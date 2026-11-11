@@ -898,7 +898,66 @@ Your profile|Ваш профиль
 Edit profile and settings|Редактировать профиль и настройки
 In challenges with chosen grace days, an available pass excuses a scheduled or missed day without a photo. Finalized results stay locked.|В испытаниях с выбором дней отдыха доступный пропуск закрывает будущий или пропущенный день без фото. Подведённые итоги не меняются.
 View badges and points|Открыть значки и очки
-View your badges and progress points.|Ваши значки и очки за прогресс.`;
+View your badges and progress points.|Ваши значки и очки за прогресс.
+Review inbox|Очередь проверки
+Help your teammates. Review photos and open disputes in one place.|Поддержите команду: проверяйте фото и разбирайте споры в одном месте.
+Install StakeUp|Установить StakeUp
+StakeUp app mode|StakeUp как приложение
+Take StakeUp with you|StakeUp всегда под рукой
+You are using the installed app experience.|Вы открыли StakeUp как приложение.
+Add StakeUp to your phone or Windows apps. Open your circles with one tap.|Добавьте StakeUp на телефон или в приложения Windows. Открывайте команду одним нажатием.
+Installation & app info|Установка и сведения о приложении
+You are offline. Photos and votes need a connection and are not queued. Submission deadlines still apply.|Нет соединения. Для отправки фото и голосования нужен интернет. Они не сохраняются для фоновой отправки, а сроки продолжают действовать.
+YOUR CIRCLES. ONE TAP AWAY.|ВАША КОМАНДА — В ОДНОМ НАЖАТИИ
+StakeUp is in app mode.|StakeUp открыт как приложение.
+A place on your home screen.|Ваша команда на главном экране.
+The same private circles, reviews and progress, in a window of their own.|Ваши закрытые команды, проверки и прогресс — в отдельном окне приложения.
+Choose your device below for installation steps. Your browser decides when an install prompt is available.|Выберите устройство ниже. Возможность показать окно установки зависит от браузера.
+Installation accepted. Your device will finish adding StakeUp.|Установка подтверждена. Устройство завершит добавление StakeUp.
+Installation dismissed. You can try again from your browser menu.|Установка отменена. Её можно повторить через меню браузера.
+Unable to open the install prompt. Follow the browser steps below.|Не удалось открыть окно установки. Воспользуйтесь инструкцией ниже.
+Opening installer…|Открываем установку…
+Install on your device|Установка на ваше устройство
+Choose your device|Выберите устройство
+Already installed? Open StakeUp from its app icon. Installation menus vary by browser and device.|Уже установили? Откройте StakeUp через значок приложения. Меню установки зависит от устройства и браузера.
+Your account stays yours.|Тот же аккаунт. Та же команда.
+Installation does not create another account. Use your existing login; some devices ask you to sign in again.|Установка не создаёт новый аккаунт. Используйте свой логин. На некоторых устройствах потребуется войти заново.
+An internet connection is required for account data, photos and reviews. Private photos and votes are not saved for offline use.|Для загрузки аккаунта, фото и проверок нужен интернет. Личные фотографии и голоса не сохраняются для работы без сети.
+The website and installed app use the same releases. Reopen or refresh to load the latest version.|Сайт и установленное приложение обновляются вместе. Чтобы загрузить новую версию, откройте приложение заново или обновите страницу.
+Offline setup is unavailable in this browser. StakeUp can still be used online.|В этом браузере не удалось настроить экран без сети. StakeUp по-прежнему доступен с интернетом.
+Open stakeup-olive.vercel.app in Safari. If you opened a link inside another app, open it in Safari first.|Откройте stakeup-olive.vercel.app в Safari. Если ссылка открылась внутри другого приложения, сначала перейдите в Safari.
+Tap Share, then Add to Home Screen. The Share menu may be inside the browser menu.|Нажмите «Поделиться», затем «На экран Домой». Пункт «Поделиться» может находиться в меню браузера.
+If offered, keep Open as Web App enabled, then tap Add. Launch StakeUp from its new icon.|Если есть переключатель «Открывать как веб-приложение», оставьте его включённым и нажмите «Добавить». Открывайте StakeUp через новый значок.
+Open StakeUp in Chrome. Use the Install StakeUp button here when it is available.|Откройте StakeUp в Chrome. Если на этой странице появилась кнопка установки, нажмите её.
+Otherwise open the browser menu and choose Install app or Add to Home screen, then confirm.|Или откройте меню браузера, выберите «Установить приложение» либо «Добавить на главный экран» и подтвердите.
+Launch StakeUp from its app icon. Sign in if this installed app asks you to.|Откройте StakeUp через значок приложения. При необходимости войдите в свой аккаунт.
+Open StakeUp in Microsoft Edge or Google Chrome.|Откройте StakeUp в Microsoft Edge или Google Chrome.
+Use Install StakeUp here when available, or the install icon in the address bar. Edge also offers Apps → Install this site as an app.|Нажмите кнопку установки на этой странице или значок установки в адресной строке. В Edge также можно выбрать «Приложения» → «Установить этот сайт как приложение».
+Confirm installation. StakeUp opens in its own window and can be found in your Windows apps.|Подтвердите установку. StakeUp откроется в отдельном окне и появится среди приложений Windows.
+A FAIR SECOND LOOK|ВНИМАТЕЛЬНЫЙ ВЗГЛЯД СО СТОРОНЫ
+How your review inbox works|Как устроена очередь проверки
+Only other participants’ received photos in active challenges you accepted appear here. A vote removes a photo from your queue for that round. Disputes need a fresh vote; existing quorum rules still apply.|Здесь только чужие фото из активных испытаний, в которых вы участвуете. После вашего голоса фото исчезает из очереди текущего раунда. В споре нужно проголосовать заново. Для итогового решения по-прежнему нужен кворум.
+Photos and disputes where your independent review can help.|Фото и споры, в которых нужен ваш независимый голос.
+Filter reviews|Фильтр проверок
+All reviews|Все проверки
+Awaiting review|Ожидают проверки
+Disputes|Споры
+Refresh inbox|Обновить очередь
+Review saved. The existing peer quorum determines the outcome.|Голос записан. Итоговое решение зависит от кворума участников.
+You are caught up.|Пока всё проверено.
+No photos need your vote in this filter. Your own photos, completed challenges and rounds you already reviewed are excluded.|В этом разделе нет фото, которым нужен ваш голос. Ваши фото, завершённые испытания и уже проверенные раунды сюда не попадают.
+Review photo|Проверить фото
+Close review|Свернуть проверку
+Previous page|Предыдущая страница
+Next page|Следующая страница
+Unable to load your review inbox.|Не удалось загрузить очередь проверки.
+Both cursor fields are required.|Не удалось открыть страницу очереди. Обновите её.
+App store packages|Приложения в магазинах
+Native iOS and Android packages, signing and store distribution.|Сборки для iOS и Android, подпись и публикация в магазинах приложений.
+Installable StakeUp & review inbox|Установка StakeUp и очередь проверки
+Install from your browser and find eligible peer reviews in one place.|Установите StakeUp из браузера и проверяйте задания команды в одном месте.
+Disputed|Идёт разбор спора
+Received|Получено`;
 export const ru: Record<string, string> = Object.fromEntries(
   text.split('\n').map((line) => {
     const separator = line.indexOf('|');

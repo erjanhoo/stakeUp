@@ -5,7 +5,7 @@ test('private photo → peer rejection → owner appeal → two-peer resolution'
   page,
   browser,
 }, info) => {
-  test.setTimeout(90000);
+  test.setTimeout(120000);
   const origin = 'http://localhost:5173',
     suffix = Date.now() + info.project.name;
   const contexts = [
@@ -131,15 +131,38 @@ test('private photo → peer rejection → owner appeal → two-peer resolution'
     await expect(page.getByRole('heading', { name: 'ai reviewed', exact: true })).toBeVisible();
     await expect(page.locator('.evidence-photo')).toBeVisible();
     await expect(page.locator('.evidence-photo')).toHaveJSProperty('naturalWidth', 80);
+    const privateCachePaths = await page.evaluate(async () =>
+      (
+        await Promise.all(
+          (await caches.keys()).map(async (key) =>
+            (await (await caches.open(key)).keys()).map((r) => new URL(r.url).pathname),
+          ),
+        )
+      )
+        .flat()
+        .filter((path) => path.startsWith('/api/')),
+    );
+    expect(privateCachePaths).toEqual([]);
     await expect(page.getByRole('button', { name: 'Endorse proof' })).toHaveCount(0);
+    expect((await (await page.request.get('/api/reviews')).json()).items).toHaveLength(0);
     const friend = await contexts[1].newPage(),
       third = await contexts[2].newPage();
     for (const reviewer of [friend, third]) {
-      await reviewer.goto(`/app/challenges/${hid}/evidence`);
+      await reviewer.goto('/app/reviews');
+      await expect(
+        reviewer.getByRole('heading', { name: 'Review inbox', exact: true }),
+      ).toBeVisible();
+      await reviewer.getByRole('button', { name: 'Review photo', exact: true }).click();
       await reviewer
-        .getByLabel('Your review')
+        .getByRole('textbox', { name: 'Your review', exact: true })
         .fill('This image does not show the requested notes.');
+      await reviewer.getByRole('button', { name: 'Refresh inbox', exact: true }).click();
+      await expect(reviewer.getByRole('textbox', { name: 'Your review', exact: true })).toHaveValue(
+        'This image does not show the requested notes.',
+      );
+      await reviewer.screenshot({ path: info.outputPath('review-inbox.png'), fullPage: true });
       await reviewer.getByRole('button', { name: 'Flag as invalid' }).click();
+      await expect(reviewer.getByRole('heading', { name: 'You are caught up.' })).toBeVisible();
     }
     await page.reload();
     await expect(page.getByRole('heading', { name: 'rejected', exact: true })).toBeVisible();
@@ -150,13 +173,18 @@ test('private photo → peer rejection → owner appeal → two-peer resolution'
     await page.getByRole('button', { name: 'Open dispute' }).click();
     await expect(page.getByRole('heading', { name: 'disputed', exact: true })).toBeVisible();
     for (const reviewer of [friend, third]) {
-      await reviewer.reload();
-      await reviewer.getByLabel('Your review').fill('Context clarifies the submitted effort.');
+      await reviewer.goto('/app/reviews');
+      await reviewer.getByRole('button', { name: /^Disputes/ }).click();
+      await reviewer.getByRole('button', { name: 'Review photo', exact: true }).click();
+      await reviewer
+        .getByRole('textbox', { name: 'Your review', exact: true })
+        .fill('Context clarifies the submitted effort.');
       await reviewer.getByRole('button', { name: 'Endorse proof' }).click();
+      await expect(reviewer.getByRole('heading', { name: 'You are caught up.' })).toBeVisible();
     }
     await page.reload();
     await expect(page.getByRole('heading', { name: 'accepted', exact: true })).toBeVisible();
-    await friend.reload();
+    await friend.goto(`/app/challenges/${hid}/evidence`);
     await friend.getByText('Encouragement & conversation', { exact: true }).click();
     await friend.getByRole('button', { name: 'Encourage', exact: true }).click();
     await expect(friend.getByRole('button', { name: 'Encourage', exact: true })).toHaveAttribute(

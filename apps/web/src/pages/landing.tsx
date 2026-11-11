@@ -343,6 +343,10 @@ export function Landing() {
         </section>
       </main>
       <footer className="kl-footer">
+        <Link className="st-text-link" to="/install">
+          {t('Install StakeUp')}
+          <ArrowUpRight size={16} />
+        </Link>
         <Brand />
         <span>{t('PROGRESS IS A TEAM SPORT.')}</span>
         <span>{t('All stakes are virtual. Always.')}</span>

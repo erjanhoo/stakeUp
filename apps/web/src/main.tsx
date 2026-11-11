@@ -1,4 +1,5 @@
 import { LanguageProvider } from './lib/i18n';
+import { PwaProvider } from './lib/pwa';
 import { Component, lazy, Suspense, type ErrorInfo, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
@@ -14,6 +15,7 @@ import './social.css';
 import './kinetic.css';
 import './stitch-layout.css';
 import './interaction-polish.css';
+import './pwa-inbox.css';
 import { AppearanceProvider } from './lib/appearance';
 import { afterSignIn } from './lib/social';
 const CompetitionPage = lazy(() =>
@@ -48,6 +50,8 @@ const Roadmap = lazy(() => import('./pages/dashboard').then((m) => ({ default: m
 const Onboarding = lazy(() => import('./pages/profile').then((m) => ({ default: m.Onboarding })));
 const Settings = lazy(() => import('./pages/profile').then((m) => ({ default: m.Settings })));
 const MemberPage = lazy(() => import('./pages/member').then((m) => ({ default: m.MemberPage })));
+const InstallPage = lazy(() => import('./pages/install').then((m) => ({ default: m.InstallPage })));
+const ReviewsPage = lazy(() => import('./pages/reviews').then((m) => ({ default: m.ReviewsPage })));
 const CircleDay = lazy(() =>
   import('./components/circle-calendar').then((m) => ({ default: m.CircleDay })),
 );
@@ -86,6 +90,7 @@ function AppContent() {
     <Suspense fallback={<Loading full />}>
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/install" element={<InstallPage />} />
         <Route path="/login" element={<AuthPage variant="login" />} />
         <Route path="/register" element={<AuthPage variant="register" />} />
         <Route path="/forgot-password" element={<AuthPage variant="forgot" />} />
@@ -107,6 +112,7 @@ function AppContent() {
             <Route path="challenges/:id/evidence" element={<EvidencePage />} />
             <Route path="activity" element={<ActivityPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
+            <Route path="reviews" element={<ReviewsPage />} />
             <Route path="members/:id" element={<MemberPage />} />
             <Route path="settings" element={<Settings />} />
             <Route path="profile" element={<OwnProfile />} />
@@ -121,17 +127,19 @@ function AppContent() {
 function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <LanguageProvider>
-          <ErrorBoundary>
-            <MotionConfig reducedMotion="user">
-              <AppearanceProvider>
-                <AppContent />
-              </AppearanceProvider>
-            </MotionConfig>
-          </ErrorBoundary>
-        </LanguageProvider>
-      </AuthProvider>
+      <PwaProvider>
+        <AuthProvider>
+          <LanguageProvider>
+            <ErrorBoundary>
+              <MotionConfig reducedMotion="user">
+                <AppearanceProvider>
+                  <AppContent />
+                </AppearanceProvider>
+              </MotionConfig>
+            </ErrorBoundary>
+          </LanguageProvider>
+        </AuthProvider>
+      </PwaProvider>
     </BrowserRouter>
   );
 }

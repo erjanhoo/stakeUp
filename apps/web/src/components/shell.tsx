@@ -12,6 +12,7 @@ import {
   Route,
   Globe,
   Award,
+  ClipboardCheck,
 } from 'lucide-react';
 import type { CircleSummary } from '@stakeup/contracts';
 import { useI18n } from '../lib/i18n';
@@ -20,9 +21,11 @@ import { useAuth } from '../lib/auth';
 import { useResource } from '../lib/social';
 import { message } from '../lib/api';
 import { Avatar, Brand, ErrorMessage } from './common';
+import { NetworkNotice } from './install-card';
 const links = [
   { to: '/app', label: 'Overview', icon: LayoutGrid, end: true },
   { to: '/app/circles', label: 'My circles', icon: Users },
+  { to: '/app/reviews', label: 'Review inbox', icon: ClipboardCheck },
   { to: '/app/activity', label: 'Personal activity', icon: ReceiptText },
   { to: '/app/settings', label: 'Settings & appearance', icon: SlidersHorizontal },
 ];
@@ -148,6 +151,14 @@ export function Shell() {
             </Link>
             <NotificationBell />
             <Link
+              className="st-topbar-review"
+              to="/app/reviews"
+              aria-label={t('Review inbox')}
+              title={t('Review inbox')}
+            >
+              <ClipboardCheck size={20} />
+            </Link>
+            <Link
               className="st-topbar-avatar"
               to={`/app/members/${profile?.id}`}
               aria-label={t('Your profile')}
@@ -157,6 +168,7 @@ export function Shell() {
           </div>
         </header>
         <main id="main-content" className="st-main">
+          <NetworkNotice />
           {error ? <ErrorMessage message={error} /> : null}
           <Outlet />
         </main>
@@ -166,22 +178,26 @@ export function Shell() {
         </footer>
       </div>
       <nav className="st-bottom-nav" aria-label={t('Mobile navigation')}>
-        {links.map((l) => (
-          <NavLink key={l.to} to={l.to} end={l.end}>
-            <l.icon size={21} />
-            <span>
-              {t(
-                l.to === '/app'
-                  ? 'Home'
-                  : l.to === '/app/activity'
-                    ? 'Activity'
-                    : l.to === '/app/settings'
-                      ? 'Settings'
-                      : l.label,
-              )}
-            </span>
-          </NavLink>
-        ))}
+        {links
+          .filter((l) => l.to !== '/app/activity')
+          .map((l) => (
+            <NavLink key={l.to} to={l.to} end={l.end}>
+              <l.icon size={21} />
+              <span>
+                {t(
+                  l.to === '/app'
+                    ? 'Home'
+                    : l.to === '/app/activity'
+                      ? 'Activity'
+                      : l.to === '/app/reviews'
+                        ? 'Reviews'
+                        : l.to === '/app/settings'
+                          ? 'Settings'
+                          : l.label,
+                )}
+              </span>
+            </NavLink>
+          ))}
       </nav>
     </div>
   );

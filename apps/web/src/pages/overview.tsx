@@ -12,6 +12,7 @@ import {
   Check,
   Flag,
   ArrowUpRight,
+  ClipboardCheck,
 } from 'lucide-react';
 import type { Obligation, Proof, GraceChoice, PersonalRecap } from '@stakeup/contracts';
 import { useAuth } from '../lib/auth';
@@ -179,7 +180,17 @@ export function Overview() {
           </Link>
         </div>
       </header>
-      <AchievementLink />
+      <div className="st-home-entries">
+        <AchievementLink />
+        <Link to="/app/reviews" className="st-achievement-entry st-review-entry">
+          <ClipboardCheck size={26} />
+          <span>
+            <strong>{t('Review inbox')}</strong>
+            <small>{t('Help your teammates. Review photos and open disputes in one place.')}</small>
+          </span>
+          <ArrowRight size={20} />
+        </Link>
+      </div>
       {error ? (
         <div className="st-module">
           <ErrorMessage message={error} />

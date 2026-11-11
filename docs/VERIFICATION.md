@@ -39,3 +39,10 @@ No automated test signed into a live user account or changed live user photos/pr
 
 
 The final public check caught a Russian landing-page overflow at 320px, caused by the example/FAQ grid's minimum-content width and the long CTA's no-wrap text. The grid now uses a shrinkable track and the CTA wraps. All 24 combinations of language, theme and 1440/390/320px width pass against the connected local preview. The four affected community/profile desktop/mobile journeys also passed after picker/popover corrections. One unit run timed out under concurrent browser load; the complete check passed when run separately, with all 35 tests and both builds.
+
+
+## PWA and review inbox — 2026-11-11
+
+`npm run check` passes 38 unit/API tests, TypeScript, both builds and the production bundle authorization check. All eight PostgreSQL suites pass; the new suite validates review eligibility, current membership, accepted participation, fresh dispute rounds, deterministic pagination and unchanged quorum. The full 16 desktop/mobile journeys pass, including direct inbox rejection/appeal/resolution, preserved review drafts, install metadata/icons, simulated browser prompt choices, private-only network behavior, public-only offline caches and Russian offline recovery. Forty-eight public layout combinations and Chromium installability diagnostics pass locally. See PWA_REVIEW_INBOX.md for exact scope and physical-device limits.
+
+The production review-inbox migration has committed: anonymous PostgREST access to the new function returns 42501. Browser automation disconnected after submitting the migration; it was not retried. Production web/API publication follows the tested source push. No new keys or paid resources are needed.
