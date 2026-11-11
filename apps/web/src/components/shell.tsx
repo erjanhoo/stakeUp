@@ -11,6 +11,7 @@ import {
   KeyRound,
   Route,
   Globe,
+  Award,
 } from 'lucide-react';
 import type { CircleSummary } from '@stakeup/contracts';
 import { useI18n } from '../lib/i18n';
@@ -76,6 +77,13 @@ export function Shell() {
                   {t(l.label)}
                 </NavLink>
               ))}
+              <NavLink
+                to={`/app/members/${profile?.id}`}
+                className={({ isActive }) => `st-nav-link ${isActive ? 'is-active' : ''}`}
+              >
+                <Award size={19} />
+                {t('Achievements')}
+              </NavLink>
             </nav>
           </div>
           <div className="st-nav-group">

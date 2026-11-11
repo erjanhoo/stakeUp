@@ -77,6 +77,10 @@ function Protected({ onboarding = false }: { onboarding?: boolean }) {
   if (onboarding && profile.onboardingCompleted) return <Navigate to={afterSignIn()} replace />;
   return <Outlet />;
 }
+function OwnProfile() {
+  const { profile } = useAuth();
+  return profile ? <Navigate to={`/app/members/${profile.id}`} replace /> : <Loading />;
+}
 function AppContent() {
   return (
     <Suspense fallback={<Loading full />}>
@@ -105,7 +109,7 @@ function AppContent() {
             <Route path="notifications" element={<NotificationsPage />} />
             <Route path="members/:id" element={<MemberPage />} />
             <Route path="settings" element={<Settings />} />
-            <Route path="profile" element={<Navigate to="/app/settings" replace />} />
+            <Route path="profile" element={<OwnProfile />} />
             <Route path="roadmap" element={<Roadmap />} />
           </Route>
         </Route>

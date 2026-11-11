@@ -32,6 +32,9 @@ test('Russian account preferences, visible accents, chosen grace dates and priva
   await page.keyboard.press('Escape');
   await expect(page.getByRole('heading', { name: 'Оформление и темы' })).toBeVisible();
   await expect(page.locator('html')).toHaveAttribute('lang', 'ru');
+  await expect(
+    page.getByRole('link', { name: 'Открыть значки и очки', exact: true }),
+  ).toBeVisible();
   await page.getByRole('button', { name: 'Электрический лайм' }).click();
   await expect(page.locator('html')).toHaveAttribute('data-accent', 'lime');
   await page.getByRole('button', { name: 'Светлая', exact: true }).click();

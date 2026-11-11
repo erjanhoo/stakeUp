@@ -1,4 +1,5 @@
 import { HelpTip } from '../components/help-tip';
+import { AchievementLink } from '../components/achievement-link';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -178,6 +179,7 @@ export function Overview() {
           </Link>
         </div>
       </header>
+      <AchievementLink />
       {error ? (
         <div className="st-module">
           <ErrorMessage message={error} />

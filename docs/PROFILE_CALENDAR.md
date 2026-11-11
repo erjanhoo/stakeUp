@@ -23,3 +23,10 @@ Both migrations were applied to the managed production project through its signe
 The full TypeScript/unit/API/build check passes, including 35 tests and the exact Vercel API bundle HTTP check. All seven PostgreSQL authorization suites pass in an isolated PostgreSQL 17 cluster. New checks cover membership-scoped profiles/avatars, forbidden peer overwrite, outsider denial, single-use missed-day passes, allowance limits and past cancellation. Browser checks cover desktop/mobile calendar navigation, pass consumption, actual avatar upload, private teammate profiles and the distinction between an excused day and an earned badge. Accepted-photo rewards and photo/review navigation are also exercised.
 
 Physical iOS/Android camera behavior, real-account production upload/review/settlement walkthroughs, managed cron run monitoring, retention/account deletion, larger-history pagination, paid vision and push remain separate launch work. The AI development provider still checks decodability only and never attests completion. Profile/calendar browser tests use isolated local-auth fixtures, never live user records.
+
+
+## Achievement discovery follow-up
+
+The initial release exposed badges through avatar links only, and the older `/app/profile` alias still led to Settings. That made the implemented rewards difficult to find. Home and Settings now have a visible Achievements entry, desktop navigation includes Achievements, and `/app/profile` resolves to the signed-in member's badge profile. Locked badges remain visible before any proof is accepted. This is a navigation correction; badge thresholds and points are unchanged, and bonus grace-day rewards have not been added.
+
+The follow-up passes TypeScript/build checks, all 35 unit/API tests and eight targeted desktop/mobile journeys covering the Home entry, Settings entry, profile alias, locked badges, Russian labels, avatars and teammate privacy.

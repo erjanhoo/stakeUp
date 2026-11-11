@@ -34,12 +34,20 @@ test('landing → register → onboarding → dashboard → saved settings → l
     page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
   ).resolves.toBe(true);
   await page.screenshot({ path: testInfo.outputPath('dashboard.png'), fullPage: true });
+  await page.getByRole('link', { name: 'View badges and points', exact: true }).click();
+  await expect(page).toHaveURL(/\/app\/members\/[0-9a-f-]+$/);
+  await expect(page.getByRole('heading', { name: 'Achievements', exact: true })).toBeVisible();
+  await expect(page.locator('.member-badge')).toHaveCount(4);
+  await expect(page.locator('.member-hero')).toContainText('0 progress points');
   // The join entry works without an invitation already stored in the URL/session.
   await page.goto('/join');
   await expect(page.getByLabel('Invitation link or code')).toBeVisible();
   await expect(page.getByRole('alert')).toHaveCount(0);
   // Navigate directly to prove protected deep links render and session restoration works.
   await page.goto('/app/settings');
+  await expect(
+    page.getByRole('link', { name: 'View badges and points', exact: true }),
+  ).toBeVisible();
   await page.getByLabel('Display name').fill('Maya Chen');
   await page.getByLabel('A little about you').fill('One chapter, one morning, one small win.');
   await page.getByRole('button', { name: 'Save changes' }).click();
