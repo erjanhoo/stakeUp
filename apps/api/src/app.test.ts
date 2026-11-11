@@ -58,6 +58,7 @@ describe('foundation HTTP boundary', () => {
     expect(own.json()).toMatchObject({ accepted: 0, completed: 0 });
   });
   it('requires authentication and rejects cross-origin mutations', async () => {
+    expect((await app.inject('/api/reviews')).statusCode).toBe(401);
     expect((await app.inject('/api/me')).statusCode).toBe(401);
     const response = await app.inject({
       method: 'POST',
@@ -70,6 +71,20 @@ describe('foundation HTTP boundary', () => {
       (await app.inject({ method: 'POST', url: '/api/auth/register', payload: account }))
         .statusCode,
     ).toBe(403);
+  });
+  it('validates review inbox filters, page size and complete cursors', async () => {
+    const { cookie } = await register();
+    const cookies = { stakeup_session: cookie };
+    for (const url of [
+      '/api/reviews?filter=unknown',
+      '/api/reviews?limit=21',
+      '/api/reviews?afterId=91000000-0000-4000-8000-000000000001',
+      '/api/reviews?afterTime=not-a-date',
+    ])
+      expect((await app.inject({ url, cookies })).statusCode).toBe(400);
+    const r = await app.inject({ url: '/api/reviews?filter=disputed', cookies });
+    expect(r.statusCode).toBe(200);
+    expect(r.json()).toEqual({ items: [], counts: { pending: 0, disputed: 0 }, nextCursor: null });
   });
   it('saves language per account and protects community endpoints', async () => {
     const { cookie } = await register();

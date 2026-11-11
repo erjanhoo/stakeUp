@@ -5,6 +5,7 @@ import {
 } from './local-community.js';
 import { competitionCommand } from './local-competition.js';
 import { evidenceCommand, type EvidenceState } from './local-evidence.js';
+import { reviewInbox, type InboxInput } from './review-inbox.js';
 import {
   randomBytes,
   randomUUID,
@@ -48,6 +49,9 @@ interface State extends SocialState {
 export class LocalStore {
   private queue: Promise<unknown> = Promise.resolve();
   constructor(private file: string) {}
+  reviews(uid: string, input: InboxInput) {
+    return this.transact((state) => reviewInbox(state as EvidenceState, uid, input));
+  }
   private transact<T>(fn: (state: State) => T | Promise<T>): Promise<T> {
     const work = this.queue.then(async () => {
       let state: State;

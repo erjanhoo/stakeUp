@@ -266,6 +266,23 @@ export interface EvidencePage {
   proofs: Proof[];
   eligibleReviewers: number;
 }
+export type ReviewFilter = 'all' | 'pending' | 'disputed';
+export interface ReviewCursor {
+  receivedAt: string;
+  id: string;
+}
+export interface ReviewTask {
+  proof: Proof;
+  circleId: string;
+  circleName: string;
+  challengeTitle: string;
+  timezone: string;
+}
+export interface ReviewInbox {
+  items: ReviewTask[];
+  counts: { pending: number; disputed: number };
+  nextCursor: ReviewCursor | null;
+}
 export interface CompetitionRow {
   userId: string;
   name: string;

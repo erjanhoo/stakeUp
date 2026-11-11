@@ -17,6 +17,28 @@ export function evidenceRoutes(
   }) => Promise<{ profile: { id: string }; db?: SupabaseClient }>,
 ) {
   const verifier = new MockVerificationProvider();
+  app.get('/api/reviews', async (req) => {
+    const { profile, db } = await authenticate(req);
+    const q = z
+      .object({
+        filter: z.enum(['all', 'pending', 'disputed']).default('all'),
+        limit: z.coerce.number().int().min(1).max(20).default(20),
+        afterId: z.uuid().optional(),
+        afterTime: z.iso.datetime({ offset: true }).optional(),
+      })
+      .refine((p) => !!p.afterId === !!p.afterTime, 'Both cursor fields are required.')
+      .parse(req.query);
+    if (local)
+      return local.reviews(profile.id, {
+        filter: q.filter,
+        limit: q.limit,
+        after: q.afterId && q.afterTime ? { id: q.afterId, receivedAt: q.afterTime } : undefined,
+      });
+    const r = await db!.rpc('stakeup_review_inbox', { p_payload: q });
+    if (r.error)
+      throw new AppError(r.error.code === '42501' ? 403 : 503, 'Unable to load your review inbox.');
+    return r.data;
+  });
   const action = async (
     uid: string,
     db: SupabaseClient | undefined,
