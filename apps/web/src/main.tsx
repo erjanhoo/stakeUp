@@ -13,6 +13,7 @@ import './themes.css';
 import './social.css';
 import './kinetic.css';
 import './stitch-layout.css';
+import './interaction-polish.css';
 import { AppearanceProvider } from './lib/appearance';
 import { afterSignIn } from './lib/social';
 const CompetitionPage = lazy(() =>
@@ -46,6 +47,10 @@ const NotificationsPage = lazy(() =>
 const Roadmap = lazy(() => import('./pages/dashboard').then((m) => ({ default: m.Roadmap })));
 const Onboarding = lazy(() => import('./pages/profile').then((m) => ({ default: m.Onboarding })));
 const Settings = lazy(() => import('./pages/profile').then((m) => ({ default: m.Settings })));
+const MemberPage = lazy(() => import('./pages/member').then((m) => ({ default: m.MemberPage })));
+const CircleDay = lazy(() =>
+  import('./components/circle-calendar').then((m) => ({ default: m.CircleDay })),
+);
 
 class ErrorBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   state = { failed: false };
@@ -90,6 +95,7 @@ function AppContent() {
             <Route index element={<DashboardPage />} />
             <Route path="circles" element={<CirclesPage />} />
             <Route path="circles/new" element={<CreateCircle />} />
+            <Route path="circles/:id/day/:date" element={<CircleDay />} />
             <Route path="circles/:id" element={<CirclePage />} />
             <Route path="circles/:id/challenges/new" element={<CreateChallenge />} />
             <Route path="challenges/:id" element={<ChallengePage />} />
@@ -97,6 +103,7 @@ function AppContent() {
             <Route path="challenges/:id/evidence" element={<EvidencePage />} />
             <Route path="activity" element={<ActivityPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
+            <Route path="members/:id" element={<MemberPage />} />
             <Route path="settings" element={<Settings />} />
             <Route path="profile" element={<Navigate to="/app/settings" replace />} />
             <Route path="roadmap" element={<Roadmap />} />

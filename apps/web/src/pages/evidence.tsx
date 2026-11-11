@@ -1,3 +1,4 @@
+import { HelpTip } from '../components/help-tip';
 import { useI18n } from '../lib/i18n';
 import { ProofConversation, GracePlanner } from '../components/community';
 import { useEffect, useState, useRef, type FormEvent } from 'react';
@@ -13,7 +14,7 @@ import { useResource } from '../lib/social';
 import { api, message, supabase } from '../lib/api';
 import { useAuth } from '../lib/auth';
 import { Button } from '../components/ui/button';
-import { ErrorMessage, Loading } from '../components/common';
+import { ErrorMessage, Loading, Avatar } from '../components/common';
 import './evidence.css';
 async function prepare(file: File) {
   if (file.size > 20_000_000) throw new Error('Choose a photo smaller than 20 MB.');
@@ -68,7 +69,7 @@ function Photo({ challengeId, proof }: { challengeId: string; proof: Proof }) {
     <Loading />
   );
 }
-function Review({
+export function Review({
   proof: s,
   challengeId,
   reload,
@@ -105,6 +106,7 @@ function Review({
   return (
     <article className="proof-entry">
       <div className="proof-entry-heading">
+        <Avatar userId={s.userId} name={s.name} />
         <div>
           <span className="eyebrow">
             {s.localDate} · {s.name}

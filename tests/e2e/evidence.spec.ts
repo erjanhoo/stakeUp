@@ -181,6 +181,14 @@ test('private photo → peer rejection → owner appeal → two-peer resolution'
     );
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
     await page.screenshot({ path: info.outputPath('proof-reviewed.png'), fullPage: true });
+    await page.goto(`/app/circles/${cid}/day/${day}`);
+    await expect(page.getByRole('heading', { name: 'accepted', exact: true })).toBeVisible();
+    await expect(page.locator('.evidence-photo')).toHaveJSProperty('naturalWidth', 80);
+    await expect(page.getByText('Encouragement & conversation', { exact: true })).toBeVisible();
+    await page.goto(`/app/members/${profiles[0].id}`);
+    await expect(page.locator('.member-hero')).toContainText('10 progress points');
+    await expect(page.locator('.member-badge.earned')).toHaveCount(1);
+    await expect(page.locator('.member-badge.earned')).toContainText('First step');
     expect(errors).toEqual([]);
     await page.goto('/');
     await page.emulateMedia({ reducedMotion: 'reduce' });

@@ -1,3 +1,5 @@
+import { CircleCalendar } from '../components/circle-calendar';
+import { HelpTip } from '../components/help-tip';
 import { useI18n } from '../lib/i18n';
 import { useEffect, useState, type FormEvent, type ChangeEvent } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -169,7 +171,7 @@ function CircleWorkspaceCard({ circle: c }: { circle: CircleSummary }) {
           </div>
           <div className="st-avatar-strip">
             {data?.members.slice(0, 6).map((m) => (
-              <Avatar key={m.userId} name={m.displayName} />
+              <Avatar key={m.userId} userId={m.userId} name={m.displayName} />
             ))}
             <small>
               {(active ?? proposal)!.rules.opening}–{(active ?? proposal)!.rules.cutoff} ·{' '}
@@ -677,10 +679,17 @@ export function CirclePage() {
           </div>
         </section>
       ) : null}
+      <CircleCalendar circleId={c.id} challenges={c.challenges} />
       <div className="st-circle-layout">
         <section className="panel">
           <div className="panel-heading">
-            <h2>{t('Circle challenges')}</h2>
+            <h2>
+              {t('Circle challenges')}
+              <HelpTip title="How challenges work">
+                Each person accepts a challenge individually. Your photo is reviewed by teammates.
+                Open a challenge to see its rules and upload window.
+              </HelpTip>
+            </h2>
             <span className="count-pill">{c.challenges.length}</span>
           </div>
           <div className="st-view-tabs">
@@ -737,7 +746,7 @@ export function CirclePage() {
             </div>
             {c.members.map((member) => (
               <div className="member-row" key={member.userId}>
-                <Avatar name={member.displayName} />
+                <Avatar userId={member.userId} name={member.displayName} />
                 <div>
                   <strong>{member.displayName}</strong>
                   <span>@{member.username}</span>
@@ -1124,7 +1133,7 @@ export function CreateChallenge() {
             <strong>{t('Discipline rewards · policy v2')}</strong>
             <p>
               {t(
-                'Chosen grace days are excused. Reserve them before the upload deadline. Unused days are not assigned automatically.',
+                'Grace passes excuse scheduled or missed days without photos, within your agreed allowance. Past passes cannot be cancelled. Finalized results stay locked.',
               )}{' '}
             </p>
           </div>
@@ -1197,7 +1206,7 @@ function ChallengeParticipant({ challenge: c }: { challenge: ChallengeDetail }) 
   return (
     <section className="st-challenge-person">
       <div className="st-challenge-person-name">
-        <Avatar name={profile?.displayName ?? ''} large />
+        <Avatar userId={profile?.id} name={profile?.displayName ?? ''} large />
         <div>
           <strong>{profile?.displayName}</strong>
           <span>{t(c.ownStatus === 'accepted' ? 'Accepted' : 'Not accepted')}</span>
@@ -1434,7 +1443,7 @@ export function ChallengePage() {
               {t(
                 (r.gracePolicy ?? 'automatic_v1') === 'automatic_v1'
                   ? '80% completion eligibility. No real money. Grace days excuse the earliest misses; accepted days count toward your discipline score.'
-                  : 'Chosen grace days are excused. Reserve them before the upload deadline. Unused days are not assigned automatically.',
+                  : 'Grace passes excuse scheduled or missed days without photos, within your agreed allowance. Past passes cannot be cancelled. Finalized results stay locked.',
               )}{' '}
             </p>
             <p>{t('See standings and the virtual pool for current projections.')}</p>
@@ -1454,7 +1463,7 @@ export function ChallengePage() {
             .filter((p) => p.status === 'accepted')
             .map((p) => (
               <div className="member-row" key={p.userId}>
-                <Avatar name={p.displayName} />
+                <Avatar userId={p.userId} name={p.displayName} />
                 <div>
                   <strong>{p.displayName}</strong>
                   <span>

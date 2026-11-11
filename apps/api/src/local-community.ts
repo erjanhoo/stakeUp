@@ -237,7 +237,7 @@ export function communityCommand(
       throw new AppError(403, 'Only enrolled participants can choose their own grace days.');
     if ((h.rules.gracePolicy ?? 'automatic_v1') !== 'chosen_v1')
       throw new AppError(409, 'This challenge uses its original automatic grace policy.');
-    if (now > new Date(o.deadlineAt))
+    if (action === 'grace_cancel' && now > new Date(o.deadlineAt))
       throw new AppError(409, 'Choose or cancel a grace day before its upload deadline.');
     const choices = (state.graceChoices ??= []);
     if (action === 'grace_cancel') {

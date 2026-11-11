@@ -42,7 +42,7 @@ Prototype-only widgets are mapped to truthful copy/data in the same visual regio
 
 The connected local preview is `http://localhost:5183`, backed by the API on port 3003. Existing confirmed Supabase accounts can sign in. Preference changes and other actions affect the real account. Automated design/regression checks use separate local-auth data on ports 5173/3001; they do not mutate Supabase user records.
 
-Both previews are temporary development processes. Production at `https://stakeup-olive.vercel.app` is not updated by this branch. A source push may trigger Vercel preview creation, but its API/origin configuration is separate from this working local review setup.
+Both previews are temporary development processes. The approved redesign is now the production interface at `https://stakeup-olive.vercel.app`, released from commit `e84ef94` on `erjanhoo/social-challenges`. All existing routes use the redesigned pages; the previous layout has no separate public route. Later profile/calendar improvements are documented in PROFILE_CALENDAR.md.
 
 ## Verification
 

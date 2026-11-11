@@ -23,7 +23,7 @@ import { useResource } from '../lib/social';
 import { api, message } from '../lib/api';
 import { useAuth } from '../lib/auth';
 import { Button } from './ui/button';
-import { ErrorMessage, Loading } from './common';
+import { Avatar, ErrorMessage, Loading } from './common';
 import './community.css';
 export function PoolMark({ size = 30 }: { size?: number }) {
   return (
@@ -125,6 +125,7 @@ function Conversation({ challengeId, proofId }: { challengeId: string; proofId: 
         </summary>
         {data?.comments.map((c) => (
           <div className="comment-row" key={c.id}>
+            <Avatar userId={c.userId} name={c.name} />
             <strong>{c.name}</strong>
             <time>{new Date(c.createdAt).toLocaleString(language)}</time>
             <p>{c.deleted ? t('Comment removed') : c.body}</p>
@@ -210,7 +211,7 @@ export function GracePlanner({
         <>
           <p>
             {t(
-              'Choose a scheduled day before its upload deadline. Chosen days are excused and excluded from your score denominator. Unused grace days are not assigned automatically.',
+              'A grace pass excuses one scheduled or missed day without a photo. It uses your agreed allowance. Past passes cannot be cancelled; finalized results stay locked.',
             )}{' '}
           </p>
           <strong>
@@ -221,7 +222,8 @@ export function GracePlanner({
             <summary>{t('Choose or change a grace day')}</summary>
             {c.obligations.map((o) => {
               const selected = choices.some((g) => g.obligationId === o.id),
-                closed = c.status !== 'active' || Date.parse(o.deadlineAt) < Date.now();
+                closed =
+                  c.status !== 'active' || (selected && Date.parse(o.deadlineAt) < Date.now());
               return (
                 <div className="grace-choice" key={o.id}>
                   <span>{o.localDate}</span>

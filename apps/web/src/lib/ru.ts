@@ -1,4 +1,4 @@
-const text = `PRIVATE CIRCLES. SHARED INTENTION.|ЗАКРЫТЫЕ КРУГИ. ОБЩАЯ ЦЕЛЬ.
+const text = `PRIVATE CIRCLES. SHARED INTENTION.|ЗАКРЫТЫЕ КОМАНДЫ. ОБЩАЯ ЦЕЛЬ.
 Private accountability.|Личная ответственность.
 Real social stakes.|Дружеский азарт.
 I have an invitation|У меня есть приглашение
@@ -11,11 +11,11 @@ No deposits. No withdrawals. Just a reason to keep your word.|Без попол�
 Private by default.|Закрыто по умолчанию.
 People make the decision.|Решение принимают люди.
 The accountability rhythm.|Ритм ответственности.
-Form a private Circle|Создайте закрытый круг
-Invite your people. Your challenges, photos and progress stay inside your Circle.|Пригласите друзей. Испытания, фото и прогресс остаются внутри вашего круга.
+Form a private Circle|Соберите команду
+Invite your people. Your challenges, photos and progress stay inside your Circle.|Пригласите друзей. Испытания, фото и прогресс остаются в вашей команде.
 Accept the same rules|Примите общие правила
 Choose the days, upload window and virtual penalty. Each participant accepts before the roster locks.|Выберите дни, окно отправки и виртуальный штраф. Каждый принимает правила до закрепления состава.
-Show the effort|Покажите усилия
+Show the effort|Покажите результат
 Submit a private photo and context during your window. A photo is evidence, not a guarantee of completion.|Отправьте закрытое фото и пояснение в своё окно. Снимок — свидетельство, а не гарантия выполнения.
 Review fairly|Проверяйте справедливо
 Independent peers review the proof. Uncertain decisions stay open, and disputed penalties wait for resolution.|Доказательства оценивают независимые участники. Неясные случаи остаются открытыми, спорные штрафы ждут решения.
@@ -24,13 +24,13 @@ A few good questions.|Несколько хороших вопросов.
 Can I exchange credits for real money?|Можно обменять баллы на деньги?
 No. VC are simulated points with no cash value. There are no deposits, payments or withdrawals.|Нет. ВК — условные баллы без денежной ценности. Пополнений, платежей и вывода денег нет.
 Who sees my proof?|Кто видит мои доказательства?
-Only current members of your private Circle can view its submitted photos. There is no public feed.|Отправленные фото видят только текущие участники вашего закрытого круга. Публичной ленты нет.
+Only current members of your private Circle can view its submitted photos. There is no public feed.|Отправленные фото видят только текущие участники вашей закрытой команды. Публичной ленты нет.
 Does AI verify my activity?|ИИ подтверждает мои действия?
 The current development mock checks image readability only. It does not analyze the photo or prove completion. Peers make review decisions.|Тестовый провайдер проверяет только читаемость изображения. Он не анализирует фото и не доказывает выполнение. Решения принимают участники.
 What if I need a rest day?|Что если мне нужен день отдыха?
 New challenges let you reserve a scheduled grace day before its upload deadline, within your accepted allowance.|В новых испытаниях можно забронировать день отдыха до срока отправки в пределах принятого лимита.
-YOUR CIRCLE. YOUR NEXT STEP.|ВАШ КРУГ. ВАШ СЛЕДУЮЩИЙ ШАГ.
-Proof workspace|Доказательства
+YOUR CIRCLE. YOUR NEXT STEP.|ВАША КОМАНДА. ВАШ СЛЕДУЮЩИЙ ШАГ.
+Proof workspace|Фото и проверки
 Submit proof|Отправка
 Review & history|Проверки и история
 Competition sections|Разделы соревнования
@@ -55,17 +55,17 @@ Grace days must be fewer than scheduled days.|Дней отдыха должно
 Choose a start date from tomorrow onward in the challenge timezone.|Выберите начало не раньше завтра в часовом поясе испытания.
 Paste a valid invitation code or link.|Вставьте действующий код или ссылку-приглашение.
 Paste a valid invitation link or its 64-character code.|Вставьте действующую ссылку-приглашение или код из 64 символов.
-Circle not found.|Круг не найден.
-Only the circle owner can do this.|Это доступно только владельцу круга.
-This circle is archived.|Этот круг в архиве.
-You can join up to 20 circles.|Можно вступить максимум в 20 кругов.
+Circle not found.|Команда не найдена.
+Only the circle owner can do this.|Это доступно только владельцу команды.
+This circle is archived.|Эта команда в архиве.
+You can join up to 20 circles.|Можно вступить максимум в 20 команд.
 This invitation is invalid, expired, or full.|Приглашение недействительно, просрочено или достигло лимита.
-The circle or membership limit has been reached.|Достигнут лимит кругов или участников.
+The circle or membership limit has been reached.|Достигнут лимит команд или участников.
 Resolve active challenges before archiving.|Перед архивацией завершите активные испытания.
-A circle can have up to 25 open challenges.|В круге может быть до 25 открытых испытаний.
+A circle can have up to 25 open challenges.|В команде может быть до 25 открытых испытаний.
 The challenge rules and roster are locked.|Правила и состав испытания закреплены.
 The rules version has changed. Review it again.|Версия правил изменилась. Ознакомьтесь с ней снова.
-Only the proposer or circle owner can manage this challenge.|Управлять испытанием может его автор или владелец круга.
+Only the proposer or circle owner can manage this challenge.|Управлять испытанием может его автор или владелец команды.
 At least two members must accept before activation.|Перед стартом нужно согласие хотя бы двух участников.
 Only enrolled participants can submit their own proof.|Отправлять своё доказательство могут только участники испытания.
 This submission window is closed or has not opened.|Окно отправки закрыто или ещё не открылось.
@@ -80,7 +80,7 @@ This challenge is completed; review is closed.|Испытание заверше
 Only a decided proof can be disputed.|Оспорить можно только доказательство с принятым решением.
 This proof has already had its dispute round.|Раунд спора по этому доказательству уже был.
 You can appeal only your rejected proof.|Обжаловать можно только отклонение своего доказательства.
-You cannot review your own proof.|Нельзя проверять своё доказательство.
+You cannot review your own proof.|Вы не можете проверять своё доказательство.
 This proof is not open for review.|Это доказательство не открыто для проверки.
 Your vote is already recorded.|Ваш голос уже учтён.
 Development mock: human review required.|Тестовый провайдер: требуется проверка людьми.
@@ -100,11 +100,11 @@ A decodable photo was received. This mock does not analyze its visual contents.|
 Relevance to the evidence requirements has not been verified.|Соответствие требованиям к доказательству не проверено.
 A photo cannot establish completion, capture time, or who performed an action.|Фото не подтверждает выполнение, время съёмки или личность того, кто выполнил действие.
 This day is excused. Cancel the grace day before submitting proof.|На этот день выбран отдых. Отмените его перед отправкой доказательства.
-Created the circle|Круг создан
-Joined the circle|Вступил в круг
-Left the circle|Покинул круг
-Updated the circle|Обновил круг
-Archived the circle|Круг архивирован
+Created the circle|Команда создана
+Joined the circle|Присоединился к команде
+Left the circle|Вышел из команды
+Updated the circle|Обновил команду
+Archived the circle|Команда отправлена в архив
 Reward and grace policies must match.|Правила наград и отдыха должны соответствовать друг другу.
 Upload received; mock review requires independent peers.|Фото получено; после тестовой проверки нужно решение независимых участников.
 Strict majority accepted the proof.|Строгое большинство приняло доказательство.
@@ -124,16 +124,16 @@ A SIMPLE IDEA. A STRONGER YOU.|ПРОСТАЯ ИДЕЯ. СИЛЬНЕЕ ВЫ.
 A big commitment.|Большое обещание.
 A familiar face. A fresh ambition. Make yourself at home.|Знакомые лица. Новые цели. Чувствуйте себя как дома.
 A little better every day. Even better together.|Каждый день немного лучше. Вместе — ещё лучше.
-A little circle. Big possibilities|Небольшой круг. Большие возможности
+A little circle. Big possibilities|Вместе можно больше
 A little commitment can change a lot. Make yours.|Маленькое обещание может многое изменить. Дайте своё.
 A little momentum|Небольшой разгон
 A little profile refresh.|Профиль обновлён.
 A little progress. A lot of possibility.|Небольшой прогресс. Большие возможности.
 A little space for a big goal.|Немного места для большой цели.
-A photo. A little context. Your circle sees the effort and reviews it honestly. Progress has a paper trail.|Фото и немного контекста. Ваш круг видит усилия и честно оценивает их. У прогресса остаётся история.
+A photo. A little context. Your circle sees the effort and reviews it honestly. Progress has a paper trail.|Фото и немного контекста. Ваша команда видит усилия и честно оценивает их. У прогресса остаётся история.
 A place to start|Точка старта
 A plausible photo cannot prove that an action happened. Evidence is reviewed by peers. AI does not prove completion.|Правдоподобное фото не доказывает, что действие произошло. Доказательства оценивают участники. ИИ не подтверждает выполнение.
-A private circle. A shared ambition. Your next small step.|Закрытый круг. Общая цель. Ваш следующий шаг.
+A private circle. A shared ambition. Your next small step.|Закрытая команда. Общая цель. Ваш следующий шаг.
 A private corner for your people.|Закрытое пространство для ваших друзей.
 A promise worth keeping|Обещание, которое стоит сдержать
 A quieter kind of inbox|Спокойное место для новостей
@@ -152,22 +152,22 @@ Big goals.|Большие цели.
 Big things start|Большое начинается
 Bring your people|Пригласите своих
 Built for encouragement, transparent rules, and the kind of competition that brings everyone up.|Для поддержки, прозрачных правил и соревнования, которое помогает каждому стать лучше.
-CIRCLE CONTACT SHEET|ЛИЦА ВАШЕГО КРУГА
+CIRCLE CONTACT SHEET|ФОТОГРАФИИ КОМАНДЫ
 COMPANY.|КОМПАНИИ.
 CONSISTENCY LOOKS GOOD ON YOU.|ПОСТОЯНСТВО ВАМ К ЛИЦУ.
 Commit to something good|Пообещайте себе хорошее
 Deadline reminders, circle invitations, and review updates will arrive here when notifications launch in milestone 05.|Здесь появляются напоминания о сроках, приглашения и новости проверок.
 Discipline rewards · policy v1|Награды за дисциплину · правила v1
 Every great streak starts with one.|Каждая большая серия начинается с одного дня.
-Everything’s better with a circle.|С кругом всё лучше.
-Explore your circle’s next shared promise.|Найдите следующее общее обещание вашего круга.
+Everything’s better with a circle.|С командой всё лучше.
+Explore your circle’s next shared promise.|Найдите следующее общее обещание вашей команды.
 FOR THE EARLY RISERS|ДЛЯ ТЕХ, КТО ВСТАЁТ РАНО
 Find your momentum|Найдите свой ритм
 Find your people|Найдите своих
 First, find the people you want to grow with.|Сначала найдите людей, с которыми хотите расти.
 GOOD COMPANY. SHARED AMBITION.|ХОРОШАЯ КОМПАНИЯ. ОБЩАЯ ЦЕЛЬ.
 GOOD THINGS|ХОРОШЕЕ
-Good company is waiting.|Хорошая компания уже ждёт.
+Good company is waiting.|Команда ждёт вас.
 Good company.|Хорошая компания.
 Good habits.|Хорошие привычки.
 Great company.|Отличная компания.
@@ -184,9 +184,9 @@ Let’s go.|Начнём.
 Let’s show up.|Давайте действовать.
 Loading activity|Загрузка событий
 Loading statistic|Загрузка статистики
-MAKE ROOM FOR GOOD COMPANY|ПУСТИТЕ В ЖИЗНЬ ХОРОШУЮ КОМПАНИЮ
-Made for your circle.|Для вашего круга.
-Make a commitment, show up, and grow with friends who get it.|Дайте обещание, действуйте и растите с друзьями, которые вас понимают.
+MAKE ROOM FOR GOOD COMPANY|СОБЕРИТЕ ДРУЗЕЙ
+Made for your circle.|Для вашей команды.
+Make a commitment, show up, and grow with friends who get it.|Ставьте цели и двигайтесь к ним с друзьями, которые вас понимают.
 Make consistency count|Пусть постоянство приносит плоды
 Make this your day one|Пусть сегодня будет первым днём
 More day one.|Больше первых дней.
@@ -194,13 +194,13 @@ More doing.|Больше действий.
 Motivation comes and goes.|Мотивация приходит и уходит.
 No real-money stakes. No public shaming.|Без реальных ставок. Без публичного осуждения.
 ONE DAY AT A TIME|ДЕНЬ ЗА ДНЁМ
-One private circle. A shared ambition. Friends who notice when you show up—and help you get back to it when you don’t.|Один закрытый круг. Общая цель. Друзья, которые замечают ваши усилия и помогают вернуться, когда не получается.
+One private circle. A shared ambition. Friends who notice when you show up—and help you get back to it when you don’t.|Закрытая команда. Общая цель. Друзья, которые замечают ваши усилия и помогают вернуться, когда не получается.
 Open your space|Открыть своё пространство
 PEOPLE|ДРУЗЬЯ
 PROGRESS IS A TEAM SPORT.|ПРОГРЕСС — КОМАНДНЫЙ СПОРТ.
 Pick a goal. Agree on the rules.|Выберите цель. Договоритесь о правилах.
-Private circles, invitations, challenge rules, enrollment and timezone-aware deadlines.|Закрытые круги, приглашения, правила испытаний, запись участников и сроки с учётом часовых поясов.
-Private circles. Friendly stakes. Always virtual.|Закрытые круги. Дружеский азарт. Только виртуально.
+Private circles, invitations, challenge rules, enrollment and timezone-aware deadlines.|Закрытые команды, приглашения, правила испытаний, запись участников и сроки с учётом часовых поясов.
+Private circles. Friendly stakes. Always virtual.|Закрытые команды. Дружеский азарт. Только виртуально.
 Private photo evidence, honest mock review, peer review and fair disputes.|Закрытые фото, честная тестовая проверка, оценка участниками и справедливые споры.
 Private spaces for friends who bring out your better.|Закрытые пространства для друзей, с которыми вы становитесь лучше.
 Proof, with perspective|Доказательства с контекстом
@@ -221,7 +221,7 @@ Small wins add up|Победы складываются
 Social challenges are here. Here’s what works now, and what’s next.|Общие испытания уже доступны. Вот что работает сейчас и что впереди.
 Stack wins.|Копите победы.
 StakeUp interface error|Ошибка интерфейса StakeUp
-Start a private group, invite your friends, and turn a shared ambition into a daily promise.|Создайте закрытый круг, пригласите друзей и превратите общую цель в ежедневное обещание.
+Start a private group, invite your friends, and turn a shared ambition into a daily promise.|Создайте закрытую команду, пригласите друзей и превратите общую цель в ежедневное обещание.
 TAKE TOGETHER.|ДЕЛАЕМ ВМЕСТЕ.
 THE CHAPTER-A-DAY CREW|КОМАНДА «ГЛАВА В ДЕНЬ»
 THE DAILY PROMISE|ЕЖЕДНЕВНОЕ ОБЕЩАНИЕ
@@ -234,7 +234,7 @@ TOGETHER.|ВМЕСТЕ.
 The final tally|Окончательные итоги
 The right nudge, when you need it.|Нужное напоминание в нужный момент.
 The rules, in plain sight|Правила как на ладони
-This page hasn’t found its circle.|Эта страница не нашла свой круг.
+This page hasn’t found its circle.|Страница не найдена.
 UP NEXT · MILESTONE 02|СЛЕДУЮЩИЙ ШАГ
 UP ↗|ВВЕРХ ↗
 VIRTUAL STAKES. REAL INTENTION.|ВИРТУАЛЬНЫЕ СТАВКИ. РЕАЛЬНОЕ НАМЕРЕНИЕ.
@@ -248,7 +248,7 @@ You don’t need more willpower.|Вам не нужна сверхсила во�
 You joined StakeUp. Good things start small.|Вы присоединились к StakeUp. Хорошее начинается с малого.
 You made yourself at home.|Вы освоились.
 You need someone in your corner.|Вам нужен тот, кто на вашей стороне.
-Your goals need a circle.|Вашим целям нужен круг.
+Your goals need a circle.|К цели проще идти вместе.
 Your people keep showing up.|Ваши друзья продолжают действовать.
 You’re one small commitment away from something good.|До хорошего — одно небольшое обещание.
 You’ve got the ambition. Bring the accountability.|Цель уже есть. Добавьте ответственность.
@@ -263,7 +263,7 @@ accepted vote|голос за
 rejected vote|голос против
 Language|Язык
 Overview|Обзор
-My circles|Мои круги
+My circles|Мои команды
 Activity|Активность
 Settings|Настройки
 Notifications|Уведомления
@@ -299,8 +299,8 @@ Timezone|Часовой пояс
 Your changes are saved.|Изменения сохранены.
 Your personal details are up to date.|Личные данные обновлены.
 Your profile is good to go.|Профиль готов.
-Your profile stays within the circles you join.|Ваш профиль виден только участникам ваших кругов.
-Your details aren’t public. Your circles share your display name, username and challenge participation with members. Your email stays private.|Данные профиля закрыты. Участники ваших кругов видят имя, ник и участие в испытаниях. Почта остаётся приватной.
+Your profile stays within the circles you join.|Ваш профиль виден только участникам ваших команд.
+Your details aren’t public. Your circles share your display name, username and challenge participation with members. Your email stays private.|Данные профиля закрыты. Участники ваших команд видят имя, ник и участие в испытаниях. Почта остаётся приватной.
 Future deadlines will show in your preferred timezone. Each challenge keeps its own agreed timezone.|Сроки будут отображаться в выбранном часовом поясе. У каждого испытания остаётся свой согласованный часовой пояс.
 Log out|Выйти
 Log out of this account|Выйти из аккаунта
@@ -343,12 +343,11 @@ Make yourself at home|Устраивайтесь поудобнее
 Your profile is ready. Bring a circle of friends who make showing up feel good.|Профиль готов. Пригласите друзей, с которыми проще держать слово.
 Your people are waiting.|Друзья вас ждут.
 Profile ready. Your next chapter is waiting.|Профиль готов. Впереди новая глава.
-YOUR FIRST SMALL STEP|ВАШ ПЕРВЫЙ ШАГ
-YOUR NEXT CHAPTER|ВАША НОВАЯ ГЛАВА
+YOUR FIRST SMALL STEP|НАЧНЁМ С ПРОСТОГО
+YOUR NEXT CHAPTER|ВАША СЛЕДУЮЩАЯ ГЛАВА
 A LITTLE MORE YOU|БОЛЬШЕ О ВАС
-Initials for now. Photo uploads arrive with evidence.|Пока — инициалы. Фотографии доступны в доказательствах.
 Your momentum|Ваш прогресс
-Your next small win.|Ваша следующая победа.
+Your next small win.|Ещё один шаг к цели.
 Hey,|Привет,
 Your goals. Your people. Your next small win.|Ваши цели. Ваши друзья. Ваша следующая победа.
 Your people are here. Pick the next promise you’ll keep together.|Друзья уже здесь. Выберите обещание, которое сдержите вместе.
@@ -357,12 +356,12 @@ Your statistics|Ваша статистика
 Active challenges|Активные испытания
 Successful days|Успешные дни
 Virtual prize pool|Виртуальная копилка
-Virtual credits · no cash value|Виртуальные баллы · без денежной ценности
-Your circles|Ваши круги
-Your circle|Ваш круг
-Your people. Your circles|Ваши друзья. Ваши круги
+Virtual credits · no cash value|Виртуальные баллы — не деньги
+Your circles|Ваши команды
+Your circle|Ваша команда
+Your people. Your circles|Ваши друзья. Ваши команды
 Your people, your pace|Ваши друзья, ваш темп
-Your people, your promise|Ваши друзья, ваше обещание
+Your people, your promise|Ваши друзья. Общая цель.
 Your shared momentum|Ваш общий прогресс
 Your people.|Ваши друзья.
 Your daily commitments will live here.|Здесь появятся ваши ежедневные задачи.
@@ -373,19 +372,18 @@ All activity|Все события
 Account activity|События аккаунта
 Your first small win will appear here.|Здесь появится ваша первая маленькая победа.
 Make consistency your thing|Пусть постоянство станет привычкой
-Build your first private circle.|Создайте свой первый закрытый круг.
-Create your first circle|Создать первый круг
-Create a circle|Создать круг
-Create circle|Создать круг
-Explore your circles|Открыть круги
-Create your account|Создайте аккаунт
+Build your first private circle.|Создайте свою первую команду.
+Create your first circle|Создать первую команду
+Create a circle|Создать команду
+Create circle|Создать команду
+Explore your circles|Открыть команды
 Shared promises|Общие обещания
 In your corner|Ваша поддержка
-Circle activity|События круга
-Circle name|Название круга
+Circle activity|События команды
+Circle name|Название команды
 Description|Описание
-Circle icon|Значок круга
-PRIVATE CIRCLE ·|ЗАКРЫТЫЙ КРУГ ·
+Circle icon|Значок команды
+PRIVATE CIRCLE ·|ЗАКРЫТАЯ КОМАНДА ·
 MEMBERS|УЧАСТНИКИ
 Member|Участник
 Owner|Владелец
@@ -393,7 +391,7 @@ Invite friends|Пригласить друзей
 Invitation link|Ссылка-приглашение
 Invitation link or code|Ссылка или код приглашения
 Paste the link your friend sent|Вставьте ссылку от друга
-Join circle|Вступить в круг
+Join circle|Вступить в команду
 Joining…|Вступаем…
 Creating…|Создание…
 Copy|Копировать
@@ -403,25 +401,25 @@ and admits up to|Максимум участников:
 people.|чел.
 Select the link and copy it manually.|Выделите ссылку и скопируйте вручную.
 Private by default. No public directory.|Закрыто по умолчанию. Без публичного каталога.
-Only people with a valid private invitation can join a Circle.|Вступить в круг можно только по действующему приглашению.
+Only people with a valid private invitation can join a Circle.|Вступить в команду можно только по действующему приглашению.
 Sign in or create an account to use this invitation. We’ll keep it here while you get settled.|Войдите или создайте аккаунт, чтобы принять приглашение. Мы сохраним его для вас.
 A little invitation to something good.|Небольшое приглашение к хорошему.
 GOT AN INVITATION?|ВАС ПРИГЛАСИЛИ?
 AN INVITATION TO SHOW UP|ПРИГЛАШЕНИЕ К ДЕЙСТВИЮ
 You’ll be the owner. Invite friends with a private, expiring link.|Вы станете владельцем. Пригласите друзей по закрытой ссылке с ограниченным сроком.
-Your circle is ready to grow.|Ваш круг готов расти.
+Your circle is ready to grow.|Ваша команда готова расти.
 What brings your people together?|Что объединяет ваших друзей?
 The morning crew|Утренняя команда
 Why together?|Почему вместе?
-Why does this matter to your circle?|Почему это важно для вашего круга?
+Why does this matter to your circle?|Почему это важно для вашей команды?
 Make a shared promise|Дайте общее обещание
-Manage circle|Управление кругом
-Save circle details|Сохранить данные круга
-Archive circle|Архивировать круг
-Show archived circles|Показать архивные круги
+Manage circle|Управление командой
+Save circle details|Сохранить данные команды
+Archive circle|Отправить команду в архив
+Show archived circles|Показать архивные команды
 Archived|В архиве
-Leave circle|Покинуть круг
-Active challenge participants must stay until their challenge is resolved.|Участники активного испытания остаются в круге до его завершения.
+Leave circle|Выйти из команды
+Active challenge participants must stay until their challenge is resolved.|Участники активного испытания остаются в команде до его завершения.
 Archiving preserves history and cancels proposals. Active challenges must be resolved first.|Архивация сохраняет историю и отменяет предложения. Сначала завершите активные испытания.
 New challenge|Новое испытание
 Challenge title|Название испытания
@@ -482,13 +480,12 @@ Submit & review proof|Отправить и проверить доказате�
 Submit & review proof →|Отправить и проверить доказательства →
 Submit photos and review evidence inside an active challenge.|Отправляйте фото и проверяйте доказательства в активном испытании.
 Back to challenge|К испытанию
-Back to circle|К кругу
+Back to circle|К команде
 Back to your space|В ваше пространство
 Standings & virtual pool|Рейтинг и копилка
 Final results|Итоги
 Virtual ledger|Виртуальный журнал
 Virtual credits only. No deposits, charges or withdrawals.|Только виртуальные баллы. Без пополнений, списаний и вывода денег.
-Virtual credits · no cash value|Виртуальные баллы · без денежной ценности
 Projected reward / refund|Ожидаемая награда / возврат
 Reward / refund|Награда / возврат
 Projected from resolved days. Grace days and caps applied. Review decisions can change these amounts.|Прогноз по дням с принятым решением. Учтены дни отдыха и лимиты. Новые решения могут изменить суммы.
@@ -521,15 +518,15 @@ Server-generated deadlines follow|Сервер рассчитывает срок
 . Your timestamps are fixed across clock changes.|. Сроки зафиксированы с учётом перевода часов.
 No submission window is open right now. Check the schedule below.|Сейчас окно отправки закрыто. Расписание — ниже.
 Your proof for today has been submitted.|Доказательство за сегодня отправлено.
-Submit private proof|Отправить закрытое доказательство
+Submit private proof|Отправить фото
 Take a photo|Сделать фото
 Choose photo|Выбрать фото
-Context for your circle|Пояснение для круга
+Context for your circle|Комментарий для команды
 What did you do? What can this photo show?|Что вы сделали? Что может показать это фото?
 Your selected proof preview|Предпросмотр выбранного фото
 Preparing proof…|Подготовка фото…
 Photo received. Your proof is ready for peer review.|Фото получено. Доказательство готово к проверке участниками.
-Photos are private to your Circle. GPS metadata is removed. Camera capture is a requested source, not proof of when a photo was taken. JPEG, PNG and WebP are supported; photos are resized before upload.|Фото доступны только вашему кругу. Данные GPS удаляются. Камера — выбранный источник, но не подтверждение времени съёмки. Поддерживаются JPEG, PNG и WebP; перед загрузкой фото уменьшаются.
+Photos are private to your Circle. GPS metadata is removed. Camera capture is a requested source, not proof of when a photo was taken. JPEG, PNG and WebP are supported; photos are resized before upload.|Фото доступны только вашей команде. Данные GPS удаляются. Камера — выбранный источник, но не подтверждение времени съёмки. Поддерживаются JPEG, PNG и WebP; перед загрузкой фото уменьшаются.
 Use JPEG, PNG or WebP.|Используйте JPEG, PNG или WebP.
 Choose a photo smaller than 20 MB.|Выберите фото размером меньше 20 МБ.
 Unable to load this private photo.|Не удалось загрузить закрытое фото.
@@ -540,8 +537,8 @@ Window closed|Окно закрыто
 Expired — no proof|Просрочено — фото нет
 Upload incomplete|Загрузка не завершена
 Development review · human judgment needed|Тестовая проверка · нужно решение людей
-AI never decides completion. Decisions require a strict majority of eligible peers. Rejection and dispute resolution need at least two independent reviewers. If your Circle is too small, review stays unresolved; no penalty is finalized.|ИИ не определяет выполнение. Нужно строгое большинство допущенных участников. Для отклонения и разрешения спора нужны минимум два независимых проверяющих. Если круг слишком мал, проверка остаётся открытой, окончательный штраф не начисляется.
-Your Circle’s submitted photos and review history will appear here.|Здесь появятся фотографии круга и история проверок.
+AI never decides completion. Decisions require a strict majority of eligible peers. Rejection and dispute resolution need at least two independent reviewers. If your Circle is too small, review stays unresolved; no penalty is finalized.|ИИ не определяет выполнение. Нужно строгое большинство допущенных участников. Для отклонения и разрешения спора нужны минимум два независимых проверяющих. Если команда слишком маленькая, проверка остаётся открытой, окончательный штраф не начисляется.
+Your Circle’s submitted photos and review history will appear here.|Здесь появятся фотографии команды и история проверок.
 Your review|Ваша проверка
 What did you observe? Explain your decision.|Что вы увидели? Объясните решение.
 Endorse proof|Подтвердить
@@ -564,18 +561,18 @@ grace|отдых
 penalty|штраф
 reward|награда
 refund|возврат
-YOUR CIRCLE, IN THE LOOP|ВАШ КРУГ НА СВЯЗИ
+YOUR CIRCLE, IN THE LOOP|СОБЫТИЯ ВАШЕЙ КОМАНДЫ
 A little nudge|Небольшое напоминание
 Deadlines, decisions and the moments worth noticing.|Сроки, решения и важные моменты.
 Mark all as read|Прочитать всё
 Mark as read|Прочитано
 You’re all caught up.|Вы всё прочитали.
-Reminders and circle updates will appear here.|Здесь появятся напоминания и новости круга.
+Reminders and circle updates will appear here.|Здесь появятся напоминания и новости команды.
 Open update →|Открыть событие →
-Circle update|Новость круга
+Circle update|Новость команды
 Your upload window closes soon|Окно отправки скоро закроется
 A submission deadline has passed|Срок отправки истёк
-Your circle needs a review|Кругу нужна ваша проверка
+Your circle needs a review|Команде нужна ваша проверка
 Your proof was accepted|Ваше доказательство принято
 Your proof was rejected|Ваше доказательство отклонено
 A proof decision was disputed|Решение по доказательству оспорено
@@ -589,7 +586,7 @@ Encourage|Поддержать
 Celebrate|Отметить успех
 Support|Поставить сердце
 Encouragement never counts as a review vote.|Реакции не считаются голосами при проверке.
-Circle conversation ·|Разговор круга ·
+Circle conversation ·|Обсуждение ·
 Comment removed|Комментарий удалён
 Remove my comment|Удалить мой комментарий
 Add encouragement|Добавить поддержку
@@ -625,8 +622,8 @@ Skip to content|Перейти к содержимому
 Main navigation|Основная навигация
 Mobile navigation|Мобильная навигация
 StakeUp home|Главная StakeUp
-Your circle stays private.|Ваш круг остаётся закрытым.
-All stakes are virtual. Your circle stays private.|Все ставки виртуальные. Ваш круг остаётся закрытым.
+Your circle stays private.|Ваша команда остаётся закрытой.
+All stakes are virtual. Your circle stays private.|Все ставки виртуальные. Ваша команда остаётся закрытой.
 All stakes are virtual. Always.|Все ставки виртуальные. Всегда.
 All stakes are virtual. There are no payment details to add.|Все ставки виртуальные. Платёжные данные не нужны.
 VIRTUAL STAKES ONLY|ТОЛЬКО ВИРТУАЛЬНЫЕ СТАВКИ
@@ -686,9 +683,9 @@ A few shared principles|Несколько общих принципов
 A quieter hour. A shared goal.|Тихий час. Общая цель.
 Accept before activation|Принять до начала
 Account|Аккаунт
-Across your Circles|Во всех ваших кругах
+Across your Circles|Во всех ваших командах
 Active|Активные
-Active Circles|Активные круги
+Active Circles|Активные команды
 Active challenge|Активное испытание
 Active virtual pool|Общий виртуальный фонд
 All|Все
@@ -701,31 +698,30 @@ Before final results|Перед подведением итогов
 Built around real life.|Для настоящей жизни.
 Cancel|Отмена
 Challenge roster|Участники испытания
-Circle challenges|Испытания круга
+Circle challenges|Испытания команды
 Circle identity|Название и описание
 Circle owner permissions|Возможности владельца
 Combined challenge pools|Общий фонд испытаний
-Create a private Circle or join your friends with an invitation.|Создайте закрытый круг или присоединитесь к друзьям по приглашению.
+Create a private Circle or join your friends with an invitation.|Создайте закрытую команду или присоединитесь к друзьям по приглашению.
 Create new password|Создать новый пароль
 Create your private account.|Создайте личный аккаунт.
 Created by you · 1 member|Создан вами · 1 участник
-Creating a challenge does not enroll you. Joining a circle does not accept any challenge rules.|Создание испытания не означает участие. Вступление в круг не означает принятие правил испытаний.
+Creating a challenge does not enroll you. Joining a circle does not accept any challenge rules.|Создание испытания не означает участие. Вступление в команду не означает принятие правил испытаний.
 Dawn Runners|Ранние бегуны
 Deep Work|Глубокая работа
 Design a challenge proposal|Создайте испытание
-Discipline rate|Уровень дисциплины
+Discipline rate|Выполнение заданий
 Every participant accepts individually, including you.|Каждый участник принимает правила лично, включая вас.
 Grace day reserved|Выбран день отдыха
 How it works|Как это работает
 Immutable challenge rules|Зафиксированные правила
 In-app notifications|Уведомления в приложении
-In-app updates from your Circles. Only you can read your notifications.|Новости ваших кругов. Ваши уведомления видны только вам.
+In-app updates from your Circles. Only you can read your notifications.|Новости ваших команд. Ваши уведомления видны только вам.
 Independent reviewers|Независимые участники
-Initials for now. Your profile stays private.|Пока используем инициалы. Профиль остаётся закрытым.
 Installable mobile and Windows experiences built on this shared application.|Мобильное приложение и версия для Windows на основе этого приложения.
 Invite friends with private links.|Приглашайте друзей по закрытым ссылкам.
 Invite only|По приглашению
-Joining a circle does not enroll you in its challenges.|Вступление в круг не означает участие в испытаниях.
+Joining a circle does not enroll you in its challenges.|Вступление в команду не означает участие в испытаниях.
 Latest 100 updates|Последние 100 уведомлений
 Live theme preview|Предпросмотр темы
 Make time to focus|Время для концентрации
@@ -739,25 +735,25 @@ No cash value|Без денежной стоимости
 No deposits, charges or withdrawals.|Без пополнений, списаний и вывода денег.
 No deposits, real-money transfers or withdrawals. There is no launch date promised for future capabilities.|Без пополнений, денежных переводов и вывода денег. Сроки запуска будущих возможностей пока не определены.
 No proof obligation today.|Сегодня доказательство не требуется.
-No public directory. Your Circle stays between its members.|Открытого каталога нет. Ваш круг доступен только участникам.
+No public directory. Your Circle stays between its members.|Открытого каталога нет. Ваша команда доступна только участникам.
 No public feed|Нет открытой ленты
 Notification center|Центр уведомлений
 One private photo. Your own context.|Одно закрытое фото. Ваше пояснение.
 One small effort, together.|Маленький шаг, вместе.
-Only authorized members can access Circle data.|Данные круга доступны только его участникам.
+Only authorized members can access Circle data.|Данные команды доступны только её участникам.
 Only virtual stakes.|Только виртуальные ставки.
-Open Circle workspace|Открыть круг
+Open Circle workspace|Открыть команду
 Open window|Окно открыто
 Opt-in reminders beyond the in-app inbox.|Напоминания вне приложения по вашему согласию.
 Optional vision analysis with honest limitations and human review.|Анализ изображений с честным описанием ограничений и проверкой участниками.
 Personal activity|Личная активность
 Phone & Windows apps|Приложения для телефона и Windows
 Planned|Запланировано
-Private accountability with|Личная ответственность и
+Private accountability with|Держите слово.
 Private by default. These are examples, not a public feed.|Всё закрыто по умолчанию. Это примеры, а не открытая лента.
-Private circle|Закрытый круг
-Private photo evidence|Закрытые фото-доказательства
-Private, invite-only squads holding each other accountable.|Закрытые круги по приглашениям. Поддерживайте ответственность друг друга.
+Private circle|Закрытая команда
+Private photo evidence|Фото только для команды
+Private, invite-only squads holding each other accountable.|Закрытые команды по приглашениям. Помогайте друг другу держать слово.
 Profile|Профиль
 Profile updates|Изменения профиля
 Propose challenges with clear, shared rules.|Предлагайте испытания с понятными общими правилами.
@@ -769,19 +765,19 @@ Rejected|Отклонено
 Reviews|Проверки
 Schedule order|По расписанию
 Search activity|Поиск событий
-Selected proof artifact|Выбранное доказательство
+Selected proof artifact|Выбранное фото
 Server receipt time|Время получения сервером
 Set up your profile|Настройте профиль
 Settings & appearance|Настройки и оформление
 Settings & preferences|Настройки
 Settlement lifecycle|Этапы подведения итогов
-Start a circle|Создать круг
+Start a circle|Создать команду
 The 24-hour appeal period must finish.|Должны пройти 24 часа на обжалование.
 The link may be incorrect or the page may have moved. You can return to your workspace.|Возможно, ссылка неверна или страница перемещена. Вернитесь в своё пространство.
 The server determines when finalization is ready.|Сервер определяет готовность к подведению итогов.
-This is how your friends will recognize you in Circles and reviews.|Так друзья узнают вас в кругах и при проверке доказательств.
-This page records account and profile activity. Circle events stay in their own private workspaces.|Здесь сохраняются события аккаунта и профиля. События кругов находятся в их закрытых пространствах.
-Today’s obligations & active windows|Сегодняшние обязательства и окна отправки
+This is how your friends will recognize you in Circles and reviews.|Так друзья узнают вас в командах и при проверке доказательств.
+This page records account and profile activity. Circle events stay in their own private workspaces.|Здесь сохраняются события аккаунта и профиля. События команд находятся в их закрытых пространствах.
+Today’s obligations & active windows|Задания на сегодня и время отправки фото
 Two friends preparing for a workout|Двое друзей готовятся к тренировке
 Unread|Непрочитанные
 Upcoming window|Окно ещё не открыто
@@ -795,62 +791,111 @@ Welcome back|С возвращением
 What comes next|Что дальше
 Working now|Уже работает
 You choose which challenges to accept.|Вы сами выбираете, какие испытания принять.
-Your Circle stays private.|Ваш круг остаётся закрытым.
-Your circle starts with you.|Ваш круг начинается с вас.
-Your commitments. Your people. Your next move.|Ваши обязательства. Ваши люди. Ваш следующий шаг.
-Your daily commitment, reviewed by your Circle.|Ваше ежедневное обязательство проверяют участники круга.
-Your first commitment starts here.|Первое обязательство начинается здесь.
+Your Circle stays private.|Ваша команда остаётся закрытой.
+Your circle starts with you.|Ваша команда начинается с вас.
+Your commitments. Your people. Your next move.|Ваши цели, команда и планы на сегодня.
+Your daily commitment, reviewed by your Circle.|Делитесь результатом дня — команда поможет его оценить.
+Your first commitment starts here.|Начните с первого испытания.
 Your interface language is saved to your account.|Язык интерфейса сохраняется в вашем аккаунте.
-Your new circle|Ваш новый круг
-Your people. Your progress.|Ваши люди. Ваш прогресс.
+Your new circle|Ваша новая команда
+Your people. Your progress.|Ваша команда. Ваш прогресс.
 Your private history|Ваша личная история
 Your private inbox|Ваши личные уведомления
 Your rules. Your choice.|Ваши правила. Ваш выбор.
 Your workspace|Ваше пространство
-real|настоящие
-social stakes.|социальные ставки.
+real|Вместе
+social stakes.|с друзьями.
 PRIVATE ACCOUNTABILITY|ЛИЧНАЯ ОТВЕТСТВЕННОСТЬ
-PRIVATE CIRCLES|ЗАКРЫТЫЕ КРУГИ
+PRIVATE CIRCLES|ЗАКРЫТЫЕ КОМАНДЫ
 ZERO PUBLIC DIRECTORY|БЕЗ ОТКРЫТОГО КАТАЛОГА
 YOUR ACCOUNT. YOUR PREFERENCES.|ВАШ АККАУНТ. ВАШИ НАСТРОЙКИ.
-EMAIL ADDRESS|ЭЛЕКТРОННАЯ ПОЧТА
 YOUR ACCOUNT HISTORY|ИСТОРИЯ ВАШЕГО АККАУНТА
-YOUR PRIVATE IDENTITY|ВАША ЛИЧНОСТЬ
+YOUR PRIVATE IDENTITY|ВАШ ПРОФИЛЬ
 YOUR PROFILE|ВАШ ПРОФИЛЬ
-PRIVATE CIRCLE · NEW WORKSPACE|ЗАКРЫТЫЙ КРУГ · НОВОЕ ПРОСТРАНСТВО
-LIVE CIRCLE PREVIEW|ПРЕДПРОСМОТР КРУГА
+PRIVATE CIRCLE · NEW WORKSPACE|НОВАЯ КОМАНДА
+LIVE CIRCLE PREVIEW|ВАША КОМАНДА
 INVITATION REQUIRED|НУЖНО ПРИГЛАШЕНИЕ
 CONNECTION INTERRUPTED|СОЕДИНЕНИЕ ПРЕРВАНО
-CIRCLE ONLY|ТОЛЬКО КРУГ
+CIRCLE ONLY|ТОЛЬКО ДЛЯ КОМАНДЫ
 INVITE ONLY|ПО ПРИГЛАШЕНИЮ
 PEER REVIEW|ПРОВЕРКА УЧАСТНИКАМИ
 SHARED RULES|ОБЩИЕ ПРАВИЛА
 PRIVATE PHOTO|ЗАКРЫТОЕ ФОТО
 VIRTUAL REWARDS|ВИРТУАЛЬНЫЕ НАГРАДЫ
-ILLUSTRATIVE CIRCLES|ПРИМЕРЫ КРУГОВ
-YOUR PEOPLE. YOUR PROMISE.|ВАШИ ЛЮДИ. ВАШЕ ОБЕЩАНИЕ.
-YOUR NEXT CHAPTER|ВАША СЛЕДУЮЩАЯ ГЛАВА
-Proof workspace|Доказательства
+ILLUSTRATIVE CIRCLES|ПРИМЕРЫ КОМАНД
+YOUR PEOPLE. YOUR PROMISE.|ВАШИ ДРУЗЬЯ. ОБЩАЯ ЦЕЛЬ.
 HONEST DEVELOPMENT MOCK|ЧЕСТНЫЙ ТЕСТОВЫЙ РЕЖИМ
-The development mock checks readability only. It does not analyze the photo or prove completion. Your peers make the decision.|Тестовый модуль проверяет только читаемость файла. Он не анализирует фото и не доказывает выполнение. Решение принимают участники круга.
+The development mock checks readability only. It does not analyze the photo or prove completion. Your peers make the decision.|Тестовый модуль проверяет только читаемость файла. Он не анализирует фото и не доказывает выполнение. Решение принимают участники команды.
 Your daily rhythm|Ваш ежедневный ритм
 Choose the days, upload window and virtual penalty.|Выберите дни, окно отправки и виртуальный штраф.
 Independent peers make the decision.|Решение принимают независимые участники.
-Open proof workspace|Открыть доказательства
+Open proof workspace|Фото и проверки
 LIVE CHALLENGE PREVIEW|ПРЕДПРОСМОТР ИСПЫТАНИЯ
 Your new challenge|Ваше новое испытание
-Circle icon selection|Выбор значка круга
+Circle icon selection|Выбор значка команды
 Peer review|Проверка участниками
-You cannot review your own proof.|Вы не можете проверять своё доказательство.
 Explain what you observed. Comments and reactions do not count as votes.|Объясните свои наблюдения. Комментарии и реакции не считаются голосами.
 A SHARED PROMISE · OPEN FOR ACCEPTANCE|ОБЩЕЕ ОБЯЗАТЕЛЬСТВО · МОЖНО ПРИНЯТЬ
 ACTIVE · RULES AND ROSTER LOCKED|АКТИВНО · ПРАВИЛА И СОСТАВ ЗАФИКСИРОВАНЫ
 CANCELLED PROPOSAL|ПРЕДЛОЖЕНИЕ ОТМЕНЕНО
 COMPLETED · RESULTS FINAL|ЗАВЕРШЕНО · ИТОГИ ПОДВЕДЕНЫ
 MAKE ROOM FOR PROGRESS|ВРЕМЯ ДЛЯ ПРОГРЕССА
-PRIVATE CIRCLES. SHARED INTENTION.|ЗАКРЫТЫЕ КРУГИ. ОБЩАЯ ЦЕЛЬ.
-WELCOME TO THE CIRCLE|ДОБРО ПОЖАЛОВАТЬ В КРУГ
-WORKING NOW|УЖЕ РАБОТАЕТ`;
+WELCOME TO THE CIRCLE|ДОБРО ПОЖАЛОВАТЬ В КОМАНДУ
+WORKING NOW|УЖЕ РАБОТАЕТ
+Close|Закрыть
+About the pool|Как устроен общий фонд
+Virtual credits come from missed commitments. They have no cash value. Final rewards depend on the accepted challenge rules.|Виртуальные баллы попадают в фонд за пропуски. Их нельзя обменять на деньги. Итоговое распределение зависит от принятых правил испытания.
+How challenges work|Как участвовать в испытании
+Each person accepts a challenge individually. Your photo is reviewed by teammates. Open a challenge to see its rules and upload window.|Каждый участник сам принимает правила. Фотографии проверяют другие участники команды. Откройте испытание, чтобы посмотреть правила и время отправки.
+Submitting and reviewing|Отправка и проверка фото
+Upload during your agreed window. A readable photo is not automatic acceptance: independent teammates review your evidence. You cannot review your own submission.|Отправляйте фото в согласованное время. Читаемость файла не означает, что задание выполнено: это проверяют другие участники команды. Своё фото проверять нельзя.
+Circle|Команда
+Small steps count.|Каждый шаг важен.
+View profile|Открыть профиль
+Profile photo|Фото профиля
+Your photo is visible to teammates only. Location metadata is removed.|Фото видят только участники ваших команд. Данные о местоположении удаляются.
+Save profile photo|Сохранить фото
+Profile photo saved.|Фото профиля сохранено.
+Profile not found.|Профиль недоступен.
+Choose a JPEG, PNG or WebP photo smaller than 20 MB.|Выберите фото JPEG, PNG или WebP размером до 20 МБ.
+Unable to save profile photo.|Не удалось сохранить фото. Попробуйте ещё раз.
+progress points|очков прогресса
+Achievements|Значки достижений
+Earn badges and progress points through accepted proof. Grace passes do not count as verified proof.|Получайте значки и очки за задания, подтверждённые командой. Дни отдыха не считаются подтверждёнными заданиями.
+First step|Первый шаг
+Seven wins|Семь побед
+Consistency champion|Мастер постоянства
+Challenge finisher|Испытание пройдено
+accepted proofs|подтверждений
+Progress rewards|Награды за прогресс
+Each accepted photo earns 10 progress points. Each finished challenge earns 50. These points unlock profile milestones and have no cash value.|За каждое принятое фото — 10 очков, за завершённое испытание — ещё 50. Очки отражают ваш прогресс и не имеют денежной стоимости.
+Progress shown here comes from challenges you can both access.|Здесь показан прогресс в испытаниях, доступных вам обоим.
+Commitment calendar|Календарь заданий
+Calendar and grace passes|Календарь и дни отдыха
+Green means a photo was submitted or a grace pass was used. Red means missed or rejected. A pass clears a missed day without a photo. Open a date for all photos, reviews and conversation.|Зелёный — фото отправлено или использован день отдыха. Красный — пропуск или отклонённое фото. День отдыха закрывает пропуск без фото. Нажмите на дату, чтобы открыть фотографии и обсуждения.
+Previous month|Предыдущий месяц
+Next month|Следующий месяц
+Submitted / excused|Фото отправлено / день отдыха
+Missed / rejected|Пропуск / отклонено
+Dates follow each challenge timezone.|Даты указаны в часовом поясе каждого испытания.
+View day|Открыть день
+photos|фото
+Grace pass|День отдыха
+Excused with a grace pass. No photo required.|Использован день отдыха. Фото не требуется.
+Use an available grace pass to complete this day without a photo.|Используйте доступный день отдыха, чтобы закрыть этот день без фото.
+Use grace pass|Использовать день отдыха
+passes remaining|дней отдыха осталось
+No photos were submitted for this challenge on this date.|За этот день в испытании ещё нет фотографий.
+Photos, reviews and conversation for this day.|Все фотографии, проверки и обсуждения за этот день.
+A grace pass excuses one scheduled or missed day without a photo. It uses your agreed allowance. Past passes cannot be cancelled; finalized results stay locked.|День отдыха закрывает запланированный день или пропуск без фото. Лимит установлен правилами испытания. Отдых за прошедший день отменить нельзя. Подведённые итоги не меняются.
+A used past grace pass cannot be cancelled.|День отдыха за прошедшую дату нельзя отменить.
+Grace passes excuse scheduled or missed days without photos, within your agreed allowance. Past passes cannot be cancelled. Finalized results stay locked.|День отдыха можно использовать заранее или за пропущенную дату — без фото и в пределах установленного лимита. Отдых за прошедший день отменить нельзя. Подведённые итоги не меняются.
+Colors show your days. Photo counts include the whole team.|Цвет отмечает ваши дни, а счётчик фото учитывает всю команду.
+No challenges are scheduled for this date.|На эту дату испытаний нет.
+Your progress includes all your challenges.|Здесь учтён прогресс во всех ваших испытаниях.
+Your photo and achievements are visible to teammates.|Фото и достижения видят участники ваших команд.
+Your profile|Ваш профиль
+Edit profile and settings|Редактировать профиль и настройки`;
 export const ru: Record<string, string> = Object.fromEntries(
   text.split('\n').map((line) => {
     const separator = line.indexOf('|');

@@ -1,3 +1,4 @@
+import { AvatarUpload } from './member';
 import { useI18n } from '../lib/i18n';
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -51,10 +52,10 @@ export function ProfileForm({ onboarding = false }: { onboarding?: boolean }) {
   return (
     <form onSubmit={submit} className="form-stack profile-form">
       <div className={`profile-identity ${onboarding ? '' : 'st-profile-form-identity'}`}>
-        <Avatar name={profile.displayName} large />
+        <Avatar userId={profile.id} name={profile.displayName} large />
         <div>
           <strong>{t('Your corner of StakeUp')}</strong>
-          <span>{t('Initials for now. Photo uploads arrive with evidence.')}</span>
+          <span>{t('Your photo and achievements are visible to teammates.')}</span>
         </div>
       </div>
       <div className="form-row">
@@ -142,10 +143,10 @@ export function Onboarding() {
           <h2>{t('Your circle starts with you.')}</h2>
           <p>{t('This is how your friends will recognize you in Circles and reviews.')}</p>
           <section className="st-module st-onboarding-monogram">
-            <Avatar name={profile?.displayName ?? ''} large />
+            <Avatar userId={profile?.id} name={profile?.displayName ?? ''} large />
             <strong>{profile?.displayName}</strong>
             <span>@{profile?.username}</span>
-            <small>{t('Initials for now. Your profile stays private.')}</small>
+            <small>{t('Your photo and achievements are visible to teammates.')}</small>
           </section>
           <section className="st-module">
             <h3>{t('A few shared principles')}</h3>
@@ -211,7 +212,7 @@ export function Settings() {
       <div className="st-settings-layout">
         <div className="st-settings-left">
           <section className="st-profile-summary">
-            <Avatar name={profile?.displayName ?? ''} large />
+            <Avatar userId={profile?.id} name={profile?.displayName ?? ''} large />
             <div>
               <h2>{profile?.displayName}</h2>
               <span>@{profile?.username}</span>
@@ -225,6 +226,7 @@ export function Settings() {
               <UserRound size={20} />
             </div>
             <ProfileForm />
+            <AvatarUpload />
           </section>
           <section className="st-module st-account-security">
             <div className="st-module-heading">

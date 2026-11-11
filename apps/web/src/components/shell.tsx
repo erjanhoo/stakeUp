@@ -102,8 +102,8 @@ export function Shell() {
           </div>
         </div>
         <div className="st-profile-dock">
-          <Link to="/app/settings" aria-label={t('Your profile and settings')}>
-            <Avatar name={profile?.displayName ?? ''} />
+          <Link to={`/app/members/${profile?.id}`} aria-label={t('Your profile')}>
+            <Avatar userId={profile?.id} linked={false} name={profile?.displayName ?? ''} />
             <div>
               <strong>{profile?.displayName}</strong>
               <span>@{profile?.username}</span>
@@ -141,10 +141,10 @@ export function Shell() {
             <NotificationBell />
             <Link
               className="st-topbar-avatar"
-              to="/app/settings"
-              aria-label={t('Your profile and settings')}
+              to={`/app/members/${profile?.id}`}
+              aria-label={t('Your profile')}
             >
-              <Avatar name={profile?.displayName ?? ''} />
+              <Avatar userId={profile?.id} linked={false} name={profile?.displayName ?? ''} />
             </Link>
           </div>
         </header>

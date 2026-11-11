@@ -41,11 +41,14 @@ jobs:
           -f supabase/migrations/20261110000200_upload_windows.sql
           -f supabase/migrations/20261110000300_competition.sql
           -f supabase/migrations/20261110000400_community.sql
+          -f supabase/migrations/20261111000100_member_profiles.sql
+          -f supabase/migrations/20261111000200_grace_bypass.sql
           -f supabase/tests/foundation.sql
           -f supabase/tests/social_challenges.sql
           -f supabase/tests/evidence.sql
           -f supabase/tests/upload_windows.sql
           -f supabase/tests/competition.sql
           -f supabase/tests/community.sql
+          -f supabase/tests/member_profiles.sql
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e

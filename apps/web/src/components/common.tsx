@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react';
+import { useAuth } from '../lib/auth';
+import { supabase } from '../lib/api';
 import { useI18n } from '../lib/i18n';
 import { ArrowUpRight, Zap, LoaderCircle, CircleAlert } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -50,10 +53,71 @@ export function PhaseNote({ title, text }: { title: string; text: string }) {
     </div>
   );
 }
-export function Avatar({ name, large = false }: { name: string; large?: boolean }) {
-  return (
+export function Avatar({
+  name,
+  large = false,
+  userId,
+  linked = true,
+}: {
+  name: string;
+  large?: boolean;
+  userId?: string;
+  linked?: boolean;
+}) {
+  const { profile } = useAuth(),
+    { t } = useI18n(),
+    [url, setUrl] = useState(''),
+    [revision, setRevision] = useState(0);
+  useEffect(() => {
+    const update = () => setRevision((v) => v + 1);
+    window.addEventListener('stakeup:avatar', update);
+    return () => window.removeEventListener('stakeup:avatar', update);
+  }, []);
+  useEffect(() => {
+    setUrl('');
+    if (!userId || !profile) return;
+    const controller = new AbortController();
+    let object = '';
+    void (async () => {
+      const token = supabase ? (await supabase.auth.getSession()).data.session?.access_token : null;
+      const r = await fetch(`/api/members/${userId}/avatar`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        signal: controller.signal,
+      });
+      if (!r.ok) return;
+      const blob = await r.blob();
+      if (controller.signal.aborted) return;
+      object = URL.createObjectURL(blob);
+      setUrl(object);
+    })().catch(() => {});
+    return () => {
+      controller.abort();
+      if (object) URL.revokeObjectURL(object);
+    };
+  }, [userId, profile?.id, revision]);
+  const face = (
     <span className={`avatar ${large ? 'avatar-large' : ''}`} aria-hidden="true">
-      {name.slice(0, 2).toUpperCase()}
+      {url ? (
+        <img src={url} alt="" />
+      ) : (
+        name
+          .split(/\s+/)
+          .slice(0, 2)
+          .map((w) => w[0])
+          .join('')
+          .toUpperCase()
+      )}
     </span>
+  );
+  return userId && linked ? (
+    <Link
+      className="avatar-profile-link"
+      to={`/app/members/${userId}`}
+      aria-label={`${t('View profile')}: ${name}`}
+    >
+      {face}
+    </Link>
+  ) : (
+    face
   );
 }

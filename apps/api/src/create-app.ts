@@ -1,3 +1,4 @@
+import { memberRoutes } from './member-routes.js';
 import { evidenceRoutes } from './evidence-routes.js';
 import Fastify, {
   type FastifyReply,
@@ -404,5 +405,6 @@ export async function configureApp(app: FastifyInstance, config: Config) {
       },
     });
   evidenceRoutes(app, config, local, authenticate);
+  memberRoutes(app, config, local, authenticate);
   return app;
 }

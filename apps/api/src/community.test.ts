@@ -225,3 +225,23 @@ it('deduplicates notifications, isolates read state and produces timezone-aware 
   );
   expect(communityCommand(s, id(4), 'notifications', {}, now)).toEqual([]);
 });
+
+it('consumes a pass once for a missed day, removes its provisional penalty and locks past cancellation/final results', () => {
+  const s = fixture(),
+    late = new Date('2026-11-10T10:00Z');
+  expect(
+    competitionCommand(s, id(1), id(11), false, late).rows.find((r) => r.userId === id(1))
+      ?.penaltyMinor,
+  ).toBe(100);
+  grace(s, 'grace_choose', id(110), id(1), late);
+  grace(s, 'grace_choose', id(110), id(1), late);
+  expect(grace(s, 'grace_list')).toHaveLength(1);
+  expect(
+    competitionCommand(s, id(1), id(11), false, late).rows.find((r) => r.userId === id(1))
+      ?.penaltyMinor,
+  ).toBe(0);
+  expect(() => grace(s, 'grace_choose', id(111), id(1), late)).toThrow(/allowance/);
+  expect(() => grace(s, 'grace_cancel', id(110), id(1), late)).toThrow(/deadline/);
+  s.challenges[0].status = 'completed';
+  expect(() => grace(s, 'grace_choose', id(112), id(1), late)).toThrow(/own grace/);
+});

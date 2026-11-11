@@ -30,6 +30,7 @@ Stop development with Ctrl+C. No paid service is needed for this mode.
 - [Foundation verification and known limitations](docs/VERIFICATION.md)
 - [Upload windows and virtual competition](docs/COMPETITION.md)
 - [Community, Russian localization and chosen grace days](docs/COMMUNITY.md)
+- [Profiles, private avatars, calendar, passes and achievement rewards](docs/PROFILE_CALENDAR.md)
 - [Google Stitch redesign brief with exact pages, actions and permissions](docs/STITCH_DESIGN_BRIEF.md)
 - [Evidence, review rules and upload security](docs/EVIDENCE.md)
 - [Social challenges: rules, boundaries and acceptance checks](docs/SOCIAL_CHALLENGES.md)

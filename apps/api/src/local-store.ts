@@ -181,6 +181,42 @@ export class LocalStore {
   community(uid: string, action: string, p: Record<string, unknown> = {}) {
     return this.transact((state) => communityCommand(state, uid, action, p));
   }
+  memberProfile(viewer: string, target: string) {
+    return this.transact((state) => {
+      const shared = state.circles
+        .filter(
+          (c) =>
+            state.members.some((m) => m.circleId === c.id && m.userId === viewer && !m.leftAt) &&
+            state.members.some((m) => m.circleId === c.id && m.userId === target && !m.leftAt),
+        )
+        .map((c) => c.id);
+      const p = state.accounts.find((a) => a.profile.id === target)?.profile;
+      if (!p || (viewer !== target && !shared.length))
+        throw new AppError(404, 'Profile not found.');
+      const ids = state.challenges
+        .filter((c) => viewer === target || shared.includes(c.circleId))
+        .map((c) => c.id);
+      const accepted = ((state as EvidenceState).proofs ?? []).filter(
+        (p) => p.userId === target && p.status === 'accepted' && ids.includes(p.challengeId),
+      ).length;
+      const completed = state.enrollments.filter(
+        (e) =>
+          e.userId === target &&
+          e.status === 'accepted' &&
+          ids.includes(e.challengeId) &&
+          state.challenges.some((c) => c.id === e.challengeId && c.status === 'completed'),
+      ).length;
+      return {
+        id: p.id,
+        displayName: p.displayName,
+        username: p.username,
+        bio: p.bio,
+        createdAt: p.createdAt,
+        accepted,
+        completed,
+      };
+    });
+  }
   language(uid: string, language: 'en' | 'ru') {
     return this.transact((state) => {
       const profile = state.accounts.find((a) => a.profile.id === uid)!.profile;

@@ -37,6 +37,26 @@ describe('foundation HTTP boundary', () => {
     expect(response.statusCode).toBe(201);
     return { profile: response.json(), cookie: response.cookies[0].value };
   }
+  it('keeps teammate profiles private and excludes email from visible profiles', async () => {
+    const a = await register(),
+      b = await register({ ...account, email: 'other@example.test', username: 'other' });
+    expect((await app.inject(`/api/members/${a.profile.id}`)).statusCode).toBe(401);
+    expect(
+      (
+        await app.inject({
+          url: `/api/members/${a.profile.id}`,
+          cookies: { stakeup_session: b.cookie },
+        })
+      ).statusCode,
+    ).toBe(404);
+    const own = await app.inject({
+      url: `/api/members/${a.profile.id}`,
+      cookies: { stakeup_session: a.cookie },
+    });
+    expect(own.statusCode).toBe(200);
+    expect(own.json()).not.toHaveProperty('email');
+    expect(own.json()).toMatchObject({ accepted: 0, completed: 0 });
+  });
   it('requires authentication and rejects cross-origin mutations', async () => {
     expect((await app.inject('/api/me')).statusCode).toBe(401);
     const response = await app.inject({

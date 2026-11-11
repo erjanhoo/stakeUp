@@ -1,3 +1,4 @@
+import { HelpTip } from '../components/help-tip';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -262,6 +263,10 @@ export function Overview() {
               <h2>
                 <PiggyBank size={18} />
                 {t('Active virtual pool')}
+                <HelpTip title="About the pool">
+                  Virtual credits come from missed commitments. They have no cash value. Final
+                  rewards depend on the accepted challenge rules.
+                </HelpTip>
               </h2>
               <span className="st-live-dot" />
             </div>

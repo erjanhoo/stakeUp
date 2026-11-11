@@ -27,3 +27,12 @@ The user applied the combined two-migration file in Supabase and reported Succes
 
 
 Community/localization release: the user applied 20261110000400_community.sql and reported Success. API dpl_6igTyAFKu6GT4VuCGqt1xfDgn47P and web dpl_2qmHKF1tKpJbMunS1M2G3VY2Uk95 reached READY from code commit 4e13c0b. All 33 unit/API/client tests, six PostgreSQL suites and 12 desktop/mobile browser journeys passed; the two language journeys also passed again after locale/error-boundary tightening. Public EN/RU landing/login, private API/deep-link authorization, health, responsive layouts, eight-character password and CSP checks passed. Managed signed-in real-user Storage/review/settlement and scheduled-job run history remain operational verification work.
+
+
+## Profile/calendar release — 2026-11-11
+
+The approved Stitch redesign is published as the primary production interface from `e84ef94`. The follow-up adds membership-scoped profiles and private avatars, Circle calendars with daily proof/review/conversation views, one-use missed-day grace bypasses, derived points and visible badge milestones, natural Russian team terminology, help popovers, themed pickers and interaction motion. See PROFILE_CALENDAR.md for exact behavior and privacy boundaries.
+
+Both new migrations were applied to the managed production database through its SQL Editor, which returned Success. All seven PostgreSQL authorization suites pass against isolated PostgreSQL 17. `npm run check` passes TypeScript, 35 tests, both builds and the bundled API HTTP check. All 14 desktop/mobile journeys pass, including accepted-photo badge rewards, no-photo grace bypass, avatar upload and shared-membership profile access. New profile layouts also pass a 320px overflow assertion. CI includes both new migrations and the seventh SQL suite.
+
+No automated test signed into a live user account or changed live user photos/proof. Physical-device camera behavior and managed signed-in Storage/review/settlement walkthroughs remain operational checks. The Vite build reports a 644 kB initial JS chunk warning; route-specific modules are still lazy-loaded. There is no paid vision provider, push integration or app-store package in this release.
