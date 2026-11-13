@@ -24,7 +24,9 @@ Published at https://stakeup-olive.vercel.app. The database update was applied d
 - Application source: `080241757d6068b05a99400fefcb55cec20dee11`, branch `erjanhoo/experience-refresh`.
 - API production: `dpl_3V3fGBcaZns2iCLNfdmPK1f3UEho`, https://stakeup-api.vercel.app.
 - Web production: `dpl_9KinbwjEETSY9qYct2tdLao3jwJS`, https://stakeup-olive.vercel.app.
-- Both deployments reached READY from the application source above. Production health/config, API proxying, private wallet/review endpoints, legacy join redirects, PWA worker v2, eight appearance combinations and 24 responsive checks passed with no browser errors.
+- Follow-up invitation scrolling fix: `ccd9a1fd623f9d765d9a91a2b85f952c923f58c2`; website deployment `dpl_4gjCD8NcxbXFCkvHgm2hDXyCvaZn` reached READY.
+- GitHub Actions full verification passed: https://github.com/erjanhoo/stakeUp/actions/runs/43481015627.
+- Both initial deployments reached READY from the application source above. Production health/config, API proxying, private wallet/review endpoints, legacy join redirects, PWA worker v2, eight appearance combinations and 24 responsive checks passed with no browser errors.
 - Live top-up/retry behavior was tested inside a rolled-back database transaction. Signed-in behavior was covered by isolated local-account journeys; no user credentials were used during production browser checks.
 
 The migration is transactional and does not rewrite accepted challenge snapshots or completed settlements. The new top-up records are owner-readable through RLS; direct client inserts are denied. The wallet RPC derives its user from the authenticated session and serializes repeated top-up requests.
@@ -33,6 +35,6 @@ The migration is transactional and does not rewrite accepted challenge snapshots
 
 - TypeScript, 40 unit/API tests, web/API builds, and the exact production API bundle HTTP checks.
 - All migrations and nine PostgreSQL authorization/behavior suites in a fresh isolated PostgreSQL 17 instance, including top-up isolation, retry protection, legacy grace visibility, pending contributions and settlement reconciliation.
-- All 18 desktop/mobile browser journeys passed, including homepage session restoration, currency/top-ups, four accents, circle navigation, invitations, achievements, grace/calendar return navigation, review/appeal flows and settlement. Three interrupted journeys were rerun successfully after stopping overlapping dev-server restarts. Responsive checks include 1440, 1024, 820, 390 and 320 pixels.
+- All 18 desktop/mobile browser journeys passed locally and in GitHub Actions, including homepage session restoration, currency/top-ups, four accents, circle navigation, invitations, achievements, grace/calendar return navigation, review/appeal flows and settlement. Three interrupted local journeys were rerun successfully after stopping overlapping dev-server restarts. CI exposed a mobile popup stacking issue with animations enabled; the popup was moved outside animated containers and verified with scroll and pointer-access checks before the full CI run passed. Responsive checks include 1440, 1024, 820, 390 and 320 pixels.
 
 Supabase connected successfully. Migration `20261113180125_experience_wallet` is applied to StakeUp (`bwtpxrjcubvvsvnsjigm`). Live schema, RLS, function privileges, and transactional top-up/retry checks passed. The authenticated wallet RPC is intentionally exposed and checks the calling user; anonymous execution and direct writes are denied. Transactional test top-ups were rolled back; no account balance was changed. Earlier migrations were applied manually and have no history entries; do not rerun them.
