@@ -1073,4 +1073,16 @@ Object.assign(ru, {
     'Каждое обещание важно. Посмотрите на прогресс команды.',
   'I accept these dates, upload window, evidence rules, grace days, daily stakes and cap.':
     'Я принимаю даты, время загрузки, требования к фото, дни отдыха, ежедневные взносы и лимит.',
+  'Shrink calendar': 'Свернуть календарь',
+  'Expand calendar': 'Развернуть календарь',
+  'Demo payment card': 'Демонстрационная карта',
+  'Demo card details': 'Данные демонстрационной карты',
+  'Name on card': 'Имя на карте',
+  'Card number': 'Номер карты',
+  'Expiry date': 'Срок действия',
+  'Security code': 'Код безопасности',
+  'Use the demo card details shown below.': 'Используйте указанные данные демонстрационной карты.',
+  'Choose a future expiry date.': 'Укажите будущий срок действия.',
+  'Use demo card 4242 4242 4242 4242 | code 123': 'Демо-карта 4242 4242 4242 4242 · код 123',
+  'How your balance works': 'Как работает баланс',
 });

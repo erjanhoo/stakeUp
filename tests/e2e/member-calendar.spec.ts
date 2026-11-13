@@ -115,6 +115,12 @@ test('calendar pass clears a missed day once; teammate profiles and private avat
   await writeFile(file, JSON.stringify(state));
   await page.goto(`/app/circles/${cid}`);
   await expect(page.getByRole('heading', { name: 'Commitment calendar' })).toBeVisible();
+  await page.getByRole('button', { name: 'Shrink calendar' }).click();
+  await expect(page.locator('.calendar-grid')).toBeHidden();
+  await page.reload();
+  await expect(page.locator('.calendar-grid')).toBeHidden();
+  await page.getByRole('button', { name: 'Expand calendar' }).click();
+  await expect(page.locator('.calendar-grid')).toBeVisible();
   await page.getByRole('button', { name: 'Calendar and grace passes' }).click();
   await expect(page.getByRole('dialog', { name: 'Calendar and grace passes' })).toBeVisible();
   await page.keyboard.press('Escape');

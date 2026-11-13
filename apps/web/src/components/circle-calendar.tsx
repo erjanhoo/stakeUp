@@ -26,6 +26,9 @@ export function CircleCalendar({
   challenges: ChallengeSummary[];
 }) {
   const [search] = useSearchParams();
+  const [expanded, setExpanded] = useState(
+    () => search.has('month') || localStorage.getItem(`calendar-expanded:${circleId}`) !== 'false',
+  );
   const { t, language } = useI18n(),
     [month, setMonth] = useState(() =>
       /^\d{4}-(0[1-9]|1[0-2])$/.test(search.get('month') ?? '')
@@ -69,84 +72,104 @@ export function CircleCalendar({
             reviews and conversation.
           </HelpTip>
         </h2>
-      </div>
-      <div className="calendar-toolbar">
-        <Button variant="ghost" aria-label={t('Previous month')} onClick={() => move(-1)}>
-          <ChevronLeft size={18} />
+        <Button
+          variant="ghost"
+          className="calendar-toggle"
+          aria-expanded={expanded}
+          aria-controls={`calendar-body-${circleId}`}
+          onClick={() => {
+            setExpanded((v) => {
+              localStorage.setItem(`calendar-expanded:${circleId}`, String(!v));
+              return !v;
+            });
+          }}
+        >
+          {t(expanded ? 'Shrink calendar' : 'Expand calendar')}
+          <ChevronRight
+            size={17}
+            style={{ transform: expanded ? 'rotate(-90deg)' : 'rotate(90deg)' }}
+          />
         </Button>
-        <strong>
-          {new Intl.DateTimeFormat(language, { month: 'long', year: 'numeric' }).format(date)}
-        </strong>
-        <Button variant="ghost" aria-label={t('Next month')} onClick={() => move(1)}>
-          <ChevronRight size={18} />
-        </Button>
       </div>
-      <div className="calendar-legend">
-        <span className="good">{t('Submitted / excused')}</span>
-        <span className="missed">{t('Missed / rejected')}</span>
-        <span>{t('Dates follow each challenge timezone.')}</span>
-        <span>{t('Colors show your days. Photo counts include the whole team.')}</span>
-      </div>
-      {error ? (
-        <ErrorMessage message={error} />
-      ) : !rows ? (
-        <Loading />
-      ) : (
-        <div className="calendar-grid">
-          {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => (
-            <small key={d}>{t(d)}</small>
-          ))}
-          {Array.from({ length: offset }, (_, i) => (
-            <span key={`blank${i}`} />
-          ))}
-          {Array.from({ length: days }, (_, i) => {
-            const key = `${month}-${String(i + 1).padStart(2, '0')}`,
-              own = rows.flatMap((r) =>
-                r.challenge.obligations.filter((o) => o.localDate === key).map((o) => ({ o, r })),
-              ),
-              proofs = rows.flatMap((r) =>
-                r.proofs.filter((p) => p.localDate === key && p.receivedAt),
-              );
-            let state = '';
-            if (
-              own.some(
-                ({ o, r }) =>
-                  !r.grace.some((g) => g.obligationId === o.id) &&
-                  ((!r.proofs.some((p) => p.obligationId === o.id && p.receivedAt) &&
-                    Date.parse(o.deadlineAt) < Date.now()) ||
-                    r.proofs.some((p) => p.obligationId === o.id && p.status === 'rejected')),
-              )
-            )
-              state = 'missed';
-            else if (
-              own.some(
-                ({ o, r }) =>
-                  r.grace.some((g) => g.obligationId === o.id) ||
-                  r.proofs.some((p) => p.obligationId === o.id && p.receivedAt),
-              )
-            )
-              state = 'good';
-            return (
-              <Link
-                key={key}
-                className={`calendar-day ${state}`}
-                to={`/app/circles/${circleId}/day/${key}`}
-                aria-label={`${key}: ${t(state === 'missed' ? 'Missed / rejected' : state === 'good' ? 'Submitted / excused' : 'View day')}`}
-              >
-                <strong>{i + 1}</strong>
-                {proofs.length ? (
-                  <small>
-                    {proofs.length} {t('photos')}
-                  </small>
-                ) : null}
-                {own.some(({ o, r }) => r.grace.some((g) => g.obligationId === o.id)) ? (
-                  <small>{t('Grace pass')}</small>
-                ) : null}
-              </Link>
-            );
-          })}
+      <div id={`calendar-body-${circleId}`} hidden={!expanded}>
+        <div className="calendar-toolbar">
+          <Button variant="ghost" aria-label={t('Previous month')} onClick={() => move(-1)}>
+            <ChevronLeft size={18} />
+          </Button>
+          <strong>
+            {new Intl.DateTimeFormat(language, { month: 'long', year: 'numeric' }).format(date)}
+          </strong>
+          <Button variant="ghost" aria-label={t('Next month')} onClick={() => move(1)}>
+            <ChevronRight size={18} />
+          </Button>
         </div>
-      )}
+        <div className="calendar-legend">
+          <span className="good">{t('Submitted / excused')}</span>
+          <span className="missed">{t('Missed / rejected')}</span>
+          <span>{t('Dates follow each challenge timezone.')}</span>
+          <span>{t('Colors show your days. Photo counts include the whole team.')}</span>
+        </div>
+        {error ? (
+          <ErrorMessage message={error} />
+        ) : !rows ? (
+          <Loading />
+        ) : (
+          <div className="calendar-grid">
+            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => (
+              <small key={d}>{t(d)}</small>
+            ))}
+            {Array.from({ length: offset }, (_, i) => (
+              <span key={`blank${i}`} />
+            ))}
+            {Array.from({ length: days }, (_, i) => {
+              const key = `${month}-${String(i + 1).padStart(2, '0')}`,
+                own = rows.flatMap((r) =>
+                  r.challenge.obligations.filter((o) => o.localDate === key).map((o) => ({ o, r })),
+                ),
+                proofs = rows.flatMap((r) =>
+                  r.proofs.filter((p) => p.localDate === key && p.receivedAt),
+                );
+              let state = '';
+              if (
+                own.some(
+                  ({ o, r }) =>
+                    !r.grace.some((g) => g.obligationId === o.id) &&
+                    ((!r.proofs.some((p) => p.obligationId === o.id && p.receivedAt) &&
+                      Date.parse(o.deadlineAt) < Date.now()) ||
+                      r.proofs.some((p) => p.obligationId === o.id && p.status === 'rejected')),
+                )
+              )
+                state = 'missed';
+              else if (
+                own.some(
+                  ({ o, r }) =>
+                    r.grace.some((g) => g.obligationId === o.id) ||
+                    r.proofs.some((p) => p.obligationId === o.id && p.receivedAt),
+                )
+              )
+                state = 'good';
+              return (
+                <Link
+                  key={key}
+                  className={`calendar-day ${state}`}
+                  to={`/app/circles/${circleId}/day/${key}`}
+                  aria-label={`${key}: ${t(state === 'missed' ? 'Missed / rejected' : state === 'good' ? 'Submitted / excused' : 'View day')}`}
+                >
+                  <strong>{i + 1}</strong>
+                  {proofs.length ? (
+                    <small>
+                      {proofs.length} {t('photos')}
+                    </small>
+                  ) : null}
+                  {own.some(({ o, r }) => r.grace.some((g) => g.obligationId === o.id)) ? (
+                    <small>{t('Grace pass')}</small>
+                  ) : null}
+                </Link>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </section>
   );
 }

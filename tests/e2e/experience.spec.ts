@@ -39,7 +39,21 @@ test('restores the homepage session, tops up in the selected currency, and opens
   await page.getByLabel('Display currency').selectOption('KGS');
   await expect(page.getByLabel('Display currency')).toBeEnabled();
   await page.getByLabel('Top-up amount').fill('125.50');
+  await page.getByLabel('Name on card').fill('Maya Demo');
+  await page.getByLabel('Card number', { exact: true }).fill('4242424242424242');
+  await page.getByLabel('Expiry date').fill('1239');
+  await page.getByLabel('Security code', { exact: true }).fill('123');
+  await page.getByRole('button', { name: 'Demo card details', exact: true }).click();
+  await expect(page.getByRole('dialog', { name: 'Demo card details' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  const topupRequest = page.waitForRequest(
+    (r) => r.url().endsWith('/api/me/wallet/top-up') && r.method() === 'POST',
+  );
   await page.getByRole('button', { name: 'Add to balance', exact: true }).click();
+  expect(Object.keys((await topupRequest).postDataJSON()).sort()).toEqual([
+    'amountMinor',
+    'requestId',
+  ]);
   await expect(page.getByText('Balance updated.', { exact: true })).toBeVisible();
   await expect(page.locator('.wallet-amount')).toContainText('125.50');
   await expect(page.locator('.wallet-amount')).toContainText('KGS');

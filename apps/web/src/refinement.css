@@ -816,3 +816,107 @@ button:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
+/* Compact explanations, tactile controls, and demo checkout. */
+.about-help {
+  display: inline-flex;
+  margin: 10px 0;
+}
+.help-popover {
+  z-index: 100;
+  font: 400 15px/1.65 var(--font-sans);
+  color: var(--k-text);
+  letter-spacing: normal;
+  text-transform: none;
+}
+.calendar-toggle {
+  margin-left: auto;
+  gap: 8px;
+}
+.calendar-toggle svg {
+  transition: transform 0.3s ease;
+}
+.mock-card {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--k-line);
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--accent-tint), transparent 70%);
+}
+.mock-card legend {
+  font-weight: 650;
+  padding: 0 8px;
+}
+.mock-card p {
+  margin: 0;
+  color: var(--k-muted);
+  font-size: 14px;
+}
+.mock-card label {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.mock-card-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .wallet-topup button,
+  .help-trigger,
+  .calendar-day,
+  .mock-card,
+  .st-text-link {
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.3s ease,
+      background 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .help-trigger:hover {
+    transform: rotate(-12deg) scale(1.12);
+    box-shadow: 0 0 18px var(--accent-tint);
+  }
+  .calendar-day:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px var(--accent-tint);
+    border-color: var(--accent-ink);
+  }
+  .wallet-quick-amounts button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px var(--accent-tint);
+  }
+  .wallet-topup button:active,
+  .calendar-day:active,
+  .help-trigger:active {
+    transform: scale(0.96);
+  }
+  .mock-card:focus-within {
+    border-color: var(--accent-ink);
+    box-shadow: 0 0 0 4px var(--accent-tint);
+  }
+  .st-text-link:hover svg {
+    transform: translateX(4px);
+    transition: transform 0.25s ease;
+  }
+}
+@media (max-width: 540px) {
+  .circle-calendar .st-module-heading {
+    flex-wrap: wrap;
+  }
+  .calendar-toggle {
+    margin-left: 0;
+  }
+  .mock-card {
+    padding: 14px;
+  }
+}
+
+.help-content {
+  margin-top: 12px;
+  color: var(--k-subtle);
+  font-weight: 400;
+}

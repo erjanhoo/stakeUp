@@ -8,6 +8,7 @@ import { useI18n } from '../lib/i18n';
 import { useMoney } from '../lib/money';
 import { useResource } from '../lib/social';
 import { ErrorMessage, Loading } from './common';
+import { HelpTip } from './help-tip';
 import { About } from './about';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -18,6 +19,10 @@ export function WalletPanel({ compact = false }: { compact?: boolean }) {
     money = useMoney();
   const { data, error, reload } = useResource<Wallet>('/me/wallet');
   const [amount, setAmount] = useState('100.00'),
+    [cardName, setCardName] = useState(''),
+    [cardNumber, setCardNumber] = useState(''),
+    [expiry, setExpiry] = useState(''),
+    [securityCode, setSecurityCode] = useState(''),
     [busy, setBusy] = useState(false),
     [actionError, setActionError] = useState(''),
     [success, setSuccess] = useState('');
@@ -28,6 +33,16 @@ export function WalletPanel({ compact = false }: { compact?: boolean }) {
     setActionError('');
     setSuccess('');
     try {
+      if (
+        !cardName.trim() ||
+        cardNumber.replace(/\s/g, '') !== '4242424242424242' ||
+        !/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiry) ||
+        securityCode !== '123'
+      )
+        throw new Error(t('Use the demo card details shown below.'));
+      const [expiryMonth, expiryYear] = expiry.split('/').map(Number);
+      if (new Date(2000 + expiryYear, expiryMonth, 1).getTime() <= Date.now())
+        throw new Error(t('Choose a future expiry date.'));
       const amountMinor = creditsToMinor(amount);
       if (!request.current || request.current.amountMinor !== amountMinor)
         request.current = { amountMinor, requestId: crypto.randomUUID() };
@@ -36,6 +51,7 @@ export function WalletPanel({ compact = false }: { compact?: boolean }) {
         body: JSON.stringify(request.current),
       });
       request.current = null;
+      setSecurityCode('');
       await reload();
       setSuccess(t('Balance updated.'));
     } catch (e) {
@@ -50,6 +66,10 @@ export function WalletPanel({ compact = false }: { compact?: boolean }) {
         <h2>
           <WalletIcon size={20} />
           {t('Your balance')}
+          <HelpTip title="How your balance works">
+            Top up your balance here. Challenge results appear after settlement; pending stakes are
+            listed separately.
+          </HelpTip>
         </h2>
         {compact && (
           <Link className="st-text-link" to="/app/settings#wallet">
@@ -125,6 +145,76 @@ export function WalletPanel({ compact = false }: { compact?: boolean }) {
                 </button>
               ))}
             </div>
+            <fieldset className="mock-card" disabled={busy}>
+              <legend>
+                {t('Demo payment card')}{' '}
+                <HelpTip title="Demo card details">
+                  Use card 4242 4242 4242 4242, any name, a future expiry date and security code
+                  123. These fields stay in your browser and are never sent or saved.
+                </HelpTip>
+              </legend>
+              <p>{t('Use demo card 4242 4242 4242 4242 | code 123')}</p>
+              <label>
+                {t('Name on card')}
+                <Input
+                  value={cardName}
+                  onChange={(e) => setCardName(e.target.value)}
+                  required
+                  maxLength={80}
+                  autoComplete="off"
+                  placeholder="Alex Morgan"
+                />
+              </label>
+              <label>
+                {t('Card number')}
+                <Input
+                  value={cardNumber}
+                  onChange={(e) =>
+                    setCardNumber(
+                      e.target.value
+                        .replace(/\D/g, '')
+                        .slice(0, 16)
+                        .replace(/(.{4})/g, '$1 ')
+                        .trim(),
+                    )
+                  }
+                  required
+                  inputMode="numeric"
+                  autoComplete="off"
+                  placeholder="4242 4242 4242 4242"
+                />
+              </label>
+              <div className="mock-card-row">
+                <label>
+                  {t('Expiry date')}
+                  <Input
+                    value={expiry}
+                    onChange={(e) => {
+                      const digits = e.target.value.replace(/\D/g, '').slice(0, 4);
+                      setExpiry(
+                        digits.length > 2 ? digits.slice(0, 2) + '/' + digits.slice(2) : digits,
+                      );
+                    }}
+                    required
+                    inputMode="numeric"
+                    autoComplete="off"
+                    placeholder="MM/YY"
+                  />
+                </label>
+                <label>
+                  {t('Security code')}
+                  <Input
+                    value={securityCode}
+                    onChange={(e) => setSecurityCode(e.target.value.replace(/\D/g, '').slice(0, 3))}
+                    required
+                    inputMode="numeric"
+                    type="password"
+                    autoComplete="off"
+                    placeholder="123"
+                  />
+                </label>
+              </div>
+            </fieldset>
             <Button disabled={busy} type="submit">
               <Plus size={17} />
               {t(busy ? 'Adding…' : 'Add to balance')}
