@@ -1,4 +1,5 @@
-import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useLayoutEffect, useId, useRef, useState, type FormEvent } from 'react';
+import { createPortal } from 'react-dom';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { ArrowRight, ChevronDown, KeyRound } from 'lucide-react';
 import { useAuth } from '../lib/auth';
@@ -69,18 +70,52 @@ export function JoinCircleButton({
 }) {
   const { t } = useI18n(),
     id = useId(),
-    root = useRef<HTMLDivElement>(null);
+    root = useRef<HTMLDivElement>(null),
+    panel = useRef<HTMLElement>(null);
   const [open, setOpen] = useState(initialOpen);
+  useLayoutEffect(() => {
+    if (!open || !panel.current) return;
+    const position = () => {
+      const anchor = root.current?.getBoundingClientRect();
+      const popup = panel.current;
+      if (!anchor || !popup) return;
+      const viewport = window.visualViewport;
+      const left = viewport?.offsetLeft ?? 0,
+        top = viewport?.offsetTop ?? 0;
+      const width = viewport?.width ?? innerWidth,
+        height = viewport?.height ?? innerHeight;
+      popup.style.width = `${Math.min(370, width - 32)}px`;
+      popup.style.maxHeight = `${Math.max(120, height - 32)}px`;
+      const bounds = popup.getBoundingClientRect();
+      const below = anchor.bottom + 10;
+      const above = anchor.top - bounds.height - 10;
+      popup.style.left = `${Math.max(left + 16, Math.min(anchor.left, left + width - bounds.width - 16))}px`;
+      popup.style.top = `${Math.max(top + 16, Math.min(below + bounds.height > top + height - 16 && above >= top + 16 ? above : below, top + height - bounds.height - 16))}px`;
+      popup.style.visibility = 'visible';
+    };
+    position();
+    panel.current.querySelector('input')?.focus({ preventScroll: true });
+    window.addEventListener('resize', position);
+    window.addEventListener('scroll', position, true);
+    window.visualViewport?.addEventListener('resize', position);
+    window.visualViewport?.addEventListener('scroll', position);
+    return () => {
+      window.removeEventListener('resize', position);
+      window.removeEventListener('scroll', position, true);
+      window.visualViewport?.removeEventListener('resize', position);
+      window.visualViewport?.removeEventListener('scroll', position);
+    };
+  }, [open]);
   useEffect(() => {
     if (!open) return;
-    root.current?.querySelector('input')?.focus();
     const outside = (e: PointerEvent) => {
-      if (!root.current?.contains(e.target as Node)) setOpen(false);
+      if (!root.current?.contains(e.target as Node) && !panel.current?.contains(e.target as Node))
+        setOpen(false);
     };
     const escape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setOpen(false);
-        root.current?.querySelector('button')?.focus();
+        root.current?.querySelector('button')?.focus({ preventScroll: true });
       }
     };
     document.addEventListener('pointerdown', outside);
@@ -103,16 +138,23 @@ export function JoinCircleButton({
         {t(label)}
         <ChevronDown size={15} />
       </button>
-      {open && (
-        <section id={id} className="join-popover" aria-label={t('Join circle with invitation')}>
-          <h3>{t('Your people are waiting.')}</h3>
-          <p>{t('Paste your invitation to join their circle.')}</p>
-          <JoinForm
-            initial={sessionStorage.getItem(PENDING_INVITE) ?? ''}
-            onJoin={() => setOpen(false)}
-          />
-        </section>
-      )}
+      {open &&
+        createPortal(
+          <section
+            ref={panel}
+            id={id}
+            className="join-popover"
+            aria-label={t('Join circle with invitation')}
+          >
+            <h3>{t('Your people are waiting.')}</h3>
+            <p>{t('Paste your invitation to join their circle.')}</p>
+            <JoinForm
+              initial={sessionStorage.getItem(PENDING_INVITE) ?? ''}
+              onJoin={() => setOpen(false)}
+            />
+          </section>,
+          document.body,
+        )}
     </div>
   );
 }

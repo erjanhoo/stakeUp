@@ -16,6 +16,7 @@ Published at https://stakeup-olive.vercel.app. The database update was applied d
 - Account-level display currencies: USD, KGS, EUR, RUB, GBP and KZT. All displayed challenge and pool amounts use the selected unit. Changing units preserves numeric amounts and does not apply exchange rates.
 - Persistent balance top-ups, account-private history, idempotent retry handling and settled stake/reward/refund reconciliation. Pending stakes are displayed separately from posted balance entries.
 - Secondary explanations use About dropdowns. Repetitive currency disclaimers were removed from rendered pages.
+- Invitation dropdowns render outside animated page containers and stay within the visible viewport while scrolling, resizing, or opening the mobile keyboard. Regression checks force animations on and verify that the submit button receives pointer input after scrolling.
 
 ## Release record
 

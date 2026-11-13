@@ -5,6 +5,7 @@ test('restores the homepage session, tops up in the selected currency, and opens
   browser,
 }, info) => {
   test.setTimeout(90000);
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
   const origin = 'http://localhost:5173',
     suffix = `${Date.now()}${info.project.name[0]}`;
   const errors: string[] = [];
@@ -70,6 +71,21 @@ test('restores the homepage session, tops up in the selected currency, and opens
     .getByRole('button', { name: 'Join circle', exact: true })
     .click();
   await page.getByLabel('Invitation link or code').fill('invalid');
+  await page.evaluate(() => window.scrollBy(0, 160));
+  const joinSubmit = page
+    .locator('.join-popover')
+    .getByRole('button', { name: 'Join circle', exact: true });
+  await expect(joinSubmit).toBeInViewport();
+  await expect
+    .poll(() =>
+      joinSubmit.evaluate((el) => {
+        const r = el.getBoundingClientRect();
+        return (
+          document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2)?.closest('button') === el
+        );
+      }),
+    )
+    .toBe(true);
   await page
     .locator('.join-popover')
     .getByRole('button', { name: 'Join circle', exact: true })
