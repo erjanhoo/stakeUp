@@ -45,6 +45,7 @@ jobs:
           -f supabase/migrations/20261111000200_grace_bypass.sql
           -f supabase/migrations/20261111000300_review_inbox.sql
           -f supabase/migrations/20261113180125_experience_wallet.sql
+          -f supabase/migrations/20261113191448_multicolor_themes.sql
           -f supabase/tests/foundation.sql
           -f supabase/tests/social_challenges.sql
           -f supabase/tests/evidence.sql

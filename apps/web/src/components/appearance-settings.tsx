@@ -10,6 +10,8 @@ export function AppearanceSettings() {
     lime: 'Electric lime',
     blue: 'Ocean blue',
     violet: 'Soft violet',
+    aurora: 'Aurora',
+    sunset: 'Sunset',
   };
   const { t } = useI18n();
 
@@ -46,7 +48,7 @@ export function AppearanceSettings() {
         ))}
       </div>
       <div role="group" aria-label={t('Accent color')} className="appearance-options">
-        {(['orange', 'lime', 'blue', 'violet'] as const).map((accent) => (
+        {(['orange', 'lime', 'blue', 'violet', 'aurora', 'sunset'] as const).map((accent) => (
           <button
             key={accent}
             type="button"

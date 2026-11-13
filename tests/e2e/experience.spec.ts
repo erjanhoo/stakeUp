@@ -58,6 +58,8 @@ test('restores the homepage session, tops up in the selected currency, and opens
   await expect(page.locator('.wallet-amount')).toContainText('125.50');
   await expect(page.locator('.wallet-amount')).toContainText('KGS');
   for (const [name, accent] of [
+    ['Aurora', 'aurora'],
+    ['Sunset', 'sunset'],
     ['Ocean blue', 'blue'],
     ['Soft violet', 'violet'],
     ['Electric lime', 'lime'],
@@ -65,6 +67,23 @@ test('restores the homepage session, tops up in the selected currency, and opens
     await page.getByRole('button', { name, exact: true }).click();
     await expect(page.locator('html')).toHaveAttribute('data-accent', accent);
     await expect(page.getByRole('button', { name, exact: true })).toBeEnabled();
+    if (accent === 'aurora' || accent === 'sunset') {
+      await page.reload();
+      await expect(page.locator('html')).toHaveAttribute('data-accent', accent);
+      for (const mode of ['Light', 'Dark']) {
+        await page.getByRole('button', { name: mode, exact: true }).click();
+        await expect(page.getByRole('button', { name: mode, exact: true })).toBeEnabled();
+        const palette = await page.locator('html').evaluate((el) => {
+          const s = getComputedStyle(el);
+          return ['--k-accent', '--k-ink', '--k-secondary'].map((k) =>
+            s.getPropertyValue(k).trim(),
+          );
+        });
+        expect(new Set(palette).size).toBe(3);
+        await page.getByRole('heading', { name: 'Appearance & themes' }).scrollIntoViewIfNeeded();
+        await page.screenshot({ path: info.outputPath(`${accent}-${mode}.png`) });
+      }
+    }
   }
   await page.reload();
   await expect(page.getByLabel('Display currency')).toHaveValue('KGS');
@@ -72,6 +91,18 @@ test('restores the homepage session, tops up in the selected currency, and opens
   await page.locator('#wallet').scrollIntoViewIfNeeded();
   await page.screenshot({ path: info.outputPath('wallet-viewport.png') });
   await page.screenshot({ path: info.outputPath('settings-wallet.png'), fullPage: true });
+  await page.goto('/app/reviews');
+  for (const label of ['All reviews', 'Awaiting review', 'Disputes', 'Refresh inbox']) {
+    const button = page.getByRole('button', { name: new RegExp(label) });
+    await expect(button).toBeEnabled();
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(250);
+    const before = await button.evaluate((el) => getComputedStyle(el).backgroundColor);
+    await button.hover();
+    await expect
+      .poll(() => button.evaluate((el) => getComputedStyle(el).backgroundColor))
+      .not.toBe(before);
+  }
   await page.goto('/app/circles');
   const card = page.locator('.st-circle-card').filter({ hasText: 'Orbit crew' });
   await card.getByRole('link', { name: 'Orbit crew', exact: true }).click();

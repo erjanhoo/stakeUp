@@ -34,7 +34,7 @@ it('persists account currency, themes and top-ups; retries are idempotent and ba
           })
         ).json().currency,
       ).toBe(currency);
-    for (const accent of ['blue', 'violet'])
+    for (const accent of ['blue', 'violet', 'aurora', 'sunset'])
       expect(
         (
           await app.inject({
@@ -104,7 +104,7 @@ it('persists account currency, themes and top-ups; retries are idempotent and ba
     ).toMatchObject({ balanceMinor: 0, entries: [] });
     expect((await app.inject({ url: '/api/me', cookies: cookie })).json()).toMatchObject({
       currency: 'EUR',
-      appearance: { mode: 'dark', accent: 'violet' },
+      appearance: { mode: 'dark', accent: 'sunset' },
     });
   } finally {
     await app.close();

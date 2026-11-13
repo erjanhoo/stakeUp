@@ -21,7 +21,7 @@ export const usernameSchema = z
 export const passwordSchema = z.string().min(8, 'Use at least 8 characters.').max(128);
 export const appearanceSchema = z.object({
   mode: z.enum(['dark', 'light']),
-  accent: z.enum(['orange', 'lime', 'blue', 'violet']),
+  accent: z.enum(['orange', 'lime', 'blue', 'violet', 'aurora', 'sunset']),
 });
 export type Appearance = z.infer<typeof appearanceSchema>;
 export const loginSchema = z.object({
