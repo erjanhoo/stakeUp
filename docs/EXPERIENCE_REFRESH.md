@@ -1,6 +1,6 @@
 # Experience refresh — 14 November 2026
 
-The database update has been applied directly through the connected Supabase plugin. API and website deployment are in progress.
+Published at https://stakeup-olive.vercel.app. The database update was applied directly through the connected Supabase plugin, followed by API and website production deployments.
 
 ## What changed
 
@@ -17,12 +17,14 @@ The database update has been applied directly through the connected Supabase plu
 - Persistent balance top-ups, account-private history, idempotent retry handling and settled stake/reward/refund reconciliation. Pending stakes are displayed separately from posted balance entries.
 - Secondary explanations use About dropdowns. Repetitive currency disclaimers were removed from rendered pages.
 
-## Release order
+## Release record
 
-1. Apply `supabase/migrations/20261113180125_experience_wallet.sql` to the existing Supabase project `bwtpxrjcubvvsvnsjigm`, after all preceding migrations. It extends theme/icon constraints, adds the currency preference, exposes effective grace consistently, and creates the protected top-up table and wallet RPC.
-2. Deploy the API project `stakeup-api` (`prj_eQG65mLRJ5wJTof5TipVqDCDew7V`).
-3. Deploy the web project `stakeup` (`prj_aSTf4Qjk10x1wiSc3etMGXGkbqwk`). Preserve the existing public audience and domains.
-4. Verify a returning signed-in account, a saved currency/theme change, a top-up, invitation joining and a missed-day pass against the managed services.
+- Supabase: `20261113180125_experience_wallet`, project `bwtpxrjcubvvsvnsjigm`.
+- Application source: `080241757d6068b05a99400fefcb55cec20dee11`, branch `erjanhoo/experience-refresh`.
+- API production: `dpl_3V3fGBcaZns2iCLNfdmPK1f3UEho`, https://stakeup-api.vercel.app.
+- Web production: `dpl_9KinbwjEETSY9qYct2tdLao3jwJS`, https://stakeup-olive.vercel.app.
+- Both deployments reached READY from the application source above. Production health/config, API proxying, private wallet/review endpoints, legacy join redirects, PWA worker v2, eight appearance combinations and 24 responsive checks passed with no browser errors.
+- Live top-up/retry behavior was tested inside a rolled-back database transaction. Signed-in behavior was covered by isolated local-account journeys; no user credentials were used during production browser checks.
 
 The migration is transactional and does not rewrite accepted challenge snapshots or completed settlements. The new top-up records are owner-readable through RLS; direct client inserts are denied. The wallet RPC derives its user from the authenticated session and serializes repeated top-up requests.
 
@@ -32,4 +34,4 @@ The migration is transactional and does not rewrite accepted challenge snapshots
 - All migrations and nine PostgreSQL authorization/behavior suites in a fresh isolated PostgreSQL 17 instance, including top-up isolation, retry protection, legacy grace visibility, pending contributions and settlement reconciliation.
 - All 18 desktop/mobile browser journeys passed, including homepage session restoration, currency/top-ups, four accents, circle navigation, invitations, achievements, grace/calendar return navigation, review/appeal flows and settlement. Three interrupted journeys were rerun successfully after stopping overlapping dev-server restarts. Responsive checks include 1440, 1024, 820, 390 and 320 pixels.
 
-Supabase connected successfully. Migration `20261113180125_experience_wallet` is applied to StakeUp (`bwtpxrjcubvvsvnsjigm`). Live schema, RLS, function privileges, and transactional top-up/retry checks passed. Transactional test top-ups were rolled back; no account balance was changed. Earlier migrations were applied manually and have no history entries; do not rerun them.
+Supabase connected successfully. Migration `20261113180125_experience_wallet` is applied to StakeUp (`bwtpxrjcubvvsvnsjigm`). Live schema, RLS, function privileges, and transactional top-up/retry checks passed. The authenticated wallet RPC is intentionally exposed and checks the calling user; anonymous execution and direct writes are denied. Transactional test top-ups were rolled back; no account balance was changed. Earlier migrations were applied manually and have no history entries; do not rerun them.
