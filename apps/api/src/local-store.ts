@@ -4,6 +4,7 @@ import {
   type CommunityState,
 } from './local-community.js';
 import { competitionCommand } from './local-competition.js';
+import { walletCommand, type WalletState } from './local-wallet.js';
 import { evidenceCommand, type EvidenceState } from './local-evidence.js';
 import { reviewInbox, type InboxInput } from './review-inbox.js';
 import {
@@ -16,7 +17,14 @@ import {
 import { promisify } from 'node:util';
 import { readFile, mkdir, writeFile, rename } from 'node:fs/promises';
 import { dirname } from 'node:path';
-import type { Profile, ProfileInput, Activity, Appearance, SocialAction } from '@stakeup/contracts';
+import type {
+  Profile,
+  ProfileInput,
+  Activity,
+  Appearance,
+  SocialAction,
+  Currency,
+} from '@stakeup/contracts';
 import { initializeSocial, socialCommand, type SocialState } from './local-social.js';
 import { AppError } from './errors.js';
 export { AppError } from './errors.js';
@@ -178,6 +186,16 @@ export class LocalStore {
       profile.appearance = appearance;
       return profile;
     });
+  }
+  currency(id: string, currency: Currency) {
+    return this.transact((state) => {
+      const profile = state.accounts.find((a) => a.profile.id === id)!.profile;
+      profile.currency = currency;
+      return profile;
+    });
+  }
+  wallet(id: string, topUp?: { amountMinor: number; requestId: string }) {
+    return this.transact((state) => walletCommand(state as WalletState, id, topUp));
   }
   social(userId: string, action: SocialAction, payload: Record<string, unknown> = {}) {
     return this.transact((state) => socialCommand(state, userId, action, payload));

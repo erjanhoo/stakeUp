@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, CalendarDays } from 'lucide-react';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { ArrowLeft, ChevronLeft, ChevronRight, CalendarDays } from 'lucide-react';
 import type { ChallengeSummary, ChallengeDetail, Proof, GraceChoice } from '@stakeup/contracts';
 import { api, message } from '../lib/api';
 import { useResource } from '../lib/social';
@@ -25,9 +25,12 @@ export function CircleCalendar({
   circleId: string;
   challenges: ChallengeSummary[];
 }) {
+  const [search] = useSearchParams();
   const { t, language } = useI18n(),
-    [month, setMonth] = useState(
-      () => `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`,
+    [month, setMonth] = useState(() =>
+      /^\d{4}-(0[1-9]|1[0-2])$/.test(search.get('month') ?? '')
+        ? search.get('month')!
+        : `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`,
     ),
     [rows, setRows] = useState<DayData[] | null>(null),
     [error, setError] = useState('');
@@ -55,7 +58,7 @@ export function CircleCalendar({
     setMonth(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`);
   }
   return (
-    <section className="st-module circle-calendar">
+    <section className="st-module circle-calendar" id="calendar">
       <div className="st-module-heading">
         <CalendarDays />
         <h2>
@@ -185,13 +188,6 @@ function DayChallenge({ id, date }: { id: string; date: string }) {
           {t('Open proof workspace')}
         </Link>
       </header>
-      {(c.rules.gracePolicy ?? 'automatic_v1') === 'automatic_v1' ? (
-        <p>
-          {t(
-            'This challenge keeps its accepted automatic grace policy. Choose grace dates in a new challenge.',
-          )}
-        </p>
-      ) : null}
       {obligations.map((o) => {
         const chosen = data.grace.some((g) => g.obligationId === o.id),
           submitted = data.proofs.some((p) => p.obligationId === o.id && p.receivedAt);
@@ -208,7 +204,6 @@ function DayChallenge({ id, date }: { id: string; date: string }) {
               disabled={
                 busy ||
                 c.status !== 'active' ||
-                (c.rules.gracePolicy ?? 'automatic_v1') === 'automatic_v1' ||
                 submitted ||
                 (!chosen && data.grace.length >= c.rules.graceDays) ||
                 (chosen && Date.parse(o.deadlineAt) < Date.now())
@@ -229,7 +224,13 @@ function DayChallenge({ id, date }: { id: string; date: string }) {
                 }
               }}
             >
-              {t(chosen ? 'Cancel grace day' : 'Use grace pass')}
+              {t(
+                chosen
+                  ? Date.parse(o.deadlineAt) < Date.now()
+                    ? 'Grace pass used'
+                    : 'Cancel grace day'
+                  : 'Use grace pass',
+              )}
             </Button>
             <small>
               {Math.max(0, c.rules.graceDays - data.grace.length)} {t('passes remaining')}
@@ -256,7 +257,7 @@ function DayChallenge({ id, date }: { id: string; date: string }) {
 }
 export function CircleDay() {
   const { id, date = '' } = useParams(),
-    { t } = useI18n(),
+    { t, language } = useI18n(),
     { data, error } = useResource<{ name: string; challenges: ChallengeSummary[] }>(
       `/circles/${id}`,
     );
@@ -264,12 +265,21 @@ export function CircleDay() {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return <ErrorMessage message="Invalid date." />;
   return (
     <div className="circle-day">
-      <Link className="back-link" to={`/app/circles/${id}`}>
-        {data?.name ?? t('Your circles')}
+      <Link
+        className="back-link calendar-back"
+        to={`/app/circles/${id}?month=${date.slice(0, 7)}#calendar`}
+      >
+        <ArrowLeft size={18} />
+        {t('Back to calendar')}
+        <span>{data?.name}</span>
       </Link>
       <header className="st-page-header">
         <div>
-          <h1>{date}</h1>
+          <h1>
+            {new Intl.DateTimeFormat(language, { dateStyle: 'long', timeZone: 'UTC' }).format(
+              new Date(`${date}T12:00:00Z`),
+            )}
+          </h1>
           <p>{t('Photos, reviews and conversation for this day.')}</p>
         </div>
       </header>

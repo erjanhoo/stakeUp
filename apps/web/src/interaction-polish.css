@@ -293,7 +293,7 @@ select:focus-visible {
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--k-muted);
   margin-bottom: 18px;
 }
@@ -310,7 +310,7 @@ select:focus-visible {
 }
 .calendar-grid > small {
   text-align: center;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--k-muted);
   padding: 8px;
 }
@@ -332,7 +332,7 @@ select:focus-visible {
   border-color: var(--accent-ink);
 }
 .calendar-day small {
-  font-size: 10px;
+  font-size: 12px;
 }
 .calendar-day.good {
   background: #1b664f33;
@@ -384,7 +384,7 @@ select:focus-visible {
   font-size: 14px;
 }
 .calendar-grace small {
-  font-size: 11px;
+  font-size: 13px;
 }
 .circle-day .proof-entry {
   padding: 24px;
@@ -468,7 +468,7 @@ select:focus-visible {
     padding: 7px;
   }
   .calendar-day small {
-    font-size: 8px;
+    font-size: 12px;
   }
   .calendar-day strong {
     font-size: 13px;

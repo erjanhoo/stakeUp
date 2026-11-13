@@ -1,3 +1,4 @@
+import { AchievementTrack } from './achievement-track';
 import { useI18n } from '../lib/i18n';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -201,46 +202,37 @@ export function GracePlanner({
         <CalendarHeart size={23} />
         {t('Make room for a rest day.')}{' '}
       </h2>
-      {(c.rules.gracePolicy ?? 'automatic_v1') === 'automatic_v1' ? (
+      <>
         <p>
           {t(
-            'This challenge keeps its accepted automatic grace policy. Choose grace dates in a new challenge.',
+            'A grace pass excuses one scheduled or missed day without a photo. It uses your agreed allowance. Past passes cannot be cancelled; finalized results stay locked.',
           )}{' '}
         </p>
-      ) : (
-        <>
-          <p>
-            {t(
-              'A grace pass excuses one scheduled or missed day without a photo. It uses your agreed allowance. Past passes cannot be cancelled; finalized results stay locked.',
-            )}{' '}
-          </p>
-          <strong>
-            {c.rules.graceDays - choices.length} / {c.rules.graceDays}{' '}
-            {t('grace days remaining')}{' '}
-          </strong>
-          <details>
-            <summary>{t('Choose or change a grace day')}</summary>
-            {c.obligations.map((o) => {
-              const selected = choices.some((g) => g.obligationId === o.id),
-                closed =
-                  c.status !== 'active' || (selected && Date.parse(o.deadlineAt) < Date.now());
-              return (
-                <div className="grace-choice" key={o.id}>
-                  <span>{o.localDate}</span>
-                  <Button
-                    variant="outline"
-                    disabled={busy || closed || (!selected && choices.length >= c.rules.graceDays)}
-                    onClick={() => void choose(o.id, selected)}
-                  >
-                    {selected ? t('Cancel grace day') : t('Use grace day')}
-                  </Button>
-                  {selected ? <span className="pill">{t('Excused')}</span> : null}
-                </div>
-              );
-            })}
-          </details>
-        </>
-      )}
+        <strong>
+          {c.rules.graceDays - choices.length} / {c.rules.graceDays}{' '}
+          {t('grace days remaining')}{' '}
+        </strong>
+        <details>
+          <summary>{t('Choose or change a grace day')}</summary>
+          {c.obligations.map((o) => {
+            const selected = choices.some((g) => g.obligationId === o.id),
+              closed = c.status !== 'active' || (selected && Date.parse(o.deadlineAt) < Date.now());
+            return (
+              <div className="grace-choice" key={o.id}>
+                <span>{o.localDate}</span>
+                <Button
+                  variant="outline"
+                  disabled={busy || closed || (!selected && choices.length >= c.rules.graceDays)}
+                  onClick={() => void choose(o.id, selected)}
+                >
+                  {selected ? t('Cancel grace day') : t('Use grace day')}
+                </Button>
+                {selected ? <span className="pill">{t('Excused')}</span> : null}
+              </div>
+            );
+          })}
+        </details>
+      </>
       {error ? <ErrorMessage message={error} /> : null}
     </section>
   );
@@ -249,12 +241,6 @@ export function PersonalProgress() {
   const { t } = useI18n();
 
   const { data, error } = useResource<PersonalRecap>('/me/recap');
-  const names: Record<string, string> = {
-    first_proof: 'First proof accepted',
-    seven_proofs: 'Seven small wins',
-    thirty_proofs: 'Thirty times showing up',
-    first_finish: 'First challenge completed',
-  };
   return (
     <section className="personal-progress">
       <span className="eyebrow">{t('YOUR EFFORT ADDS UP')}</span>
@@ -265,17 +251,7 @@ export function PersonalProgress() {
             {data.accepted} {t('accepted proofs ·')} {data.submitted} {t('submissions ·')}{' '}
             {data.completed} {t('completed challenges')}{' '}
           </p>
-          <div className="achievement-strip">
-            {data.achievements.map((a) => (
-              <span key={a}>
-                <PartyPopper size={18} />
-                {t(names[a])}
-              </span>
-            ))}
-          </div>
-          {!data.achievements.length ? (
-            <p>{t('Your first accepted proof starts your achievement history.')}</p>
-          ) : null}
+          <AchievementTrack accepted={data.accepted} completed={data.completed} />
         </>
       ) : null}
       {error ? <ErrorMessage message={error} /> : null}
@@ -295,7 +271,7 @@ export function CompletionCelebration() {
       <PartyPopper size={30} />
       <div>
         <strong>{t('You showed up. Together.')}</strong>
-        <p>{t('Your challenge is complete. Every virtual credit is accounted for.')}</p>
+        <p>{t('Your challenge is complete. Every contribution is accounted for.')}</p>
       </div>
     </motion.div>
   );

@@ -24,7 +24,7 @@
   max-width: 430px;
 }
 .trail-index {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: var(--accent-ink);
   font-weight: 650;
@@ -108,7 +108,7 @@
 .proof-print > span {
   position: absolute;
   bottom: 17px;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 2px;
 }
 .print-sun {
@@ -172,7 +172,7 @@
 }
 .stakes-sculpture small {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 2px;
   margin-top: 35px;
 }

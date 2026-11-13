@@ -3,6 +3,7 @@ import type { Competition, CompetitionRow, VirtualEntry, GraceChoice } from '@st
 import type { EvidenceState } from './local-evidence.js';
 import { AppError } from './errors.js';
 import { allocate } from './domain/rewards.js';
+import { effectiveGrace } from './local-grace.js';
 export interface FinanceState extends EvidenceState {
   graceChoices?: GraceChoice[];
   settlements?: {
@@ -46,6 +47,7 @@ export function competitionCommand(
   closes += 86400000;
   const ledger: VirtualEntry[] = [];
   const rows = participants.map((p) => {
+    const excused = effectiveGrace(state, challengeId, p.userId, now);
     const r: CompetitionRow = {
       userId: p.userId,
       name: state.accounts.find((a) => a.profile.id === p.userId)!.profile.displayName,
@@ -64,7 +66,7 @@ export function competitionCommand(
       .filter((o) => o.userId === p.userId)
       .sort((a, b) => a.localDate.localeCompare(b.localDate))) {
       r.scheduled++;
-      if (state.graceChoices?.some((g) => g.obligationId === o.id)) {
+      if (excused.some((g) => g.obligationId === o.id)) {
         r.grace++;
         continue;
       }
@@ -85,18 +87,11 @@ export function competitionCommand(
 
       r.missed++;
       r.streak = 0;
-      if (
-        (h.rules.gracePolicy ?? 'automatic_v1') === 'automatic_v1' &&
-        r.grace < h.rules.graceDays
-      ) {
-        r.grace++;
-        continue;
-      }
       const amount = Math.min(h.rules.penaltyMinor, h.rules.maxPenaltyMinor - r.penaltyMinor);
       r.penaltyMinor += amount;
       if (amount)
         ledger.push({
-          id: randomUUID(),
+          id: o.id,
           userId: p.userId,
           kind: 'penalty',
           amountMinor: amount,
@@ -168,7 +163,7 @@ export function competitionCommand(
     rows,
     poolMinor: pool,
     distributedMinor: 0,
-    ledger: [],
+    ledger,
     settlementId: null,
     appealClosesAt: new Date(closes).toISOString(),
   };

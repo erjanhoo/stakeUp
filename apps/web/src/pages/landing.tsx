@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import {
   ArrowUpRight,
   ArrowRight,
@@ -7,7 +7,6 @@ import {
   Camera,
   ClipboardCheck,
   PiggyBank,
-  KeyRound,
   Check,
   Lock,
   UserRound,
@@ -15,14 +14,16 @@ import {
   Scale,
 } from 'lucide-react';
 import { motion } from 'motion/react';
-import { Brand } from '../components/common';
+import { Brand, Loading } from '../components/common';
+import { JoinCircleButton } from '../components/invitation';
+import { afterSignIn } from '../lib/social';
 import { Button } from '../components/ui/button';
 import { useAuth } from '../lib/auth';
 import { useI18n } from '../lib/i18n';
 import './kinetic-landing.css';
 export function Landing() {
   const { t } = useI18n();
-  const { profile } = useAuth();
+  const { profile, loading } = useAuth();
   const destination = profile ? '/app' : '/register';
   const steps = [
     {
@@ -33,7 +34,7 @@ export function Landing() {
     {
       icon: ClipboardCheck,
       title: 'Accept the same rules',
-      text: 'Choose the days, upload window and virtual penalty. Each participant accepts before the roster locks.',
+      text: 'Choose the days, upload window and daily stake. Each participant accepts before the roster locks.',
     },
     {
       icon: Camera,
@@ -48,9 +49,12 @@ export function Landing() {
     {
       icon: PiggyBank,
       title: 'Make consistency count',
-      text: 'Eligible finishers share virtual penalty credits according to transparent discipline scores. No real money.',
+      text: 'Eligible finishers share the pool according to transparent discipline scores.',
     },
   ];
+  if (loading) return <Loading full />;
+  if (profile)
+    return <Navigate to={profile.onboardingCompleted ? afterSignIn() : '/onboarding'} replace />;
   return (
     <div className="kinetic-landing">
       <header className="kl-header">
@@ -105,10 +109,7 @@ export function Landing() {
                   <ArrowUpRight size={18} />
                 </Link>
               </Button>
-              <Link className="kl-invite" to="/join">
-                <KeyRound size={16} />
-                {t('I have an invitation')}
-              </Link>
+              <JoinCircleButton label="I have an invitation" />
             </div>
             <div className="kl-facts">
               <div>
@@ -117,7 +118,7 @@ export function Landing() {
               </div>
               <div>
                 <strong>0</strong>
-                <span>{t('Real-money payments')}</span>
+                <span>{t('Public feeds')}</span>
               </div>
               <div>
                 <strong>80%</strong>
@@ -129,16 +130,16 @@ export function Landing() {
             <div className="kl-pool-head">
               <PiggyBank size={28} />
               <div>
-                <strong>{t('Virtual Credit (VC)')}</strong>
-                <small>{t('No cash value')}</small>
+                <strong>{t('A little shared momentum')}</strong>
+                <small>{t('Your effort adds up')}</small>
               </div>
-              <span className="pill">100% {t('virtual')}</span>
+              <span className="pill">{t('Together')}</span>
             </div>
             <div className="kl-standard">
               <div>
                 <small>{t('THE SHARED PROMISE')}</small>
                 <strong>
-                  100% <span>{t('virtual')}</span>
+                  100% <span>{t('committed')}</span>
                 </strong>
                 <p>{t('One shared version of the rules.')}</p>
               </div>
@@ -149,8 +150,10 @@ export function Landing() {
             <section className="kl-zero-risk">
               <ShieldCheck size={20} />
               <div>
-                <h2>{t('Only virtual stakes.')}</h2>
-                <p>{t('No deposits. No withdrawals. Just a reason to keep your word.')}</p>
+                <h2>{t('One promise. Shared progress.')}</h2>
+                <p>
+                  {t('Set a daily stake, support your friends, and celebrate every small win.')}
+                </p>
               </div>
             </section>
             <ul className="kl-protocol-list">
@@ -171,7 +174,7 @@ export function Landing() {
               </li>
             </ul>
             <footer>
-              <span>{t('All stakes are virtual. Always.')}</span>
+              <span>{t('Your people. Your promise.')}</span>
               <span>{t('Private by default.')}</span>
             </footer>
           </div>
@@ -202,7 +205,7 @@ export function Landing() {
               <span className="eyebrow">{t('ONE DAY AT A TIME')}</span>
               <h2>{t('The accountability rhythm.')}</h2>
             </div>
-            <p>{t('Clear rules. Friendly stakes. No real money.')}</p>
+            <p>{t('Clear rules. Friendly stakes. Shared momentum.')}</p>
           </div>
           <div className="kl-steps">
             {steps.map((step, index) => (
@@ -295,8 +298,8 @@ export function Landing() {
               <h2>{t('A few good questions.')}</h2>
               {[
                 [
-                  'Can I exchange credits for real money?',
-                  'No. VC are simulated points with no cash value. There are no deposits, payments or withdrawals.',
+                  'How does the pool grow?',
+                  'Missed commitments add the agreed stake after grace passes are applied. Pending reviews stay separate. Eligible finishers share the pool after the appeal window closes.',
                 ],
                 [
                   'Who sees my proof?',
@@ -311,10 +314,7 @@ export function Landing() {
                   'In challenges with chosen grace days, an available pass excuses a scheduled or missed day without a photo. Finalized results stay locked.',
                 ],
               ].map(([question, answer]) => (
-                <details
-                  key={question}
-                  open={question === 'Can I exchange credits for real money?'}
-                >
+                <details key={question}>
                   <summary>{t(question)}</summary>
                   <p>{t(answer)}</p>
                 </details>
@@ -336,7 +336,7 @@ export function Landing() {
               </Button>
               <span>
                 <Check size={14} />
-                {t('All stakes are virtual. Always.')}
+                {t('Your people. Your promise.')}
               </span>
             </div>
           </div>
@@ -349,7 +349,7 @@ export function Landing() {
         </Link>
         <Brand />
         <span>{t('PROGRESS IS A TEAM SPORT.')}</span>
-        <span>{t('All stakes are virtual. Always.')}</span>
+        <span>{t('Your people. Your promise.')}</span>
       </footer>
     </div>
   );

@@ -1,5 +1,4 @@
 /* Obsidian Kinetic — shared responsive implementation of the supplied Stitch designs. */
-@import './fonts.css';
 @import './kinetic-tokens.css';
 :root {
   --k-canvas: #111317;
@@ -12,7 +11,7 @@
   --k-ink: #ffad8f;
   --k-secondary: #c3f400;
   --k-tint: #ff5a1f14;
-  --font-sans: 'Hanken Grotesk', 'Segoe UI', sans-serif;
+  --font-sans: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
 }
 :root[data-accent='lime'] {
   --k-accent: #c3f400;
@@ -61,7 +60,7 @@ h3,
 h4,
 .brand,
 .button {
-  font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+  font-family: var(--font-sans);
 }
 h1,
 h2,
@@ -83,11 +82,11 @@ time,
 .field-hint,
 .breadcrumb,
 .app-footer {
-  font-family: 'JetBrains Mono', Consolas, monospace;
+  font-family: var(--font-sans);
 }
 .eyebrow {
   color: var(--accent-ink);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1.3px;
   line-height: 1.8;
 }
@@ -132,7 +131,7 @@ time,
 }
 .button-sm {
   min-height: 40px;
-  padding: 8px 14px;
+  padding: 12px 14px;
 }
 .button-icon {
   padding: 10px;
@@ -175,7 +174,7 @@ label {
   line-height: 1.8;
 }
 .form-stack .field-hint {
-  font-size: 10px;
+  font-size: 12px;
 }
 .panel,
 .stat-card,
@@ -256,7 +255,7 @@ label {
   border: 1px solid var(--k-line);
   color: var(--k-text);
   border-radius: 6px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-sans);
 }
 .pill,
 .count-pill {
@@ -264,7 +263,7 @@ label {
   background: var(--k-high);
   color: var(--k-muted);
   border-radius: 3px;
-  font-size: 9px;
+  font-size: 12px;
   padding: 5px 8px;
 }
 .pill-active {
@@ -284,7 +283,7 @@ label {
 .sidebar-label {
   margin: 35px 12px 14px;
   color: var(--k-muted);
-  font-size: 9px;
+  font-size: 12px;
 }
 .sidebar .brand {
   margin: 0 10px;
@@ -324,7 +323,7 @@ label {
 }
 .virtual-caption {
   color: var(--k-muted);
-  font-size: 8px;
+  font-size: 12px;
 }
 .logout-button {
   color: var(--k-muted);
@@ -341,7 +340,7 @@ label {
 }
 .breadcrumb {
   color: var(--k-muted);
-  font-size: 10px;
+  font-size: 12px;
 }
 .breadcrumb strong {
   color: var(--k-text);
@@ -356,7 +355,7 @@ label {
   display: inline-flex;
   gap: 8px;
   align-items: center;
-  font-size: 11px;
+  font-size: 13px;
   min-height: 36px;
   padding: 6px 12px;
   background: var(--k-accent);
@@ -365,7 +364,7 @@ label {
   font-weight: 700;
 }
 .header-invite {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--k-muted);
 }
 .app-main {
@@ -375,7 +374,7 @@ label {
 .app-footer {
   border-color: var(--k-line);
   color: var(--k-muted);
-  font-size: 9px;
+  font-size: 12px;
 }
 .dashboard-heading {
   border-bottom: 1px solid var(--k-line);
@@ -394,7 +393,7 @@ label {
   border: 1px solid var(--k-line);
   background: var(--k-low);
   color: var(--accent-ink);
-  font-size: 9px;
+  font-size: 12px;
 }
 .momentum-banner {
   background: var(--k-low);
@@ -425,7 +424,7 @@ label {
 }
 .banner-kicker {
   color: var(--accent-ink);
-  font-size: 9px;
+  font-size: 12px;
 }
 .stats-grid {
   gap: 14px;
@@ -441,7 +440,7 @@ label {
 }
 .stat-card > div {
   color: var(--k-muted);
-  font-size: 11px;
+  font-size: 13px;
 }
 .stat-card strong {
   font-size: 30px;
@@ -450,7 +449,7 @@ label {
 }
 .stat-card p {
   color: var(--k-muted);
-  font-size: 10px;
+  font-size: 12px;
 }
 .today-commitment {
   background: var(--k-low);
@@ -516,10 +515,10 @@ label {
   margin-top: 15px;
 }
 .acceptance-roster p {
-  font-size: 11px;
+  font-size: 13px;
 }
 .acceptance-roster > div {
-  font-size: 11px;
+  font-size: 13px;
   padding: 8px 0;
 }
 .accepted-label {
@@ -541,8 +540,8 @@ label {
 }
 .rule-grid dt,
 .rules-grid dt {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-family: var(--font-sans);
+  font-size: 12px;
   color: var(--k-muted);
 }
 .reward-policy {
@@ -645,7 +644,7 @@ label {
 }
 .profile-identity div > span {
   color: var(--k-muted);
-  font-size: 11px;
+  font-size: 13px;
 }
 .appearance-options button {
   background: var(--k-canvas);
@@ -735,7 +734,7 @@ label {
   background: var(--k-high);
 }
 .leaderboard th {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-sans);
 }
 .leaderboard tbody th {
   font-family: var(--font-sans);
@@ -770,7 +769,7 @@ label {
 .achievement-strip > span {
   border-radius: 4px;
   background: var(--accent-tint);
-  font-size: 11px;
+  font-size: 13px;
 }
 .personal-progress {
   padding: 24px;
@@ -779,7 +778,7 @@ label {
   background: var(--k-low);
 }
 .error-message {
-  background: #ff875c10;
+  background: var(--accent-tint);
   color: var(--k-secondary);
   border: 1px solid var(--k-secondary);
   border-radius: 4px;
@@ -803,9 +802,7 @@ label {
   color: var(--k-muted);
   padding: 16px 20px;
   min-height: 48px;
-  font:
-    600 11px 'JetBrains Mono',
-    monospace;
+  font: 600 11px var(--font-sans);
   white-space: nowrap;
 }
 .kinetic-tabs button[aria-pressed='true'] {
@@ -819,9 +816,7 @@ label {
 .kinetic-tabs a {
   padding: 16px 20px;
   color: var(--k-muted);
-  font:
-    600 11px 'JetBrains Mono',
-    monospace;
+  font: 600 11px var(--font-sans);
   white-space: nowrap;
   min-height: 48px;
   border-bottom: 2px solid transparent;
@@ -898,15 +893,13 @@ label {
     content: attr(data-label);
     display: block;
     color: var(--k-muted);
-    font:
-      9px 'JetBrains Mono',
-      monospace;
+    font: 9px var(--font-sans);
     margin-bottom: 8px;
     text-transform: uppercase;
   }
   .kinetic-tabs a {
     padding: 14px 12px;
-    font-size: 10px;
+    font-size: 12px;
   }
   .competition-pool {
     grid-template-columns: 1fr !important;
@@ -982,9 +975,7 @@ label {
     backdrop-filter: none;
   }
   .mobile-nav a {
-    font:
-      9px 'JetBrains Mono',
-      monospace;
+    font: 9px var(--font-sans);
     color: var(--k-muted);
     border-radius: 4px;
     min-height: 46px;
@@ -1027,7 +1018,7 @@ label {
   }
   .momentum-banner .button {
     min-height: 42px;
-    padding: 10px 14px;
+    padding: 12px 14px;
   }
   .auth-layout {
     display: block;

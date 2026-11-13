@@ -1,6 +1,8 @@
+import { AchievementTrack } from '../components/achievement-track';
+import { About } from '../components/about';
 import { useState, type FormEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Award, Camera, Check, Trophy } from 'lucide-react';
+import { Camera, Trophy } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 import { useResource } from '../lib/social';
 import { useI18n } from '../lib/i18n';
@@ -113,41 +115,20 @@ export function MemberPage() {
       <div className="member-grid">
         <section className="st-module">
           <h2>{t('Achievements')}</h2>
-          <p>
-            {t(
-              'Earn badges and progress points through accepted proof. Grace passes do not count as verified proof.',
-            )}
-          </p>
-          {[
-            [1, 'First step'],
-            [7, 'Seven wins'],
-            [30, 'Consistency champion'],
-          ].map(([goal, title]) => (
-            <article
-              className={`member-badge ${data.accepted >= Number(goal) ? 'earned' : ''}`}
-              key={title}
-            >
-              <Award />
-              <div>
-                <strong>{t(String(title))}</strong>
-                <span>
-                  {Math.min(data.accepted, Number(goal))} / {goal} {t('accepted proofs')}
-                </span>
-              </div>
-              {data.accepted >= Number(goal) ? <Check /> : null}
-            </article>
-          ))}
-          <article className={`member-badge ${data.completed ? 'earned' : ''}`}>
-            <Trophy />
-            <strong>{t('Challenge finisher')}</strong>
-            <span>{data.completed}</span>
-          </article>
+          <AchievementTrack accepted={data.accepted} completed={data.completed} />
+          <About title="About progress points">
+            <p>
+              {t(
+                'Each accepted photo earns 10 points. Every completed challenge adds 50. Grace passes excuse a day; verified effort unlocks milestones.',
+              )}
+            </p>
+          </About>
         </section>
         <aside className="st-module">
-          <h2>{t('Progress rewards')}</h2>
+          <h2>{t('Your profile')}</h2>
           <p>
             {t(
-              'Each accepted photo earns 10 progress points. Each finished challenge earns 50. These points unlock profile milestones and have no cash value.',
+              'Keep showing up to earn points, unlock new levels, and build a record of your effort.',
             )}
           </p>
           <p>

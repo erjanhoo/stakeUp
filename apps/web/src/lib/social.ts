@@ -45,7 +45,7 @@ export function invitationToken(value: string) {
 }
 export const PENDING_INVITE = 'stakeup.pending-invitation';
 export function afterSignIn() {
-  return sessionStorage.getItem(PENDING_INVITE) ? '/join' : '/app';
+  return sessionStorage.getItem(PENDING_INVITE) ? '/app/circles?join=1' : '/app';
 }
 export function tomorrow(timezone: string) {
   const parts = new Intl.DateTimeFormat('en-CA', {
@@ -64,5 +64,11 @@ export function addDays(value: string, days: number) {
   date.setUTCDate(date.getUTCDate() + days);
   return date.toISOString().slice(0, 10);
 }
-export const credits = (minor: number, language = 'en') =>
-  `${(minor / 100).toLocaleString(language, { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: false })} ${language === 'ru' ? 'ВК' : 'VC'}`;
+export const credits = (minor: number, language = 'en', currency = 'USD') =>
+  new Intl.NumberFormat(language, {
+    style: 'currency',
+    currency,
+    currencyDisplay: 'code',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(minor / 100);

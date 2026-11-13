@@ -21,7 +21,7 @@ export const usernameSchema = z
 export const passwordSchema = z.string().min(8, 'Use at least 8 characters.').max(128);
 export const appearanceSchema = z.object({
   mode: z.enum(['dark', 'light']),
-  accent: z.enum(['orange', 'lime']),
+  accent: z.enum(['orange', 'lime', 'blue', 'violet']),
 });
 export type Appearance = z.infer<typeof appearanceSchema>;
 export const loginSchema = z.object({
@@ -53,7 +53,26 @@ export const resetPasswordSchema = z.object({
   password: passwordSchema,
 });
 export type ProfileInput = z.infer<typeof profileSchema>;
+export const currencySchema = z.enum(['USD', 'KGS', 'EUR', 'RUB', 'GBP', 'KZT']);
+export type Currency = z.infer<typeof currencySchema>;
+export const topUpSchema = z.object({
+  amountMinor: z.number().int().min(100).max(10_000_000),
+  requestId: z.uuid(),
+});
+export interface WalletEntry {
+  id: string;
+  kind: 'top_up' | 'penalty' | 'reward' | 'refund';
+  amountMinor: number;
+  createdAt: string;
+  reason: string;
+}
+export interface Wallet {
+  balanceMinor: number;
+  pendingPenaltyMinor: number;
+  entries: WalletEntry[];
+}
 export interface Profile extends ProfileInput {
+  currency?: Currency;
   appearance: Appearance;
   language?: 'en' | 'ru';
   id: string;
@@ -80,7 +99,23 @@ export interface RuntimeConfig {
 export const circleSchema = z.object({
   name: z.string().trim().min(3).max(60),
   description: z.string().trim().max(300),
-  icon: z.enum(['flame', 'sun', 'book', 'dumbbell', 'sprout']).default('flame'),
+  icon: z
+    .enum([
+      'flame',
+      'sun',
+      'book',
+      'dumbbell',
+      'sprout',
+      'rocket',
+      'mountain',
+      'heart',
+      'coffee',
+      'brain',
+      'bike',
+      'music',
+      'target',
+    ])
+    .default('flame'),
 });
 export const invitationSchema = z.object({
   token: z.string().regex(/^[a-f0-9]{64}$/, 'Paste a valid invitation code or link.'),

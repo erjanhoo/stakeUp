@@ -121,7 +121,7 @@ p {
 }
 .brand-dot {
   align-self: flex-start;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 400;
   margin: 8px 0 0 4px;
   letter-spacing: 0;
@@ -179,7 +179,7 @@ p {
 }
 .button-sm {
   min-height: 38px;
-  padding: 8px 14px;
+  padding: 12px 14px;
   font-size: 12px;
 }
 .button-icon {
@@ -189,7 +189,7 @@ p {
   min-height: 42px;
 }
 .eyebrow {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 650;
   letter-spacing: 1.6px;
   color: var(--tone-a3a793);
@@ -209,7 +209,7 @@ p {
   padding: 5px 9px;
   background: var(--tone-2a2e24);
   color: var(--tone-c6cbb4);
-  font-size: 10px;
+  font-size: 12px;
   border: 1px solid var(--tone-3a4030);
   border-radius: 5px;
 }
@@ -244,13 +244,13 @@ p {
   justify-content: center;
   background: var(--tone-2a2e23);
   color: var(--tone-b0b89f);
-  font-size: 10px;
+  font-size: 12px;
   border-radius: 5px;
   vertical-align: middle;
   margin-left: 6px;
 }
 .subtle-label {
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 1.2px;
   color: var(--tone-9a9e8c);
 }
@@ -258,7 +258,7 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--tone-c5c8b7);
 }
 .landing {
@@ -295,7 +295,7 @@ p {
   align-items: center;
   gap: 9px;
   color: var(--tone-bdc4a9);
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1.8px;
   margin-bottom: 28px;
 }
@@ -334,7 +334,7 @@ p {
 }
 .hero-actions > span {
   color: var(--tone-919887);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.6;
 }
 .hero-actions strong {
@@ -346,7 +346,7 @@ p {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 10px;
+  font-size: 12px;
 }
 .hero-fine svg {
   color: var(--tone-bbc79a);
@@ -390,7 +390,7 @@ p {
 .art-coordinate {
   position: absolute;
   color: var(--tone-818b74);
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 2px;
 }
 .top-coordinate {
@@ -415,14 +415,14 @@ p {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 1px;
   color: var(--tone-d7e0c3);
 }
 .illustration-label > span:last-child {
   margin-left: auto;
   color: var(--tone-a7b48d);
-  font-size: 8px;
+  font-size: 12px;
 }
 .tiny-icon {
   background: var(--tone-39472c);
@@ -443,7 +443,7 @@ p {
   justify-content: space-between;
   padding: 11px 0;
   border-bottom: 1px solid var(--tone-465039);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--tone-ccd4bb);
 }
 .illustration-check {
@@ -469,7 +469,7 @@ p {
   color: var(--tone-aebb97);
   display: grid;
   place-items: center;
-  font-size: 10px;
+  font-size: 12px;
 }
 .art-week > span.day-done {
   background: var(--tone-cadb9d);
@@ -478,7 +478,7 @@ p {
   border-color: transparent;
 }
 .illustration-caption {
-  font-size: 9px;
+  font-size: 12px;
   color: var(--tone-b6c49f);
 }
 .floating-proof {
@@ -509,7 +509,7 @@ p {
 }
 .floating-proof div > span {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--tone-72765f);
   margin-top: 3px;
 }
@@ -537,7 +537,7 @@ p {
     0 0 0 6px var(--tone-785137);
 }
 .together-sticker span {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1px;
   line-height: 1.5;
 }
@@ -548,7 +548,7 @@ p {
   border-block: 1px solid var(--tone-30362a);
   padding: 21px 7%;
   color: var(--tone-b8beaa);
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1.4px;
   white-space: nowrap;
   overflow: hidden;
@@ -594,7 +594,7 @@ p {
   margin-bottom: 40px;
 }
 .how-card-top > span {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--tone-858f78);
 }
 .how-card h3 {
@@ -651,7 +651,7 @@ p {
   font-size: 23px;
 }
 .landing-footer > span {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--tone-969f88);
 }
 .auth-layout {
@@ -693,7 +693,7 @@ p {
   gap: 8px;
   align-items: center;
   color: var(--tone-adb89a);
-  font-size: 10px;
+  font-size: 12px;
   position: relative;
   z-index: 1;
 }
@@ -714,7 +714,7 @@ p {
   display: inline-flex;
   gap: 7px;
   align-items: center;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--tone-b4bba7);
   width: fit-content;
 }
@@ -739,7 +739,7 @@ p {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 9px;
+  font-size: 12px;
   color: var(--tone-b8c59e);
   background: var(--tone-222a1d);
   border: 1px solid var(--tone-3a462f);
@@ -753,7 +753,7 @@ p {
   gap: 22px;
 }
 .form-stack label {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 550;
   display: flex;
   flex-direction: column;
@@ -785,7 +785,7 @@ select:focus {
   outline-offset: 1px;
 }
 .field-hint {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--tone-a0a990);
   line-height: 1.6;
   font-weight: 400;
@@ -797,7 +797,7 @@ select:focus {
 }
 .label-line a {
   color: var(--tone-c1cdab);
-  font-size: 10px;
+  font-size: 12px;
 }
 .password-field {
   display: block;
@@ -828,7 +828,7 @@ select:focus {
 }
 .auth-form-wrap .auth-switch {
   text-align: center;
-  font-size: 11px;
+  font-size: 13px;
   margin-top: 26px;
 }
 .auth-switch a {
@@ -836,7 +836,7 @@ select:focus {
 }
 .auth-form-wrap .auth-privacy {
   text-align: center;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--tone-89937d);
   line-height: 1.8;
   margin: 35px 0 0;
@@ -914,7 +914,7 @@ select:focus {
   align-items: center;
   gap: 7px;
   color: var(--tone-96a284);
-  font-size: 10px;
+  font-size: 12px;
   margin-top: 20px;
 }
 .page-icon {
@@ -937,7 +937,7 @@ select:focus {
   display: block;
 }
 .profile-identity div > span {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--tone-a5ad97);
   margin-top: 6px;
   display: block;
@@ -952,7 +952,7 @@ select:focus {
   align-items: center;
   background: var(--tone-c5d69d);
   color: var(--tone-333f24);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   flex-shrink: 0;
   border: 3px solid var(--tone-313b27);
@@ -970,7 +970,7 @@ select:focus {
 }
 .optional {
   display: inline;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 400;
 }
 .select-wrap {
@@ -1011,7 +1011,7 @@ textarea {
 }
 .sidebar-label {
   color: var(--tone-9aa38c);
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 1.5px;
   margin: 52px 12px 15px;
@@ -1043,7 +1043,7 @@ textarea {
 }
 .nav-count {
   margin-left: auto;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--tone-b0b99f);
 }
 .sidebar-bottom {
@@ -1069,7 +1069,7 @@ textarea {
   margin: 0 0 8px;
 }
 .sidebar-promise p {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--tone-a2af90);
   margin-bottom: 13px;
   line-height: 1.8;
@@ -1078,7 +1078,7 @@ textarea {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--tone-d0dabd);
 }
 .virtual-caption {
@@ -1105,7 +1105,7 @@ textarea {
   border-top: 1px solid var(--tone-303729);
   background: transparent;
   color: var(--tone-abb59b);
-  font-size: 11px;
+  font-size: 13px;
 }
 .app-body {
   margin-left: 220px;
@@ -1125,7 +1125,7 @@ textarea {
   gap: 12px;
   align-items: center;
   color: var(--tone-919d80);
-  font-size: 10px;
+  font-size: 12px;
 }
 .breadcrumb strong {
   color: var(--tone-c9cfbd);
@@ -1149,7 +1149,7 @@ textarea {
   align-items: center;
   gap: 9px;
   color: var(--tone-c2ccb2);
-  font-size: 11px;
+  font-size: 13px;
 }
 .profile-chip > span:nth-child(2) {
   max-width: 120px;
@@ -1190,7 +1190,7 @@ textarea {
   margin: 0;
 }
 .dashboard-heading .eyebrow {
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 1.4px;
 }
 .day-one-badge {
@@ -1244,15 +1244,15 @@ textarea {
   margin: 14px 0 11px;
 }
 .momentum-banner p {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--tone-63452f);
   line-height: 1.7;
   margin-bottom: 18px;
 }
 .momentum-banner .button {
-  font-size: 10px;
+  font-size: 12px;
   min-height: 37px;
-  padding: 9px 13px;
+  padding: 12px 13px;
   border-radius: 6px;
 }
 .banner-art {
@@ -1301,7 +1301,7 @@ textarea {
   bottom: 5px;
   right: 0;
   transform: rotate(-8deg);
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1px;
   color: var(--tone-493d28);
 }
@@ -1339,7 +1339,7 @@ textarea {
   justify-content: space-between;
   gap: 7px;
   color: var(--tone-c1cbb0);
-  font-size: 10px;
+  font-size: 12px;
 }
 .stat-card > div > svg {
   color: var(--tone-9faa8a);
@@ -1358,7 +1358,7 @@ textarea {
   letter-spacing: 0;
 }
 .stat-card > p {
-  font-size: 8px;
+  font-size: 12px;
   color: var(--tone-a3af91);
   margin: 0;
   line-height: 1.5;
@@ -1425,19 +1425,19 @@ textarea {
 }
 .commitments-empty p {
   color: var(--tone-a4b08f);
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.8;
   margin-bottom: 16px;
 }
 .commitments-empty .button {
-  font-size: 10px;
+  font-size: 12px;
   min-height: 37px;
-  padding: 8px 13px;
+  padding: 12px 13px;
 }
 .phase-caption {
   display: block;
   color: var(--tone-9fae8a);
-  font-size: 8px;
+  font-size: 12px;
   margin-top: 10px;
 }
 .commitments-foot {
@@ -1445,7 +1445,7 @@ textarea {
   align-items: center;
   justify-content: center;
   gap: 7px;
-  font-size: 8px;
+  font-size: 12px;
   padding: 15px 0;
   border-top: 1px solid var(--tone-343f29);
   color: var(--tone-a8b593);
@@ -1484,7 +1484,7 @@ textarea {
   border-radius: 50%;
   border: 1px solid var(--tone-586441);
   color: var(--tone-b4bf9d);
-  font-size: 9px;
+  font-size: 12px;
   flex-shrink: 0;
 }
 .step-row.completed .step-indicator {
@@ -1493,13 +1493,13 @@ textarea {
   border: none;
 }
 .step-row strong {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 550;
   display: block;
   margin-top: 2px;
 }
 .step-row p {
-  font-size: 9px;
+  font-size: 12px;
   color: var(--tone-a5b192);
   margin: 6px 0 7px;
   line-height: 1.5;
@@ -1514,7 +1514,7 @@ textarea {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 9px;
+  font-size: 12px;
   color: var(--tone-bcc9a4);
 }
 .recent-activity {
@@ -1549,17 +1549,17 @@ textarea {
   color: var(--tone-ffad78);
 }
 .activity-row strong {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 550;
 }
 .activity-row p {
   color: var(--tone-a2b08d);
-  font-size: 9px;
+  font-size: 12px;
   margin: 4px 0 0;
   line-height: 1.6;
 }
 .activity-row time {
-  font-size: 8px;
+  font-size: 12px;
   color: var(--tone-abb998);
   margin-left: auto;
   white-space: nowrap;
@@ -1570,7 +1570,7 @@ textarea {
   align-items: center;
   gap: 8px;
   color: var(--tone-9fab8b);
-  font-size: 10px;
+  font-size: 12px;
   padding: 25px 0;
 }
 .dashboard-bottom-note > span {
@@ -1598,7 +1598,7 @@ textarea {
   position: fixed;
   top: 10px;
   left: 235px;
-  padding: 10px 15px;
+  padding: 12px 15px;
   background: var(--tone-ff9564);
   color: var(--tone-171c12);
   border-radius: 7px;
@@ -1643,14 +1643,14 @@ textarea {
 }
 .settings-aside p {
   color: var(--tone-b5c0a3);
-  font-size: 11px;
+  font-size: 13px;
 }
 .settings-aside .eyebrow {
-  font-size: 8px;
+  font-size: 12px;
   margin-bottom: 9px;
 }
 .settings-aside .pill {
-  font-size: 8px;
+  font-size: 12px;
 }
 .quiet-note {
   padding: 26px 12px;
@@ -1661,7 +1661,7 @@ textarea {
 }
 .quiet-note p {
   color: var(--tone-a3af92);
-  font-size: 11px;
+  font-size: 13px;
 }
 .feature-empty {
   display: flex;
@@ -1703,7 +1703,7 @@ textarea {
 }
 .phase-note > .button {
   padding-left: 0;
-  font-size: 11px;
+  font-size: 13px;
 }
 .roadmap-list {
   display: grid;
@@ -1735,11 +1735,11 @@ textarea {
 }
 .roadmap-row p {
   color: var(--tone-aab99a);
-  font-size: 11px;
+  font-size: 13px;
   margin: 0;
 }
 .roadmap-row .eyebrow {
-  font-size: 8px;
+  font-size: 12px;
 }
 .roadmap-row > svg {
   color: var(--tone-c8d89b);
@@ -1871,7 +1871,7 @@ textarea {
     padding: 15px;
   }
   .stat-card > div {
-    font-size: 9px;
+    font-size: 12px;
   }
   .stat-card > div > svg {
     width: 14px;
@@ -1953,7 +1953,7 @@ textarea {
     font-size: 12px;
   }
   .hero-fine {
-    font-size: 8px;
+    font-size: 12px;
   }
   .landing-nav {
     margin-inline: 6%;
@@ -1974,7 +1974,7 @@ textarea {
     font-size: 17px;
   }
   .how-card p {
-    font-size: 11px;
+    font-size: 13px;
   }
   .together-section {
     padding: 35px 25px;
@@ -2031,7 +2031,7 @@ textarea {
     backdrop-filter: blur(18px);
     border-top: 1px solid var(--tone-3c472f);
     z-index: 40;
-    padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
+    padding: 12px 10px calc(10px + env(safe-area-inset-bottom));
   }
   .mobile-nav a {
     display: flex;
@@ -2040,7 +2040,7 @@ textarea {
     justify-content: center;
     gap: 6px;
     color: var(--tone-9fac8a);
-    font-size: 9px;
+    font-size: 12px;
     min-height: 45px;
   }
   .mobile-nav a.active {
@@ -2050,7 +2050,7 @@ textarea {
     left: 10px;
   }
   .breadcrumb {
-    font-size: 11px;
+    font-size: 13px;
   }
   .dashboard-heading h1 {
     font-size: 28px;
@@ -2093,7 +2093,7 @@ textarea {
     letter-spacing: -4.5px;
   }
   .hero-label {
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 1.4px;
     margin-bottom: 24px;
   }
@@ -2109,10 +2109,10 @@ textarea {
   }
   .hero-actions > span {
     display: inline;
-    font-size: 9px;
+    font-size: 12px;
   }
   .hero-fine {
-    font-size: 9px;
+    font-size: 12px;
   }
   .hero-art {
     transform: scale(0.88);
@@ -2155,7 +2155,7 @@ textarea {
   .manifesto-strip {
     padding: 18px 7%;
     gap: 25px;
-    font-size: 8px;
+    font-size: 12px;
   }
   .how-section {
     padding: 50px 7%;
@@ -2199,7 +2199,7 @@ textarea {
     font-size: 26px;
   }
   .together-section .eyebrow {
-    font-size: 8px;
+    font-size: 12px;
   }
   .landing-footer {
     flex-wrap: wrap;
@@ -2208,7 +2208,7 @@ textarea {
   }
   .landing-footer > span:last-child {
     width: 100%;
-    font-size: 9px;
+    font-size: 12px;
   }
   .auth-form-wrap h2 {
     font-size: 30px;
@@ -2239,17 +2239,17 @@ textarea {
     gap: 12px;
   }
   .profile-identity div > span {
-    font-size: 9px;
+    font-size: 12px;
   }
   .secure-caption {
-    font-size: 9px;
+    font-size: 12px;
   }
   .app-header {
     padding-inline: 18px;
     height: 65px;
   }
   .breadcrumb {
-    font-size: 9px;
+    font-size: 12px;
     gap: 8px;
   }
   .breadcrumb > strong {
@@ -2284,7 +2284,7 @@ textarea {
     margin-top: 10px;
   }
   .dashboard-heading p {
-    font-size: 11px;
+    font-size: 13px;
   }
   .dashboard-heading .eyebrow {
     font-size: 7px;
@@ -2303,7 +2303,7 @@ textarea {
     font-size: 6px;
   }
   .momentum-banner p {
-    font-size: 10px;
+    font-size: 12px;
     max-width: 200px;
   }
   .banner-art {
@@ -2344,14 +2344,14 @@ textarea {
     padding: 18px 15px;
   }
   .stat-card > div {
-    font-size: 9px;
+    font-size: 12px;
   }
   .stat-card > strong {
     font-size: 31px;
     margin-top: 14px;
   }
   .stat-card > p {
-    font-size: 8px;
+    font-size: 12px;
   }
   .dashboard-grid {
     grid-template-columns: 1fr;
@@ -2377,13 +2377,13 @@ textarea {
     font-size: 12px;
   }
   .step-row p {
-    font-size: 10px;
+    font-size: 12px;
   }
   .step-row .pill {
-    font-size: 8px;
+    font-size: 12px;
   }
   .first-steps-bottom {
-    font-size: 10px;
+    font-size: 12px;
   }
   .recent-activity {
     padding: 20px 17px 7px;
@@ -2392,10 +2392,10 @@ textarea {
     gap: 10px;
   }
   .activity-row strong {
-    font-size: 10px;
+    font-size: 12px;
   }
   .activity-row p {
-    font-size: 9px;
+    font-size: 12px;
   }
   .activity-row time {
     font-size: 7px;
@@ -2412,7 +2412,7 @@ textarea {
     width: 15px;
   }
   .dashboard-bottom-note {
-    font-size: 9px;
+    font-size: 12px;
     text-align: center;
     padding-block: 23px 10px;
   }
@@ -2427,10 +2427,10 @@ textarea {
     font-size: 30px;
   }
   .page-heading .eyebrow {
-    font-size: 8px;
+    font-size: 12px;
   }
   .page-heading p {
-    font-size: 11px;
+    font-size: 13px;
   }
   .settings-grid > .panel {
     padding: 22px;
@@ -2449,10 +2449,10 @@ textarea {
     font-size: 25px;
   }
   .feature-empty p {
-    font-size: 11px;
+    font-size: 13px;
   }
   .feature-empty .button {
-    font-size: 11px;
+    font-size: 13px;
     max-width: 100%;
   }
   .phase-note {
@@ -2470,7 +2470,7 @@ textarea {
     font-size: 17px;
   }
   .roadmap-row p {
-    font-size: 11px;
+    font-size: 13px;
   }
   .roadmap-number {
     align-self: flex-start;
@@ -2508,7 +2508,7 @@ textarea {
   margin-top: 22px;
 }
 .account-actions .button {
-  font-size: 10px;
+  font-size: 12px;
   white-space: normal;
 }
 /* Readable supporting text and touch targets across the app. */
@@ -2516,38 +2516,38 @@ textarea {
   font-size: 12px;
 }
 .stat-card > p {
-  font-size: 10px;
+  font-size: 12px;
 }
 .activity-row strong {
   font-size: 12px;
 }
 .activity-row p {
-  font-size: 11px;
+  font-size: 13px;
 }
 .activity-row time {
-  font-size: 10px;
+  font-size: 12px;
 }
 .commitments-empty p {
   font-size: 12px;
 }
 .phase-caption,
 .commitments-foot {
-  font-size: 10px;
+  font-size: 12px;
 }
 .step-row strong {
   font-size: 12px;
 }
 .step-row p {
-  font-size: 11px;
+  font-size: 13px;
 }
 .step-row .pill {
-  font-size: 9px;
+  font-size: 12px;
 }
 .first-steps-bottom {
-  font-size: 10px;
+  font-size: 12px;
 }
 .app-footer {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.5px;
 }
 @media (max-width: 580px) {
@@ -2555,21 +2555,21 @@ textarea {
     min-height: 44px;
   }
   .stat-card > div {
-    font-size: 11px;
+    font-size: 13px;
   }
   .stat-card > p {
-    font-size: 10px;
+    font-size: 12px;
   }
   .activity-row time {
-    font-size: 9px;
+    font-size: 12px;
   }
   .app-footer {
-    font-size: 8px;
+    font-size: 12px;
   }
   .commitments-foot {
-    font-size: 9px;
+    font-size: 12px;
   }
   .dashboard-bottom-note {
-    font-size: 10px;
+    font-size: 12px;
   }
 }

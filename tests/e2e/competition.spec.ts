@@ -160,15 +160,19 @@ test('circle enrollment visibility, explicit window and exact virtual settlement
   await page.getByLabel('Upload window closes').fill('09:00');
   await page.goto(`/app/challenges/${hid}`);
   await expect(page.getByText('08:00–09:00 · UTC', { exact: true })).toBeVisible();
-  await page.getByRole('link', { name: 'Standings & virtual pool', exact: true }).click();
-  await expect(page.getByRole('button', { name: 'Finalize virtual results' })).toBeVisible();
-  await expect(page.locator('.competition-pool')).toContainText('7.52 VC');
-  await page.getByRole('button', { name: 'Finalize virtual results' }).click();
+  await page.getByRole('link', { name: 'Standings & pool', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Finalize results' })).toBeVisible();
+  await expect(page.locator('.competition-pool')).toContainText('USD 7.52');
+  await page.getByRole('button', { name: 'Finalize results' }).click();
   await expect(page.getByRole('heading', { name: 'The final tally.' })).toBeVisible();
-  await expect(page.locator('.competition-pool')).toContainText('Remaining pool: 0.00 VC');
-  await expect(page.locator('.leaderboard tbody')).toContainText('4.18 VC');
-  await expect(page.locator('.leaderboard tbody')).toContainText('3.34 VC');
+  await expect(page.locator('.competition-pool')).toContainText('Remaining pool: USD 0.00');
+  await expect(page.locator('.leaderboard tbody')).toContainText('USD 4.18');
+  await expect(page.locator('.leaderboard tbody')).toContainText('USD 3.34');
   await expect(page.locator('.ledger-row')).toHaveCount(5);
+  expect(await (await page.request.get('/api/me/wallet')).json()).toMatchObject({
+    balanceMinor: 418,
+    pendingPenaltyMinor: 0,
+  });
   await page.reload();
   await expect(page.locator('.ledger-row')).toHaveCount(5);
   await page.screenshot({ path: info.outputPath('settled-results.png'), fullPage: true });

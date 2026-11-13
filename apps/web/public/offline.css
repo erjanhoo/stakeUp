@@ -1,6 +1,13 @@
 :root {
+  --accent: #ffad8f;
+  --accent-fill: #ff5a1f;
   color-scheme: dark;
-  font-family: system-ui, sans-serif;
+  font-family:
+    'Segoe UI',
+    -apple-system,
+    BlinkMacSystemFont,
+    Arial,
+    sans-serif;
   background: #111317;
   color: #e2e2e8;
 }
@@ -24,7 +31,7 @@ img {
 .brand {
   font-size: 12px;
   letter-spacing: 3px;
-  color: #ffad8f;
+  color: var(--accent);
   margin: 24px 0;
 }
 h1 {
@@ -41,9 +48,14 @@ p {
   padding-top: 20px;
 }
 button {
-  background: #ff5a1f;
+  background: var(--accent-fill);
   color: #111317;
-  font: 700 16px system-ui;
+  font:
+    600 16px 'Segoe UI',
+    -apple-system,
+    BlinkMacSystemFont,
+    Arial,
+    sans-serif;
   border: 0;
   border-radius: 8px;
   min-height: 48px;
@@ -56,4 +68,55 @@ button:focus-visible {
 }
 #status {
   font-size: 13px;
+}
+
+:root[data-accent='lime'] {
+  --accent: #c3f400;
+  --accent-fill: #c3f400;
+}
+:root[data-accent='blue'] {
+  --accent: #99c9ff;
+  --accent-fill: #7bb9ff;
+}
+:root[data-accent='violet'] {
+  --accent: #cfb9ff;
+  --accent-fill: #bea0ff;
+}
+:root[data-mode='light'] {
+  color-scheme: light;
+  background: #f5f6f8;
+  color: #191d25;
+  --accent: #b4380a;
+}
+:root[data-mode='light'] p {
+  color: #586170;
+}
+:root[data-mode='light'] .brand {
+  color: var(--accent);
+}
+:root[data-mode='light'][data-accent='lime'] {
+  --accent: #4c6200;
+}
+:root[data-mode='light'][data-accent='blue'] {
+  --accent: #1658a6;
+}
+:root[data-mode='light'][data-accent='violet'] {
+  --accent: #6841ab;
+}
+button {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 16px #0003;
+}
+button:active {
+  transform: scale(0.98);
+}
+@media (prefers-reduced-motion: reduce) {
+  button {
+    transition: none;
+  }
 }

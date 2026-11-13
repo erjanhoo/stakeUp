@@ -126,10 +126,8 @@ test('calendar pass clears a missed day once; teammate profiles and private avat
   await day.click();
   await page.getByRole('button', { name: 'Use grace pass', exact: true }).click();
   await expect(page.getByText('Excused with a grace pass. No photo required.')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Cancel grace day' })).toBeDisabled();
-  await page.goto(`/app/circles/${cid}`);
-  if (past.slice(0, 7) !== new Date().toISOString().slice(0, 7))
-    await page.getByRole('button', { name: 'Previous month' }).click();
+  await expect(page.getByRole('button', { name: 'Grace pass used' })).toBeDisabled();
+  await page.getByRole('link', { name: /Back to calendar/ }).click();
   await expect(page.locator(`.calendar-day[href$="/day/${past}"]`)).toHaveClass(/good/);
   await page.goto('/app/settings');
   const buffer = await sharp({
@@ -145,7 +143,7 @@ test('calendar pass clears a missed day once; teammate profiles and private avat
   await page.goto(`/app/members/${users[0].id}`);
   await expect(page.locator('.member-hero .avatar img')).toHaveJSProperty('naturalWidth', 256);
   await expect(page.getByRole('heading', { name: 'Achievements' })).toBeVisible();
-  await expect(page.locator('.member-badge.earned')).toHaveCount(0);
+  await expect(page.locator('.achievement-stage.is-earned')).toHaveCount(0);
   await page.goto(`/app/circles/${cid}`);
   await page.getByRole('link', { name: 'View profile: Teammate', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Teammate', exact: true })).toBeVisible();

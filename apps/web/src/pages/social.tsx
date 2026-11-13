@@ -1,10 +1,21 @@
+import { JoinCircleButton } from '../components/invitation';
+import { About } from '../components/about';
+import { useMoney } from '../lib/money';
 import { CircleCalendar } from '../components/circle-calendar';
 import { HelpTip } from '../components/help-tip';
 import { useI18n } from '../lib/i18n';
 import { useEffect, useState, type FormEvent, type ChangeEvent } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {
   Flame,
+  Rocket,
+  Mountain,
+  Heart,
+  Coffee,
+  Brain,
+  Bike,
+  Music,
+  Target,
   Sun,
   BookOpen,
   Dumbbell,
@@ -12,7 +23,6 @@ import {
   UsersRound,
   ArrowUpRight,
   ArrowRight,
-  KeyRound,
   ArrowLeft,
   Plus,
   Copy,
@@ -38,18 +48,25 @@ import {
 } from '@stakeup/contracts';
 import { useAuth } from '../lib/auth';
 import { api, message } from '../lib/api';
-import {
-  useResource,
-  invitationToken,
-  PENDING_INVITE,
-  credits,
-  tomorrow,
-  addDays,
-} from '../lib/social';
-import { Brand, Avatar, ErrorMessage, Loading } from '../components/common';
+import { useResource, tomorrow, addDays } from '../lib/social';
+import { Avatar, ErrorMessage, Loading } from '../components/common';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-const icons = { flame: Flame, sun: Sun, book: BookOpen, dumbbell: Dumbbell, sprout: Sprout };
+const icons = {
+  flame: Flame,
+  sun: Sun,
+  book: BookOpen,
+  dumbbell: Dumbbell,
+  sprout: Sprout,
+  rocket: Rocket,
+  mountain: Mountain,
+  heart: Heart,
+  coffee: Coffee,
+  brain: Brain,
+  bike: Bike,
+  music: Music,
+  target: Target,
+};
 const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 export function CircleIcon({ icon }: { icon: CircleInput['icon'] }) {
   const Icon = icons[icon] ?? Flame;
@@ -71,58 +88,23 @@ function Failure({ error, reload }: { error: string; reload: () => void }) {
     </div>
   );
 }
-function JoinForm({ initial = '', onJoin }: { initial?: string; onJoin?: (id: string) => void }) {
-  const { t } = useI18n();
-
-  const [busy, setBusy] = useState(false),
-    [error, setError] = useState('');
-  const navigate = useNavigate();
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setError('');
-    setBusy(true);
-    try {
-      const token = invitationToken(String(new FormData(event.currentTarget).get('invite')));
-      const result = await api<{ circleId: string }>('/invitations/join', {
-        method: 'POST',
-        body: JSON.stringify({ token }),
-      });
-      sessionStorage.removeItem(PENDING_INVITE);
-      if (onJoin) onJoin(result.circleId);
-      else navigate(`/app/circles/${result.circleId}`);
-    } catch (e) {
-      setError(message(e));
-    } finally {
-      setBusy(false);
-    }
-  }
-  return (
-    <form className="form-stack" onSubmit={submit}>
-      <label>
-        {t('Invitation link or code')}{' '}
-        <Input
-          name="invite"
-          defaultValue={initial}
-          placeholder={t('Paste the link your friend sent')}
-          required
-          autoComplete="off"
-        />
-      </label>
-      {error ? <ErrorMessage message={error} /> : null}
-      <Button type="submit" disabled={busy}>
-        {busy ? t('Joining…') : t('Join circle')}
-        <ArrowUpRight size={17} />
-      </Button>
-    </form>
-  );
-}
 function CircleWorkspaceCard({ circle: c }: { circle: CircleSummary }) {
+  const navigate = useNavigate();
   const { t, language } = useI18n();
   const { data } = useResource<CircleDetail>(`/circles/${c.id}`);
   const active = data?.challenges.find((h) => h.status === 'active'),
     proposal = data?.challenges.find((h) => h.status === 'proposed');
   return (
-    <article className="st-circle-card">
+    <article
+      className="st-circle-card"
+      onClick={(e) => {
+        if (
+          !(e.target as HTMLElement).closest('a, button, input, summary') &&
+          !window.getSelection()?.toString()
+        )
+          navigate(`/app/circles/${c.id}`);
+      }}
+    >
       <div
         className="st-circle-cover"
         style={{
@@ -138,7 +120,11 @@ function CircleWorkspaceCard({ circle: c }: { circle: CircleSummary }) {
         <div className="st-circle-card-title">
           <CircleIcon icon={c.icon} />
           <div>
-            <h2>{c.name}</h2>
+            <h2>
+              <Link className="circle-name-link" to={`/app/circles/${c.id}`}>
+                {c.name}
+              </Link>
+            </h2>
             <span>{t('Private by default.')}</span>
           </div>
         </div>
@@ -188,7 +174,8 @@ function CircleWorkspaceCard({ circle: c }: { circle: CircleSummary }) {
         </div>
       )}
       <Link className="st-circle-open" to={`/app/circles/${c.id}`}>
-        {t('Open Circle workspace')}
+        {t('More')}
+        <span className="sr-only"> · {c.name}</span>
         <ArrowRight size={18} />
       </Link>
     </article>
@@ -198,17 +185,11 @@ export function CirclesPage() {
   const { t } = useI18n();
   const { data, error, loading, reload } = useResource<CircleSummary[]>('/circles');
   const [showArchived, setShowArchived] = useState(false);
+  const [search] = useSearchParams();
   const active = data?.filter((c) => !c.archived) ?? [],
     archived = data?.filter((c) => c.archived) ?? [];
   return (
     <div className="st-circles-page">
-      <section className="st-circles-privacy">
-        <ShieldCheck size={22} />
-        <div>
-          <strong>{t('ZERO PUBLIC DIRECTORY')}</strong>
-          <p>{t('No public directory. Your Circle stays between its members.')}</p>
-        </div>
-      </section>
       <div className="st-circles-hero">
         <header className="st-page-header">
           <div>
@@ -217,10 +198,7 @@ export function CirclesPage() {
             <p>{t('Private, invite-only squads holding each other accountable.')}</p>
           </div>
           <div className="st-header-actions">
-            <Link className="st-btn st-btn-secondary" to="/join">
-              <KeyRound size={16} />
-              {t('Join circle')}
-            </Link>
+            <JoinCircleButton initialOpen={search.get('join') === '1'} />
             <Link className="st-btn" to="/app/circles/new">
               <Plus size={17} />
               {t('Create a circle')}
@@ -246,7 +224,7 @@ export function CirclesPage() {
           <div>
             <ShieldCheck size={25} />
             <strong>{t('Invite only')}</strong>
-            <span>{t('All stakes are virtual. Always.')}</span>
+            <span>{t('Your people. Your promise.')}</span>
           </div>
         </div>
       </div>
@@ -280,14 +258,13 @@ export function CirclesPage() {
           </Link>
         </section>
       ) : null}
-      <details className="st-invitation-entry">
-        <summary>
-          <KeyRound size={18} />
-          {t('GOT AN INVITATION?')}
-          <Plus size={16} />
-        </summary>
-        <JoinForm />
-      </details>
+      <About title="About circles">
+        <p>
+          {t(
+            'Circles are private and invite-only. Joining a circle does not enroll you in its challenges. Everyone accepts the same rules before a challenge starts.',
+          )}
+        </p>
+      </About>
     </div>
   );
 }
@@ -342,6 +319,14 @@ function CircleFields({
           <option value="book">{t('Book · learning')}</option>
           <option value="dumbbell">{t('Dumbbell · movement')}</option>
           <option value="sprout">{t('Sprout · growth')}</option>
+          <option value="rocket">{t('Rocket · ambition')}</option>
+          <option value="mountain">{t('Mountain · adventure')}</option>
+          <option value="heart">{t('Heart · wellbeing')}</option>
+          <option value="coffee">{t('Coffee · mornings')}</option>
+          <option value="brain">{t('Brain · focus')}</option>
+          <option value="bike">{t('Bike · endurance')}</option>
+          <option value="music">{t('Music · creativity')}</option>
+          <option value="target">{t('Target · goals')}</option>
         </select>
       </label>
       {onIconChange ? (
@@ -353,6 +338,14 @@ function CircleFields({
               ['book', 'Book · learning'],
               ['dumbbell', 'Dumbbell · movement'],
               ['sprout', 'Sprout · growth'],
+              ['rocket', 'Rocket · ambition'],
+              ['mountain', 'Mountain · adventure'],
+              ['heart', 'Heart · wellbeing'],
+              ['coffee', 'Coffee · mornings'],
+              ['brain', 'Brain · focus'],
+              ['bike', 'Bike · endurance'],
+              ['music', 'Music · creativity'],
+              ['target', 'Target · goals'],
             ] as const
           ).map(([icon, label]) => (
             <button
@@ -464,7 +457,7 @@ export function CreateCircle() {
               <p>{preview.description || t('What brings your people together?')}</p>
               <footer>
                 <span>0 {t('Active challenges')}</span>
-                <span>0.00 {t('VC')}</span>
+                <span>{t('Ready to begin')}</span>
               </footer>
             </article>
           </section>
@@ -531,6 +524,7 @@ function AcceptanceRoster({ challenge }: { challenge: ChallengeSummary }) {
   );
 }
 function ChallengeCard({ challenge: c }: { challenge: ChallengeSummary }) {
+  const money = useMoney();
   const { t, language } = useI18n();
 
   return (
@@ -553,7 +547,7 @@ function ChallengeCard({ challenge: c }: { challenge: ChallengeSummary }) {
           {c.rules.startDate} – {c.rules.endDate} · {c.rules.cutoff} {c.rules.timezone}
         </p>
         <span className="muted">
-          {c.acceptedCount} {t('accepted ·')} {credits(c.rules.penaltyMinor, language)}{' '}
+          {c.acceptedCount} {t('accepted ·')} {money(c.rules.penaltyMinor)}{' '}
           {t('per missed day')}{' '}
         </span>
       </div>
@@ -818,109 +812,8 @@ export function CirclePage() {
     </>
   );
 }
-export function JoinCircle() {
-  const { t } = useI18n();
-
-  const auth = useAuth();
-  const navigate = useNavigate();
-  const [token, setToken] = useState(''),
-    [error, setError] = useState('');
-  useEffect(() => {
-    try {
-      const fromHash = new URLSearchParams(location.hash.slice(1)).get('token');
-      const saved = fromHash ?? sessionStorage.getItem(PENDING_INVITE) ?? '';
-      if (!saved) return;
-      const parsed = invitationToken(saved);
-      setToken(parsed);
-      sessionStorage.setItem(PENDING_INVITE, parsed);
-      history.replaceState(null, '', '/join');
-    } catch (e) {
-      setError(message(e));
-    }
-  }, []);
-  return (
-    <div className="onboarding st-join">
-      <header>
-        <Brand />
-        <span className="eyebrow">{t('AN INVITATION TO SHOW UP')}</span>
-      </header>
-      <main className="st-join-layout">
-        <div className="onboarding-heading">
-          <span className="page-icon">
-            <UsersRound />
-          </span>
-          <span className="st-eyebrow">{t('INVITATION REQUIRED')}</span>
-          <h1>{t('Good company is waiting.')}</h1>
-          <p>{t('A private circle. A shared ambition. Your next small step.')}</p>
-          <div className="st-join-benefits">
-            {[
-              [
-                '01',
-                'Private by default.',
-                'No public directory. Your Circle stays between its members.',
-              ],
-              [
-                '02',
-                'Your rules. Your choice.',
-                'Joining a circle does not enroll you in its challenges.',
-              ],
-              ['03', 'Only virtual stakes.', 'No deposits, charges or withdrawals.'],
-            ].map(([n, title, detail]) => (
-              <article key={n}>
-                <span>{n}</span>
-                <div>
-                  <h2>{t(title)}</h2>
-                  <p>{t(detail)}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-        <section className="panel">
-          {auth.loading ? (
-            <Loading />
-          ) : error ? (
-            <>
-              <ErrorMessage message={error} />
-              <Button asChild variant="outline">
-                <Link to="/app/circles">{t('Your circles')}</Link>
-              </Button>
-            </>
-          ) : !auth.profile ? (
-            <>
-              <p className="muted">
-                {t(
-                  'Sign in or create an account to use this invitation. We’ll keep it here while you get settled.',
-                )}{' '}
-              </p>
-              <div className="heading-actions">
-                <Button asChild>
-                  <Link to="/login">{t('Log in')}</Link>
-                </Button>
-                <Button variant="outline" asChild>
-                  <Link to="/register">{t('Create account')}</Link>
-                </Button>
-              </div>
-            </>
-          ) : !auth.profile.onboardingCompleted ? (
-            <Button asChild>
-              <Link to="/onboarding">{t('Finish your profile')}</Link>
-            </Button>
-          ) : token ? (
-            <JoinForm initial={token} onJoin={(id) => navigate(`/app/circles/${id}`)} />
-          ) : (
-            <JoinForm />
-          )}
-          <p className="secure-caption">
-            <LockKeyhole size={16} />
-            {t('Private by default. No public directory.')}
-          </p>
-        </section>
-      </main>
-    </div>
-  );
-}
 export function CreateChallenge() {
+  const money = useMoney();
   const { t } = useI18n();
 
   const { id } = useParams();
@@ -1102,7 +995,7 @@ export function CreateChallenge() {
           <h2>{t('04 · Stakes & forgiveness')}</h2>
           <div className="form-row">
             <label>
-              {t('Virtual penalty per missed day')}{' '}
+              {t('Daily stake per missed day')}{' '}
               <Input
                 name="penalty"
                 inputMode="decimal"
@@ -1127,16 +1020,16 @@ export function CreateChallenge() {
             <Input name="graceDays" type="number" min={0} max={7} defaultValue={1} required />
           </label>
           <p className="field-hint">
-            {t('Virtual credits only. No deposits, charges or withdrawals.')}{' '}
+            {t('Choose a daily stake and a maximum total for this challenge.')}{' '}
           </p>
-          <div className="reward-policy">
-            <strong>{t('Discipline rewards · policy v2')}</strong>
+          <About title="About rewards and grace">
+            <strong>{t('Shared discipline rewards')}</strong>
             <p>
               {t(
                 'Grace passes excuse scheduled or missed days without photos, within your agreed allowance. Past passes cannot be cancelled. Finalized results stay locked.',
               )}{' '}
             </p>
-          </div>
+          </About>
         </section>
         <section className="panel publish-panel">
           <small className="st-eyebrow">{t('LIVE CHALLENGE PREVIEW')}</small>
@@ -1148,13 +1041,13 @@ export function CreateChallenge() {
               <div>
                 <span>{t('Per missed day')}</span>
                 <strong>
-                  {preview.penalty || '—'} {t('VC')}
+                  {preview.penalty || '—'} {profile?.currency ?? 'USD'}
                 </strong>
               </div>
               <div>
                 <span>{t('Your maximum')}</span>
                 <strong>
-                  {preview.cap || '—'} {t('VC')}
+                  {preview.cap || '—'} {profile?.currency ?? 'USD'}
                 </strong>
               </div>
               <div>
@@ -1197,6 +1090,7 @@ export function CreateChallenge() {
   );
 }
 function ChallengeParticipant({ challenge: c }: { challenge: ChallengeDetail }) {
+  const money = useMoney();
   const { t, language } = useI18n(),
     { profile } = useAuth(),
     { data } = useResource<Competition>(`/challenges/${c.id}/competition`);
@@ -1232,8 +1126,8 @@ function ChallengeParticipant({ challenge: c }: { challenge: ChallengeDetail }) 
           </strong>
         </div>
         <div>
-          <span>{t('Virtual penalty')}</span>
-          <strong>{credits(own?.penaltyMinor ?? 0, language)}</strong>
+          <span>{t('Daily stake')}</span>
+          <strong>{money(own?.penaltyMinor ?? 0)}</strong>
         </div>
       </div>
       <div className="st-challenge-window">
@@ -1252,7 +1146,7 @@ function ChallengeParticipant({ challenge: c }: { challenge: ChallengeDetail }) 
       ) : null}
       {c.status === 'proposed' ? (
         <Link className="st-text-link" to={`/app/challenges/${c.id}/competition`}>
-          {t('Standings & virtual pool')}
+          {t('Standings & pool')}
           <ArrowRight size={14} />
         </Link>
       ) : null}
@@ -1260,6 +1154,7 @@ function ChallengeParticipant({ challenge: c }: { challenge: ChallengeDetail }) 
   );
 }
 export function ChallengePage() {
+  const money = useMoney();
   const { t, language } = useI18n();
 
   const { id } = useParams();
@@ -1317,7 +1212,7 @@ export function ChallengePage() {
           </Button>
           <Button asChild variant="outline">
             <Link to={`/app/challenges/${c.id}/competition`}>
-              {c.status === 'completed' ? t('Final results') : t('Standings & virtual pool')}
+              {c.status === 'completed' ? t('Final results') : t('Standings & pool')}
             </Link>
           </Button>
         </div>
@@ -1348,7 +1243,7 @@ export function ChallengePage() {
                       onChange={(e) => setAgreed(e.target.checked)}
                     />
                     {t(
-                      'I accept these dates, upload window, evidence rules, grace days, virtual penalties and cap.',
+                      'I accept these dates, upload window, evidence rules, grace days, daily stakes and cap.',
                     )}{' '}
                   </label>
                   <Button disabled={!agreed || busy} onClick={() => void action('accept')}>
@@ -1419,11 +1314,11 @@ export function ChallengePage() {
             </div>
             <div>
               <dt>{t('Per missed day')}</dt>
-              <dd>{credits(r.penaltyMinor, language)}</dd>
+              <dd>{money(r.penaltyMinor)}</dd>
             </div>
             <div>
               <dt>{t('Your maximum')}</dt>
-              <dd>{credits(r.maxPenaltyMinor, language)}</dd>
+              <dd>{money(r.maxPenaltyMinor)}</dd>
             </div>
           </dl>
           <h3>{t('What counts as evidence')}</h3>
@@ -1431,23 +1326,17 @@ export function ChallengePage() {
           <span className="pill">
             {r.capturePolicy === 'camera_only' ? t('Camera capture only') : t('Camera or upload')}
           </span>
-          <div className="reward-policy">
-            <strong>
-              {t(
-                r.rewardPolicy === 'discipline_v1'
-                  ? 'Proportional discipline rewards · v1'
-                  : 'Discipline rewards · policy v2',
-              )}
-            </strong>
+          <About title="About rewards and grace">
+            <strong>{t('Shared discipline rewards')}</strong>
             <p>
               {t(
                 (r.gracePolicy ?? 'automatic_v1') === 'automatic_v1'
-                  ? '80% completion eligibility. No real money. Grace days excuse the earliest misses; accepted days count toward your discipline score.'
+                  ? '80% completion eligibility. Grace passes excuse days within the agreed allowance; accepted proof builds your discipline score.'
                   : 'Grace passes excuse scheduled or missed days without photos, within your agreed allowance. Past passes cannot be cancelled. Finalized results stay locked.',
               )}{' '}
             </p>
-            <p>{t('See standings and the virtual pool for current projections.')}</p>
-          </div>
+            <p>{t('See standings and the pool for current contributions.')}</p>
+          </About>
           <details className="rule-version">
             <summary>{t('View the immutable rule fingerprint')}</summary>
             <code>{c.rulesHash}</code>

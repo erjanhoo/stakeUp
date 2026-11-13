@@ -37,7 +37,7 @@ test('landing → register → onboarding → dashboard → saved settings → l
   await page.getByRole('link', { name: 'View badges and points', exact: true }).click();
   await expect(page).toHaveURL(/\/app\/members\/[0-9a-f-]+$/);
   await expect(page.getByRole('heading', { name: 'Achievements', exact: true })).toBeVisible();
-  await expect(page.locator('.member-badge')).toHaveCount(4);
+  await expect(page.locator('.achievement-stage')).toHaveCount(5);
   await expect(page.locator('.member-hero')).toContainText('0 progress points');
   // The join entry works without an invitation already stored in the URL/session.
   await page.goto('/join');

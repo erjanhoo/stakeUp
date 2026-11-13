@@ -15,6 +15,8 @@ import {
   registerSchema,
   profileSchema,
   appearanceSchema,
+  currencySchema,
+  topUpSchema,
   circleSchema,
   challengeSchema,
   invitationSchema,
@@ -95,9 +97,10 @@ export async function configureApp(app: FastifyInstance, config: Config) {
       onboardingCompleted: !!row.onboarding_completed_at,
       appearance: {
         mode: row.theme_mode === 'light' ? 'light' : 'dark',
-        accent: row.theme_accent === 'lime' ? 'lime' : 'orange',
+        accent: appearanceSchema.shape.accent.catch('orange').parse(row.theme_accent),
       },
       language: row.language === 'ru' ? 'ru' : 'en',
+      currency: currencySchema.catch('USD').parse(row.currency),
       createdAt: String(row.created_at),
     };
   }
@@ -197,6 +200,39 @@ export async function configureApp(app: FastifyInstance, config: Config) {
     community(req, 'read', z.object({ id: z.uuid().optional() }).parse(req.body)),
   );
   app.get('/api/me/recap', (req) => community(req, 'recap'));
+  app.patch('/api/me/currency', async (req) => {
+    const { currency } = z.object({ currency: currencySchema }).parse(req.body);
+    const { profile, db } = await authenticate(req);
+    if (local) return local.currency(profile.id, currency);
+    const result = await db!
+      .from('profiles')
+      .update({ currency })
+      .eq('id', profile.id)
+      .select('*')
+      .single();
+    if (result.error) dbError(result.error);
+    return mapProfile(result.data!, profile.email);
+  });
+  for (const method of ['GET', 'POST'] as const)
+    app.route({
+      method,
+      url: method === 'GET' ? '/api/me/wallet' : '/api/me/wallet/top-up',
+      handler: async (req) => {
+        const { profile, db } = await authenticate(req);
+        const topUp = method === 'POST' ? topUpSchema.parse(req.body) : undefined;
+        if (local) return local.wallet(profile.id, topUp);
+        const result = await db!.rpc('stakeup_wallet', {
+          p_amount: topUp?.amountMinor ?? null,
+          p_request: topUp?.requestId ?? null,
+        });
+        if (result.error)
+          throw new AppError(
+            result.error.code === '42501' ? 403 : 409,
+            result.error.code === 'P0001' ? result.error.message : 'Unable to load your balance.',
+          );
+        return result.data;
+      },
+    });
   app.get<{ Params: { id: string } }>('/api/challenges/:id/grace', (req) =>
     community(req, 'grace_list', { challengeId: z.uuid().parse(req.params.id) }),
   );

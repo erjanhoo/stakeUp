@@ -1,5 +1,5 @@
 /* Public offline screen only. Never cache APIs, sessions, photos, app HTML or JS. */
-const CACHE = 'stakeup-public-offline-v1'; // Bump when changing the offline screen.
+const CACHE = 'stakeup-public-offline-v2'; // Bump when changing the offline screen.
 const PUBLIC_FILES = ['/offline.html', '/offline.css', '/offline.js', '/icons/icon-192.png'];
 self.addEventListener('install', (event) => {
   event.waitUntil(

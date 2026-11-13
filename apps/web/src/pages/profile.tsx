@@ -1,3 +1,4 @@
+import { WalletPanel } from '../components/wallet';
 import { AvatarUpload } from './member';
 import { AchievementLink } from '../components/achievement-link';
 import { InstallCard } from '../components/install-card';
@@ -159,7 +160,7 @@ export function Onboarding() {
               </li>
               <li>
                 <Check size={18} />
-                {t('All stakes are virtual. Always.')}
+                {t('Your people. Your promise.')}
               </li>
               <li>
                 <UserRound size={18} />
@@ -256,6 +257,7 @@ export function Settings() {
           </section>
         </div>
         <aside className="st-settings-right">
+          <WalletPanel />
           <InstallCard />
           <AppearanceSettings />
           <section className="st-module st-language-panel">
@@ -270,7 +272,6 @@ export function Settings() {
                 'Your details aren’t public. Your circles share your display name, username and challenge participation with members. Your email stays private.',
               )}
             </p>
-            <p>{t('All stakes are virtual. There are no payment details to add.')}</p>
           </section>
         </aside>
       </div>

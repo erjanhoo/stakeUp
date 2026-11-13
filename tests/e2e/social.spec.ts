@@ -40,7 +40,7 @@ test('two friends create a private circle, accept immutable rules and activate a
   await page
     .getByLabel('Evidence requirements')
     .fill('Share a photo of your reading notes. A photo cannot prove pages read.');
-  await page.getByLabel('Virtual penalty per missed day').fill('2.50');
+  await page.getByLabel('Daily stake per missed day').fill('2.50');
   await page.getByLabel('Maximum total penalty').fill('15.00');
   await page.getByRole('button', { name: 'Publish proposal' }).click();
   await expect(page.getByRole('heading', { name: 'Show up for reading.' })).toBeVisible();
@@ -61,7 +61,10 @@ test('two friends create a private circle, accept immutable rules and activate a
     await friend.getByRole('button', { name: 'Create your account' }).click();
     await friend.getByLabel('Display name').fill('Sam');
     await friend.getByRole('button', { name: 'Make yourself at home' }).click();
-    await friend.getByRole('button', { name: 'Join circle', exact: true }).click();
+    await friend
+      .locator('.join-popover')
+      .getByRole('button', { name: 'Join circle', exact: true })
+      .click();
     await expect(
       friend.getByRole('heading', { name: 'The reading crew', exact: true }),
     ).toBeVisible();

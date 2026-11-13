@@ -65,7 +65,7 @@ export function UtilityScreen({
           </div>
         </section>
       </main>
-      <footer>{t('All stakes are virtual. Always.')}</footer>
+      <footer>{t('Your people. Your promise.')}</footer>
     </div>
   );
 }

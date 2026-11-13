@@ -129,7 +129,9 @@ it('preserves legacy rules and never silently assigns unused chosen grace; balan
     rewardPolicy: 'discipline_v1',
     gracePolicy: 'automatic_v1',
   };
-  expect(() => grace(s, 'grace_choose')).toThrow(/original automatic/);
+  grace(s, 'grace_choose');
+  expect(grace(s, 'grace_list')).toHaveLength(1);
+  expect(s.challenges[0].rules.gracePolicy).toBe('automatic_v1');
   s.challenges[0].rules = {
     ...s.challenges[0].rules,
     rewardPolicy: 'discipline_v2',
@@ -155,6 +157,24 @@ it('preserves legacy rules and never silently assigns unused chosen grace; balan
       0,
     ),
   ).toBe(0);
+});
+it('shows automatic passes in the calendar and charges only excess misses, keeping unresolved proof separate', () => {
+  const s = fixture();
+  s.challenges[0].rules.gracePolicy = 'automatic_v1';
+  s.challenges[0].rules.rewardPolicy = 'discipline_v1';
+  const late = new Date('2026-11-11T10:00Z');
+  expect(grace(s, 'grace_list', id(110), id(1), late)).toMatchObject([{ obligationId: id(110) }]);
+  grace(s, 'grace_choose', id(110), id(1), late);
+  expect(grace(s, 'grace_list', id(110), id(1), late)).toHaveLength(1);
+  expect(
+    competitionCommand(s, id(1), id(11), false, late).rows.find((r) => r.userId === id(1)),
+  ).toMatchObject({ grace: 1, missed: 1, penaltyMinor: 100 });
+  expect(() => grace(s, 'grace_choose', id(112), id(1), late)).toThrow(/allowance/);
+  const p = submitted(s);
+  expect(
+    competitionCommand(s, id(1), id(11), false, late).rows.find((r) => r.userId === id(1)),
+  ).toMatchObject({ grace: 1, pending: 2, penaltyMinor: 0 });
+  expect(p.proofId).toBeTruthy();
 });
 function submitted(s: CommunityState) {
   s.proofs = [

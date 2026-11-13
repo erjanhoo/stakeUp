@@ -154,6 +154,6 @@ test('Russian account preferences, visible accents, chosen grace dates and priva
   await page.goto('/unknown-page');
   await expect(page.getByRole('heading', { name: 'Страница не найдена.' })).toBeVisible();
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: /Держите слово/ })).toBeVisible();
+  await expect(page).toHaveURL(/\/app$/);
   expect(errors).toEqual([]);
 });

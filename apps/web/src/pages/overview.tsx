@@ -1,3 +1,7 @@
+import { JoinCircleButton } from '../components/invitation';
+import { AchievementTrack } from '../components/achievement-track';
+import { WalletPanel } from '../components/wallet';
+import { useMoney } from '../lib/money';
 import { HelpTip } from '../components/help-tip';
 import { AchievementLink } from '../components/achievement-link';
 import { useEffect, useState } from 'react';
@@ -5,11 +9,8 @@ import { Link } from 'react-router-dom';
 import {
   ArrowRight,
   Plus,
-  KeyRound,
   Clock,
   PiggyBank,
-  ShieldCheck,
-  Check,
   Flag,
   ArrowUpRight,
   ClipboardCheck,
@@ -17,7 +18,7 @@ import {
 import type { Obligation, Proof, GraceChoice, PersonalRecap } from '@stakeup/contracts';
 import { useAuth } from '../lib/auth';
 import { useI18n } from '../lib/i18n';
-import { useResource, credits } from '../lib/social';
+import { useResource } from '../lib/social';
 import { useDashboard, ActivityList } from './dashboard';
 import { ErrorMessage, Loading } from '../components/common';
 function Commitment({ o, clock }: { o: Obligation; clock: number }) {
@@ -119,38 +120,15 @@ function Milestones() {
     <section className="st-module">
       <div className="st-module-heading">
         <Flag size={18} />
-        <h2>{t('Verifiable milestones')}</h2>
+        <h2>{t('Your momentum')}</h2>
       </div>
       {error ? <ErrorMessage message={error} /> : !data ? <Loading /> : null}
-      {data
-        ? [
-            [1, 'First proof accepted'],
-            [7, 'Seven small wins'],
-            [30, 'Thirty times showing up'],
-            [1, 'First challenge completed'],
-          ].map(([goal, title], i) => {
-            const value = i === 3 ? (data?.completed ?? 0) : (data?.accepted ?? 0),
-              achieved = value >= Number(goal);
-            return (
-              <div className="st-milestone" key={title}>
-                <span className={achieved ? 'st-achieved' : ''}>
-                  {achieved ? <Check size={18} /> : <Flag size={18} />}
-                </span>
-                <div>
-                  <strong>{t(String(title))}</strong>
-                  <small>{achieved ? t('Accepted') : `${value} / ${goal}`}</small>
-                  <div className="st-progress">
-                    <span style={{ width: `${Math.min(100, (value / Number(goal)) * 100)}%` }} />
-                  </div>
-                </div>
-              </div>
-            );
-          })
-        : null}
+      {data && <AchievementTrack accepted={data.accepted} completed={data.completed} />}
     </section>
   );
 }
 export function Overview() {
+  const money = useMoney();
   const { t, language } = useI18n(),
     { profile } = useAuth(),
     { data, error, retry } = useDashboard();
@@ -170,10 +148,7 @@ export function Overview() {
           <p>{t('Your commitments. Your people. Your next move.')}</p>
         </div>
         <div className="st-header-actions">
-          <Link className="st-btn st-btn-secondary" to="/join">
-            <KeyRound size={16} />
-            {t('Join circle')}
-          </Link>
+          <JoinCircleButton />
           <Link className="st-btn" to="/app/circles/new">
             <Plus size={17} />
             {t('Create circle')}
@@ -205,7 +180,7 @@ export function Overview() {
             <div className="st-section-label">
               <h2>
                 <span />
-                {t('Today’s obligations & active windows')}
+                {t('Your daily commitments')}
               </h2>
               <small className="st-mono">{t('Schedule order')}</small>
             </div>
@@ -275,23 +250,17 @@ export function Overview() {
             <div className="st-module-heading">
               <h2>
                 <PiggyBank size={18} />
-                {t('Active virtual pool')}
+                {t('Shared pool')}
                 <HelpTip title="About the pool">
-                  Virtual credits come from missed commitments. They have no cash value. Final
-                  rewards depend on the accepted challenge rules.
+                  Missed days add the agreed stake after grace passes and caps are applied.
+                  Submitted proof awaiting review is kept separate until a decision is made.
                 </HelpTip>
               </h2>
               <span className="st-live-dot" />
             </div>
             <small className="st-mono st-muted">{t('Combined challenge pools')}</small>
-            <strong className="st-pool-amount">
-              {data ? credits(data.virtualPoolMinor, language) : '—'}
-            </strong>
-            <p>
-              {t(
-                'Virtual credits in active challenges. Not a personal wallet or spendable balance.',
-              )}
-            </p>
+            <strong className="st-pool-amount">{data ? money(data.virtualPoolMinor) : '—'}</strong>
+            <p>{t('Missed days contribute after grace. Pending reviews stay separate.')}</p>
             <div className="st-mini-metrics">
               {[
                 [data?.activeChallenges, 'Active challenges'],
@@ -305,17 +274,9 @@ export function Overview() {
                 </div>
               ))}
             </div>
-            <footer>
-              <ShieldCheck size={13} />
-              {t('Virtual credits · no cash value')}
-            </footer>
           </section>
+          <WalletPanel compact />
           <Milestones />
-          <section className="st-trust-note">
-            <ShieldCheck size={24} />
-            <h3>{t('Private by default.')}</h3>
-            <p>{t('All stakes are virtual. Your circle stays private.')}</p>
-          </section>
         </aside>
       </div>
     </div>

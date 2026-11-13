@@ -5,6 +5,12 @@ import { useAppearance } from '../lib/appearance';
 import { ErrorMessage } from './common';
 import { message } from '../lib/api';
 export function AppearanceSettings() {
+  const names = {
+    orange: 'Warm orange',
+    lime: 'Electric lime',
+    blue: 'Ocean blue',
+    violet: 'Soft violet',
+  };
   const { t } = useI18n();
 
   const { appearance, save, busy } = useAppearance();
@@ -40,7 +46,7 @@ export function AppearanceSettings() {
         ))}
       </div>
       <div role="group" aria-label={t('Accent color')} className="appearance-options">
-        {(['orange', 'lime'] as const).map((accent) => (
+        {(['orange', 'lime', 'blue', 'violet'] as const).map((accent) => (
           <button
             key={accent}
             type="button"
@@ -49,7 +55,7 @@ export function AppearanceSettings() {
             onClick={() => void choose({ ...appearance, accent })}
           >
             <i className={`accent-swatch swatch-${accent}`} />
-            <span>{accent === 'orange' ? t('Warm orange') : t('Electric lime')}</span>
+            <span>{t(names[accent])}</span>
             {appearance.accent === accent ? <Check size={16} /> : null}
           </button>
         ))}
@@ -62,8 +68,7 @@ export function AppearanceSettings() {
           <strong>{t('Your next small win.')}</strong>
           <p>{t('Your people, your promise')}</p>
           <span className="st-status st-status-safe">
-            {t(appearance.mode === 'dark' ? 'Dark' : 'Light')} /{' '}
-            {t(appearance.accent === 'lime' ? 'Electric lime' : 'Warm orange')}
+            {t(appearance.mode === 'dark' ? 'Dark' : 'Light')} / {t(names[appearance.accent])}
           </span>
         </div>
       </div>

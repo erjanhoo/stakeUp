@@ -24,6 +24,8 @@ Stop development with Ctrl+C. No paid service is needed for this mode.
 
 ## Architecture and planning
 
+- [13 November experience refresh and release steps (pending production deployment)](docs/EXPERIENCE_REFRESH.md)
+
 - [Architecture, project structure, schema proposal, scope, design, roadmap and risks](docs/ARCHITECTURE.md)
 - [Proposed virtual reward rules](docs/REWARD_RULES.md)
 - [Supabase and Vercel setup](docs/DEPLOYMENT.md)

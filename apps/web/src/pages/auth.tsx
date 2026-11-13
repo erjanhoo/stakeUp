@@ -142,11 +142,7 @@ export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot'
           </div>
           <div className="st-auth-rhythm">
             {[
-              [
-                '01',
-                'Accept the same rules',
-                'Choose the days, upload window and virtual penalty.',
-              ],
+              ['01', 'Accept the same rules', 'Choose the days, upload window and daily stake.'],
               ['02', 'Show the effort', 'One private photo. Your own context.'],
               ['03', 'Review fairly', 'Independent peers make the decision.'],
             ].map(([n, title, detail]) => (
@@ -173,7 +169,7 @@ export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot'
           <div className="st-auth-points">
             <span>
               <ShieldCheck size={16} />
-              {t('All stakes are virtual. Always.')}
+              {t('Your people. Your promise.')}
             </span>
             <span>
               <ArrowUpRight size={16} />
@@ -310,7 +306,7 @@ export function AuthPage({ variant }: { variant: 'login' | 'register' | 'forgot'
             )}
           </p>
           <p className="auth-privacy">
-            {t('No real-money stakes. No public shaming.')} <br />
+            {t('Small commitments. Shared progress.')} <br />
             {t('Just you, your people, and a promise to show up.')}{' '}
           </p>
         </div>

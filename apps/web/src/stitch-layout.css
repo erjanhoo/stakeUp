@@ -42,10 +42,7 @@
 }
 .st-version {
   color: var(--accent-ink);
-  font:
-    10px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   padding: 2px 5px;
   background: var(--k-high);
   border-radius: 2px;
@@ -55,10 +52,7 @@
   gap: 7px;
   align-items: center;
   color: var(--k-muted);
-  font:
-    10px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   padding: 0 24px 25px;
 }
 .st-sidebar-caption i,
@@ -70,12 +64,10 @@
   border-radius: 100%;
 }
 .st-nav-group {
-  padding: 8px 16px 16px;
+  padding: 12px 16px 16px;
 }
 .st-nav-heading {
-  font:
-    10px 'JetBrains Mono',
-    monospace;
+  font: 10px var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.7px;
   color: var(--k-label);
@@ -117,7 +109,7 @@
   display: flex;
   gap: 10px;
   align-items: center;
-  padding: 10px 15px;
+  padding: 12px 15px;
   font-size: 13px;
   border-radius: 4px;
   background: #1e202466;
@@ -139,10 +131,7 @@
 }
 .st-squad-list small {
   margin-left: auto;
-  font:
-    9px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--accent-ink);
 }
 .st-profile-dock {
@@ -167,10 +156,7 @@
   text-overflow: ellipsis;
 }
 .st-profile-dock a span {
-  font:
-    10px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--k-muted);
 }
 .st-profile-dock-footer {
@@ -180,10 +166,7 @@
   border-top: 1px solid var(--k-line);
   margin-top: 12px;
   padding-top: 10px;
-  font:
-    8px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--k-muted);
 }
 .st-profile-dock-footer button {
@@ -210,10 +193,7 @@
   box-shadow: 0 1px 8px #0003;
 }
 .st-topbar-location {
-  font:
-    10px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -238,10 +218,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font:
-    11px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 13px var(--font-sans);
   white-space: nowrap;
 }
 .st-phone-brand {
@@ -263,10 +240,7 @@
   justify-content: space-between;
   gap: 20px;
   color: var(--k-muted);
-  font:
-    9px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   border-top: 1px solid var(--k-line);
 }
 .st-bottom-nav {
@@ -280,10 +254,7 @@
   margin: 0 0 30px;
 }
 .st-page-header h1 {
-  font:
-    700 36px/1.2 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 36px/1.2 var(--font-sans);
   letter-spacing: -1px;
   margin: 8px 0;
 }
@@ -294,10 +265,7 @@
   margin: 8px 0 0;
 }
 .st-eyebrow {
-  font:
-    10px/1.7 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px/1.7 var(--font-sans);
   color: var(--accent-ink);
   letter-spacing: 1px;
 }
@@ -317,10 +285,7 @@
   color: var(--on-accent);
   border: 1px solid transparent;
   border-radius: 3px;
-  font:
-    700 14px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 14px var(--font-sans);
   white-space: normal;
   text-align: center;
   cursor: pointer;
@@ -352,18 +317,15 @@
   color: var(--k-muted);
 }
 .st-mono {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-family: var(--font-sans);
+  font-size: 12px;
 }
 .st-text-link {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   color: var(--k-subtle);
-  font:
-    11px/1.6 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 11px/1.6 var(--font-sans);
 }
 .st-text-link:hover {
   color: var(--accent-ink);
@@ -391,10 +353,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font:
-    700 16px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 16px var(--font-sans);
   text-transform: uppercase;
   margin: 0;
   letter-spacing: -0.3px;
@@ -409,7 +368,7 @@
 }
 .st-section-label > small {
   color: var(--k-label);
-  font-size: 9px;
+  font-size: 12px;
   white-space: nowrap;
 }
 .st-stack {
@@ -433,10 +392,7 @@
   color: var(--accent-ink);
 }
 .st-module-heading h2 {
-  font:
-    700 15px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 15px var(--font-sans);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -449,7 +405,7 @@
   margin: 0;
 }
 .st-account-timeline time {
-  font-size: 9px;
+  font-size: 12px;
 }
 .st-obligation {
   position: relative;
@@ -469,7 +425,7 @@
   right: -80px;
   top: -80px;
   border-radius: 100%;
-  background: #fd591e1a;
+  background: var(--accent-tint);
   filter: blur(35px);
   pointer-events: none;
 }
@@ -480,10 +436,7 @@
   gap: 10px;
 }
 .st-status {
-  font:
-    600 10px/1.7 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 600 12px/1.7 var(--font-sans);
   display: inline-flex;
   gap: 7px;
   align-items: center;
@@ -497,8 +450,8 @@
   background: currentColor;
 }
 .st-status-urgent {
-  background: #fd591e24;
-  color: #ffb59e;
+  background: var(--accent-tint);
+  color: var(--accent-ink);
 }
 .st-status-safe {
   background: var(--accent-tint);
@@ -513,10 +466,7 @@
   font-size: 12px;
 }
 .st-obligation h3 {
-  font:
-    700 24px/1.3 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 24px/1.3 var(--font-sans);
   margin: 0;
 }
 .st-obligation > p {
@@ -534,25 +484,19 @@
   color: var(--k-muted);
 }
 .st-window small {
-  font:
-    9px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   display: block;
   text-transform: uppercase;
   color: var(--k-label);
   margin-bottom: 5px;
 }
 .st-window strong {
-  font:
-    500 11px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 500 13px var(--font-sans);
   color: var(--k-text);
 }
 .st-window > span {
   margin-left: auto;
-  font-size: 9px;
+  font-size: 12px;
 }
 .st-card-actions {
   display: flex;
@@ -578,19 +522,13 @@
 }
 .st-pool-amount {
   display: block;
-  font:
-    700 clamp(27px, 3vw, 39px)/1.2 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 clamp(27px, 3vw, 39px)/1.2 var(--font-sans);
   letter-spacing: -1px;
   margin: 14px 0;
   color: var(--k-text);
 }
 .st-pool-module > p {
-  font:
-    10px/1.9 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px/1.9 var(--font-sans);
   color: var(--k-subtle);
   border-left: 2px solid var(--k-accent);
   padding-left: 10px;
@@ -612,20 +550,14 @@
 }
 .st-mini-metrics strong {
   color: var(--accent-ink);
-  font:
-    700 18px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 18px var(--font-sans);
 }
 .st-pool-module footer {
   display: flex;
   gap: 7px;
   align-items: center;
   color: var(--k-label);
-  font:
-    8px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   padding-top: 18px;
   margin-top: 20px;
   border-top: 1px solid var(--k-line);
@@ -658,10 +590,7 @@
   font-size: 12px;
 }
 .st-milestone small {
-  font:
-    9px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--k-muted);
   display: block;
   margin-top: 4px;
@@ -690,10 +619,7 @@
   font-size: 14px;
 }
 .st-trust-note p {
-  font:
-    10px/1.8 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px/1.8 var(--font-sans);
   color: var(--k-muted);
 }
 .st-empty-workspace {
@@ -712,10 +638,7 @@
   margin-bottom: 24px;
 }
 .st-empty-workspace h2 {
-  font:
-    700 27px/1.3 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 27px/1.3 var(--font-sans);
   margin: 12px 0;
 }
 .st-empty-workspace > p {
@@ -739,10 +662,7 @@
   gap: 14px;
 }
 .st-empty-steps span {
-  font:
-    11px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 13px var(--font-sans);
   color: var(--accent-ink);
 }
 .st-empty-steps strong {
@@ -804,7 +724,7 @@
   }
   .st-app-footer {
     padding: 25px 16px 100px;
-    font-size: 8px;
+    font-size: 12px;
     line-height: 1.8;
   }
   .st-bottom-nav {
@@ -824,10 +744,7 @@
     justify-content: center;
     gap: 5px;
     min-height: 48px;
-    font:
-      9px 'JetBrains Mono',
-      Consolas,
-      monospace;
+    font: 12px var(--font-sans);
     color: var(--k-subtle);
   }
   .st-bottom-nav > a.active {
@@ -893,10 +810,7 @@
     font-size: 22px;
   }
   .st-mini-metrics span {
-    font:
-      8px/1.8 'JetBrains Mono',
-      Consolas,
-      monospace;
+    font: 12px/1.8 var(--font-sans);
   }
   .st-section-label h2 {
     font-size: 16px;
@@ -917,21 +831,21 @@
     gap: 6px;
   }
   .st-status {
-    font-size: 9px;
+    font-size: 12px;
   }
   .st-window {
     padding: 12px;
     flex-wrap: wrap;
   }
   .st-window > span {
-    font-size: 8px;
+    font-size: 12px;
   }
   .st-card-actions {
     flex-direction: column;
     align-items: stretch;
   }
   .st-card-actions .st-text-link {
-    font-size: 10px;
+    font-size: 12px;
   }
   .st-card-actions .st-btn {
     width: 100%;
@@ -982,25 +896,16 @@
   min-width: 0;
 }
 .st-circle-summary small {
-  font:
-    10px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--k-muted);
   text-transform: uppercase;
 }
 .st-circle-summary strong {
-  font:
-    700 28px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 28px var(--font-sans);
   color: var(--k-text);
 }
 .st-circle-summary span {
-  font:
-    9px/1.7 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px/1.7 var(--font-sans);
   color: var(--k-label);
 }
 .st-circle-summary svg {
@@ -1027,10 +932,7 @@
   border-bottom: 2px solid transparent;
   padding: 10px 0;
   color: var(--k-muted);
-  font:
-    11px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 13px var(--font-sans);
   white-space: nowrap;
 }
 .st-view-tabs button[aria-pressed='true'] {
@@ -1041,7 +943,7 @@
   padding: 2px 6px;
   background: var(--k-high);
   border-radius: 3px;
-  font-size: 10px;
+  font-size: 12px;
 }
 .st-circles-collection {
   display: grid;
@@ -1078,18 +980,12 @@
   color: var(--on-accent);
 }
 .st-circle-card-title h2 {
-  font:
-    700 26px/1.25 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 26px/1.25 var(--font-sans);
   letter-spacing: -0.7px;
   margin: 0 0 5px;
 }
 .st-circle-card-title > div > span {
-  font:
-    10px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--k-muted);
 }
 .st-circle-card > p {
@@ -1115,18 +1011,12 @@
   border: 0;
 }
 .st-circle-card-metrics small {
-  font:
-    9px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   text-transform: uppercase;
   color: var(--k-label);
 }
 .st-circle-card-metrics strong {
-  font:
-    700 21px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 21px var(--font-sans);
 }
 .st-circle-current {
   background: var(--k-low);
@@ -1154,13 +1044,10 @@
 .st-avatar-strip .avatar {
   width: 25px;
   height: 25px;
-  font-size: 8px;
+  font-size: 12px;
 }
 .st-avatar-strip small {
-  font:
-    8px/1.7 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px/1.7 var(--font-sans);
   margin-left: 7px;
   color: var(--k-muted);
 }
@@ -1171,10 +1058,7 @@
   margin-top: 20px;
   padding-top: 20px;
   border-top: 1px solid var(--k-line);
-  font:
-    600 12px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 600 12px var(--font-sans);
 }
 .st-circle-open:hover {
   color: var(--accent-ink);
@@ -1191,10 +1075,7 @@
   align-items: center;
   gap: 10px;
   color: var(--accent-ink);
-  font:
-    11px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 13px var(--font-sans);
   cursor: pointer;
 }
 .st-invitation-entry summary > svg:last-child {
@@ -1239,10 +1120,10 @@
   font-size: 12px;
 }
 .st-circle-rail .activity-row p {
-  font-size: 11px;
+  font-size: 13px;
 }
 .st-circle-rail .activity-row time {
-  font-size: 8px;
+  font-size: 12px;
   margin-left: 42px;
 }
 .st-circle-rail .recent-activity {
@@ -1272,10 +1153,7 @@
   border: 0;
 }
 .st-circle-layout .challenge-card h3 {
-  font:
-    700 25px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 25px var(--font-sans);
   margin: 14px 0 10px;
 }
 .st-circle-layout .challenge-card p {
@@ -1288,13 +1166,10 @@
   margin: 0 6px 6px 0;
   border: 1px solid var(--k-line);
   border-radius: 4px;
-  font-size: 11px;
+  font-size: 13px;
 }
 .st-circle-layout .challenge-card > .acceptance-roster > p {
-  font:
-    9px/1.8 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px/1.8 var(--font-sans);
   margin-bottom: 14px;
 }
 .st-circle-layout .challenge-card-icon {
@@ -1380,16 +1255,16 @@
     font-size: 23px;
   }
   .st-circle-summary small {
-    font-size: 8px;
+    font-size: 12px;
   }
   .st-circle-summary span {
-    font-size: 8px;
+    font-size: 12px;
   }
   .st-circle-summary > div {
     padding: 14px;
   }
   .st-circle-layout .challenge-card > .acceptance-roster > div {
-    font-size: 10px;
+    font-size: 12px;
   }
 }
 .st-proof-toolbar {
@@ -1404,10 +1279,7 @@
   background: transparent;
   color: var(--k-muted);
   padding: 14px 22px;
-  font:
-    600 11px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 600 13px var(--font-sans);
   text-transform: uppercase;
   min-height: 64px;
   display: flex;
@@ -1416,7 +1288,7 @@
   align-items: start;
 }
 .st-proof-toolbar button small {
-  font-size: 9px;
+  font-size: 12px;
   color: var(--k-muted);
 }
 .st-proof-toolbar button[aria-selected='true'] {
@@ -1438,10 +1310,7 @@
   border-radius: 8px;
 }
 .st-proof-layout .evidence-submit > h2 {
-  font:
-    700 24px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 24px var(--font-sans);
   margin: 0 0 12px;
 }
 .st-proof-layout .evidence-submit > p {
@@ -1472,10 +1341,7 @@
 }
 .st-capture-title small {
   color: var(--k-muted);
-  font:
-    10px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
 }
 .st-proof-submit .photo-preview {
   max-height: 450px;
@@ -1483,20 +1349,14 @@
   order: 0;
 }
 .st-proof-submit form > p {
-  font:
-    11px/1.9 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 11px/1.9 var(--font-sans);
   padding: 16px;
   background: var(--k-low);
   border-radius: 4px;
   border-left: 2px solid var(--k-secondary);
 }
 .st-proof-submit .field-hint {
-  font:
-    10px/1.9 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px/1.9 var(--font-sans);
   margin-top: 20px;
 }
 .st-proof-review .stream-intro {
@@ -1507,7 +1367,7 @@
   margin-bottom: 20px;
 }
 .st-proof-review .stream-intro p {
-  font-size: 11px;
+  font-size: 13px;
   margin-bottom: 0;
 }
 .st-proof-review .proof-entry {
@@ -1523,7 +1383,7 @@
   font-size: 18px;
 }
 .st-proof-review .mock-review {
-  font-size: 11px;
+  font-size: 13px;
 }
 .st-proof-review .review-actions {
   padding: 0;
@@ -1591,10 +1451,7 @@
   display: flex;
   align-items: center;
   gap: 25px;
-  font:
-    11px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 13px var(--font-sans);
 }
 .st-auth-layout .auth-story {
   background: transparent;
@@ -1605,10 +1462,7 @@
   justify-content: start;
 }
 .st-auth-layout .auth-story h1 {
-  font:
-    700 44px/1.15 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 44px/1.15 var(--font-sans);
   letter-spacing: -1.5px;
   margin: 16px 0;
 }
@@ -1628,10 +1482,7 @@
   max-width: none;
 }
 .st-auth-layout .auth-form-wrap > h2 {
-  font:
-    700 30px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 30px var(--font-sans);
 }
 .st-auth-layout .auth-form-wrap .form-stack {
   background: var(--k-low);
@@ -1664,10 +1515,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font:
-    10px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--accent-ink);
 }
 .st-auth-login .auth-story {
@@ -1739,17 +1587,11 @@
   height: 30px;
 }
 .st-challenge-create .publish-panel h3 {
-  font:
-    700 22px/1.3 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 22px/1.3 var(--font-sans);
   margin: 14px 0;
 }
 .st-challenge-create .publish-panel p {
-  font:
-    11px/2 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 11px/2 var(--font-sans);
   color: var(--k-muted);
 }
 .st-challenge-create .publish-panel .button {
@@ -1757,10 +1599,7 @@
   margin-top: 20px;
 }
 .st-challenge-create .form-stack h2 {
-  font:
-    700 21px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 21px var(--font-sans);
   padding-bottom: 16px;
   border-bottom: 1px solid var(--k-line);
   margin: 0;
@@ -1774,10 +1613,7 @@
   justify-content: center;
   padding: 12px 4px;
   min-width: 0;
-  font:
-    12px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
 }
 .st-challenge-create .weekday-options input {
   position: absolute;
@@ -1794,7 +1630,7 @@
   color: var(--on-accent);
 }
 .st-challenge-create input[type='number'] {
-  font: 700 22px 'JetBrains Mono' !important;
+  font: 700 22px var(--font-sans) !important;
 }
 :root[data-mode='light'] .st-auth-context,
 :root[data-mode='light'] .st-auth-layout .form-stack,
@@ -1821,11 +1657,11 @@
   .st-proof-toolbar button {
     flex: 1;
     padding: 12px 10px;
-    font-size: 10px;
+    font-size: 12px;
     align-items: center;
   }
   .st-proof-toolbar small {
-    font-size: 9px;
+    font-size: 12px;
   }
   .st-proof-layout .evidence-submit {
     padding: 20px;
@@ -1872,7 +1708,7 @@
     padding: 24px;
   }
   .st-auth-layout .auth-main > .back-link {
-    font-size: 10px;
+    font-size: 12px;
   }
   .st-challenge-create {
     grid-template-columns: 1fr;
@@ -1887,7 +1723,7 @@
     padding: 20px;
   }
   .st-challenge-create .weekday-options label {
-    font-size: 10px;
+    font-size: 12px;
   }
   .st-challenge-create .weekday-options input {
     position: absolute;
@@ -1925,24 +1761,18 @@
   min-width: 0;
 }
 .st-profile-summary h2 {
-  font:
-    700 23px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 23px var(--font-sans);
   margin: 0 0 5px;
 }
 .st-profile-summary > svg {
   color: var(--accent-ink);
 }
 .st-profile-summary span {
-  font:
-    11px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 13px var(--font-sans);
   color: var(--k-muted);
 }
 .st-profile-summary p {
-  font-size: 10px;
+  font-size: 12px;
   margin: 8px 0 0;
   color: var(--k-label);
 }
@@ -1955,10 +1785,7 @@
   display: none;
 }
 .st-account-security > p {
-  font:
-    12px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
 }
 .st-settings-right .appearance-panel {
   background: var(--k-panel);
@@ -1985,27 +1812,18 @@
 }
 .st-appearance-preview strong {
   display: block;
-  font:
-    700 21px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 21px var(--font-sans);
 }
 .st-appearance-preview p {
   font-size: 12px;
   color: var(--k-muted);
 }
 .st-language-panel h3 {
-  font:
-    700 20px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 20px var(--font-sans);
   margin: 0 0 20px;
 }
 .st-language-panel > p {
-  font:
-    10px/1.9 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px/1.9 var(--font-sans);
   margin: 20px 0 0;
 }
 .st-settings-page .appearance-options button {
@@ -2035,10 +1853,7 @@
 }
 .st-notification-policy p {
   color: var(--k-muted);
-  font:
-    11px/1.9 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 11px/1.9 var(--font-sans);
 }
 .st-inbox-policy-row {
   display: flex;
@@ -2074,19 +1889,13 @@
   min-width: 0;
 }
 .st-notification-layout .notification-item h2 {
-  font:
-    700 21px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 21px var(--font-sans);
 }
 .st-notification-layout .notification-item p {
   font-size: 14px;
 }
 .st-notification-layout .notification-item time {
-  font:
-    9px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   text-transform: uppercase;
 }
 .st-notification-layout .notification-item .heading-actions {
@@ -2095,10 +1904,7 @@
   border-top: 1px solid var(--k-line);
 }
 .st-notification-layout .notification-item .text-link {
-  font:
-    11px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 13px var(--font-sans);
   min-height: 34px;
   display: inline-flex;
   align-items: center;
@@ -2133,18 +1939,12 @@
 }
 .st-challenge-person-name span {
   display: block;
-  font:
-    9px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--accent-ink);
   margin-top: 6px;
 }
 .st-discipline-number {
-  font:
-    700 55px/1 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 55px/1 var(--font-sans);
   letter-spacing: -2px;
 }
 .st-discipline-number small {
@@ -2159,10 +1959,7 @@
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  font:
-    10px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
 }
 .st-person-figures span {
   color: var(--k-muted);
@@ -2182,23 +1979,14 @@
   color: var(--k-secondary);
 }
 .st-challenge-window span {
-  font:
-    9px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--k-muted);
 }
 .st-challenge-window strong {
-  font:
-    700 21px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 700 21px var(--font-sans);
 }
 .st-challenge-window small {
-  font:
-    9px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--k-muted);
 }
 .st-challenge-person-column {
@@ -2221,18 +2009,12 @@
 }
 .st-challenge-layout .rules-grid dt {
   color: var(--k-label);
-  font:
-    10px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   text-transform: uppercase;
   margin-bottom: 10px;
 }
 .st-challenge-layout .rules-grid dd {
-  font:
-    700 18px/1.5 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 18px/1.5 var(--font-sans);
   margin: 0;
 }
 .st-challenge-layout .panel-heading h2 {
@@ -2257,10 +2039,7 @@
   margin: 0 0 20px;
 }
 .st-participation-slot p {
-  font:
-    10px/1.9 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px/1.9 var(--font-sans);
   color: var(--k-muted);
 }
 .st-participation-slot .button {
@@ -2295,10 +2074,7 @@
   margin: 0;
 }
 .st-competition-layout .competition-pool > div > strong {
-  font:
-    700 48px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 48px var(--font-sans);
   letter-spacing: -1px;
 }
 .st-competition-layout .competition-pool > div + div {
@@ -2313,10 +2089,7 @@
   margin-bottom: 14px;
 }
 .st-competition-layout .competition-pool p {
-  font:
-    11px/1.9 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 11px/1.9 var(--font-sans);
 }
 .st-settlement-engine {
   background: var(--k-low);
@@ -2324,10 +2097,7 @@
   border-radius: 8px;
 }
 .st-settlement-engine h2 {
-  font:
-    700 23px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 23px var(--font-sans);
 }
 .st-settlement-states {
   display: flex;
@@ -2336,10 +2106,7 @@
   padding: 14px 0;
 }
 .st-settlement-states span {
-  font:
-    9px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   padding: 6px;
   background: var(--k-high);
   border-radius: 3px;
@@ -2360,10 +2127,7 @@
   display: flex;
   gap: 10px;
   align-items: start;
-  font:
-    11px/1.8 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 11px/1.8 var(--font-sans);
   color: var(--k-muted);
 }
 .st-settlement-engine svg {
@@ -2371,10 +2135,7 @@
   color: var(--accent-ink);
 }
 .st-settlement-engine > p {
-  font:
-    10px/1.9 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px/1.9 var(--font-sans);
   border-top: 1px solid var(--k-line);
   padding-top: 20px;
   color: var(--k-label);
@@ -2392,7 +2153,7 @@
   border-radius: 8px;
 }
 .st-competition-layout .settlement-rules p {
-  font-size: 11px;
+  font-size: 13px;
 }
 .st-competition-layout .ledger-history {
   grid-column: 1;
@@ -2402,7 +2163,7 @@
   background: var(--k-panel);
 }
 .st-competition-layout .ledger-row small {
-  font-size: 8px;
+  font-size: 12px;
 }
 :root[data-mode='light'] .st-profile-summary,
 :root[data-mode='light'] .st-settings-right .appearance-panel,
@@ -2532,17 +2293,11 @@
   min-width: 0;
 }
 .st-mini-metrics span {
-  font:
-    10px/1.5 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px/1.5 var(--font-sans);
   color: var(--k-muted);
 }
 .st-mini-metrics strong {
-  font:
-    700 22px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 22px var(--font-sans);
 }
 .st-pool-module {
   border-top: 0;
@@ -2599,10 +2354,7 @@
   gap: 12px;
 }
 .st-circle-preview small {
-  font:
-    10px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--k-muted);
 }
 .st-circle-preview p {
@@ -2614,10 +2366,7 @@
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  font:
-    10px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--accent-ink);
   padding-top: 20px;
   border-top: 1px solid var(--k-line);
@@ -2676,10 +2425,7 @@
   color: var(--k-secondary);
 }
 .st-callout h3 {
-  font:
-    700 18px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 18px var(--font-sans);
   margin: 0 0 12px;
 }
 .st-callout p {
@@ -2712,10 +2458,7 @@
   align-items: start;
 }
 .st-onboarding-identity > h2 {
-  font:
-    700 36px/1.15 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 36px/1.15 var(--font-sans);
   margin: 20px 0;
 }
 .st-onboarding-identity > p {
@@ -2736,26 +2479,17 @@
 .st-onboarding-monogram > .avatar {
   width: 100px;
   height: 100px;
-  font:
-    700 34px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 34px var(--font-sans);
   background: var(--accent-tint);
   color: var(--accent-ink);
   border: 1px solid var(--accent-ink);
 }
 .st-onboarding-monogram > strong {
-  font:
-    700 24px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 24px var(--font-sans);
 }
 .st-onboarding-monogram > span,
 .st-onboarding-monogram > small {
-  font:
-    11px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 13px var(--font-sans);
   color: var(--k-muted);
   text-align: center;
   line-height: 1.8;
@@ -2764,10 +2498,7 @@
   padding: 32px;
 }
 .st-onboarding-form > h1 {
-  font:
-    700 36px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 36px var(--font-sans);
   margin: 20px 0 12px;
 }
 .st-onboarding-form > p {
@@ -2790,7 +2521,7 @@
   width: 100%;
 }
 .st-onboarding-form > .secure-caption {
-  font-size: 11px;
+  font-size: 13px;
 }
 .st-join-layout {
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
@@ -2800,10 +2531,7 @@
   text-align: left;
 }
 .st-join-layout h1 {
-  font:
-    700 44px/1.1 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 44px/1.1 var(--font-sans);
   margin-top: 20px;
 }
 .st-join-layout .page-icon {
@@ -2827,17 +2555,11 @@
   border-radius: 8px;
 }
 .st-join-benefits article > span {
-  font:
-    22px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 22px var(--font-sans);
   color: var(--accent-ink);
 }
 .st-join-benefits h2 {
-  font:
-    700 21px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 21px var(--font-sans);
   margin: 0 0 10px;
 }
 .st-join-benefits p {
@@ -2864,14 +2586,14 @@
   flex: 1;
 }
 .st-search {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--k-muted);
   display: grid;
   gap: 6px;
   min-width: 200px;
 }
 .st-search input {
-  padding: 10px 14px;
+  padding: 12px 14px;
   background: var(--k-low);
   border: 1px solid var(--k-line);
   border-radius: 5px;
@@ -2897,17 +2619,11 @@
   min-width: 150px;
 }
 .st-timeline-event h2 {
-  font:
-    700 22px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 22px var(--font-sans);
   margin: 0 0 8px;
 }
 .st-timeline-event time {
-  font:
-    10px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--k-muted);
 }
 .st-event-icon {
@@ -2930,10 +2646,7 @@
   margin: 0 0 12px;
 }
 .st-event-detail > span {
-  font:
-    11px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 13px var(--font-sans);
   color: var(--k-muted);
 }
 .st-activity-rail {
@@ -2947,10 +2660,7 @@
   padding: 24px;
 }
 .st-activity-rail p {
-  font:
-    12px/1.9 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px/1.9 var(--font-sans);
   color: var(--k-muted);
 }
 .st-roadmap-layout {
@@ -2977,10 +2687,7 @@
   line-height: 1.8;
 }
 .st-roadmap-layout .roadmap-number {
-  font:
-    12px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   width: auto;
   height: auto;
   background: transparent;
@@ -2996,16 +2703,10 @@
   padding: 24px;
 }
 .st-roadmap-planned h2 {
-  font:
-    700 21px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 21px var(--font-sans);
 }
 .st-roadmap-planned h2 small {
-  font:
-    10px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--k-secondary);
 }
 .st-roadmap-planned p {
@@ -3036,7 +2737,7 @@
   }
   .st-onboarding > header > .eyebrow,
   .st-join > header > .eyebrow {
-    font-size: 8px;
+    font-size: 12px;
   }
   .st-onboarding-layout,
   .st-join-layout {
@@ -3170,10 +2871,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font:
-    11px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 13px var(--font-sans);
   color: var(--accent-ink);
   margin-bottom: 32px;
 }
@@ -3188,10 +2886,7 @@
   box-shadow: 0 0 24px var(--accent-tint);
 }
 .st-utility-card h1 {
-  font:
-    700 36px/1.15 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 36px/1.15 var(--font-sans);
   letter-spacing: -1px;
   margin: 24px 0 16px;
 }
@@ -3222,10 +2917,7 @@
 }
 .st-utility-recovery span {
   display: block;
-  font:
-    11px/1.8 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 11px/1.8 var(--font-sans);
   color: var(--k-muted);
   margin-top: 8px;
 }
@@ -3236,10 +2928,7 @@
   width: 100%;
 }
 .st-utility-screen > footer {
-  font:
-    10px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--k-muted);
   text-align: center;
   padding: 20px;
@@ -3303,10 +2992,7 @@
 .st-profile-summary .avatar {
   background: var(--accent-tint);
   color: var(--accent-ink);
-  font:
-    700 28px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 28px var(--font-sans);
   width: 64px;
   height: 64px;
 }
@@ -3360,9 +3046,9 @@
   justify-content: space-between;
 }
 .st-proof-page > .st-proof-toolbar button {
-  padding: 10px 14px;
+  padding: 12px 14px;
   min-height: 50px;
-  font-size: 11px;
+  font-size: 13px;
   border: 0;
   flex: 1;
   align-items: center;
@@ -3386,10 +3072,7 @@
   flex-wrap: wrap;
 }
 .st-proof-window-card strong {
-  font:
-    600 13px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 600 13px var(--font-sans);
   text-transform: uppercase;
 }
 .st-proof-window-card p {
@@ -3402,10 +3085,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font:
-    11px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 13px var(--font-sans);
   color: var(--k-muted);
 }
 .st-proof-window-card svg {
@@ -3438,10 +3118,7 @@
   color: var(--k-secondary);
 }
 .st-mock-notice strong {
-  font:
-    11px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 13px var(--font-sans);
   color: var(--k-secondary);
 }
 .st-mock-notice p {
@@ -3542,10 +3219,7 @@
 }
 .st-auth-layout .auth-form-wrap label,
 .st-auth-layout .auth-form-wrap .label-line {
-  font:
-    12px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -3556,14 +3230,11 @@
 .st-auth-layout .auth-form-wrap input {
   background: var(--k-high);
   border: 0 !important;
-  font:
-    16px 'Hanken Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 16px var(--font-sans);
   min-height: 52px;
 }
 .st-auth-layout .auth-form-wrap > .local-badge {
-  font-size: 9px;
+  font-size: 12px;
 }
 .st-auth-layout .auth-form-wrap .button-primary {
   font-size: 16px;
@@ -3575,10 +3246,7 @@
   gap: 24px;
 }
 .st-auth-layout .st-auth-intro h1 {
-  font:
-    700 48px/56px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 48px/56px var(--font-sans);
   letter-spacing: -1.44px;
   max-width: 570px;
   margin: 20px 0;
@@ -3595,10 +3263,7 @@
 }
 .st-auth-context h3 {
   margin: 0;
-  font:
-    600 24px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 600 24px var(--font-sans);
 }
 .st-auth-context > .st-module-heading {
   margin-bottom: 22px;
@@ -3619,20 +3284,14 @@
   border-radius: 4px;
 }
 .st-auth-rhythm article > span {
-  font:
-    12px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--accent-ink);
   padding: 5px;
   background: var(--accent-tint);
   align-self: start;
 }
 .st-auth-rhythm strong {
-  font:
-    600 17px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 600 17px var(--font-sans);
 }
 .st-auth-rhythm p {
   font-size: 13px;
@@ -3703,7 +3362,7 @@
     padding: 0 0 25px;
   }
   .st-auth-layout .auth-main > .back-link {
-    font-size: 10px;
+    font-size: 12px;
     margin: 12px 0 20px;
   }
   .st-auth-layout .auth-form-wrap {
@@ -3730,7 +3389,7 @@
     margin: 24px auto;
   }
   .st-auth-layout .auth-form-wrap .field-hint {
-    font-size: 9px;
+    font-size: 12px;
   }
 }
 
@@ -3740,17 +3399,11 @@
   border-radius: 8px;
 }
 .st-proposal-preview h3 {
-  font:
-    700 24px/1.3 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 24px/1.3 var(--font-sans);
   margin: 18px 0 8px;
 }
 .st-proposal-preview > p {
-  font:
-    11px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 13px var(--font-sans);
   color: var(--k-muted);
 }
 .st-proposal-preview-metrics {
@@ -3766,27 +3419,18 @@
   border-radius: 4px;
 }
 .st-proposal-preview-metrics span {
-  font:
-    9px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--k-muted);
   display: block;
   margin-bottom: 10px;
 }
 .st-proposal-preview-metrics strong {
-  font:
-    700 18px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 700 18px var(--font-sans);
   color: var(--accent-ink);
   overflow-wrap: anywhere;
 }
 .st-proposal-preview > footer {
-  font:
-    10px 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 12px var(--font-sans);
   color: var(--k-muted);
   margin-top: 18px;
 }
@@ -3887,20 +3531,14 @@
   margin-bottom: 16px;
 }
 .st-proof-review-label h3 {
-  font:
-    600 22px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 600 22px var(--font-sans);
   margin: 0;
 }
 .st-proof-review-label svg {
   color: var(--k-secondary);
 }
 .st-review-guardrail {
-  font:
-    11px/1.8 'JetBrains Mono',
-    Consolas,
-    monospace;
+  font: 11px/1.8 var(--font-sans);
   color: var(--k-muted);
   padding: 16px;
   background: var(--k-canvas);
@@ -3913,10 +3551,7 @@
   flex-wrap: wrap;
 }
 .st-proof-decisions .proof-conversation > summary {
-  font:
-    600 16px 'Space Grotesk',
-    'Segoe UI',
-    sans-serif;
+  font: 600 16px var(--font-sans);
   padding: 20px 0;
 }
 .st-proof-artifact > .verification-note {
@@ -3962,7 +3597,7 @@
   margin-top: 24px;
 }
 .st-proof-layout[data-tab='submit'] .st-proof-artifact > .verification-note {
-  font-size: 10px;
+  font-size: 12px;
   padding: 14px;
 }
 @media (max-width: 900px) {
@@ -4116,10 +3751,7 @@
     color: var(--accent-ink);
   }
   .st-circles-privacy strong {
-    font:
-      600 10px 'JetBrains Mono',
-      Consolas,
-      monospace;
+    font: 600 12px var(--font-sans);
     color: var(--accent-ink);
   }
   .st-circles-privacy p {
@@ -4190,7 +3822,7 @@
     font-size: 20px;
   }
   .st-circle-card .st-circle-card-metrics small {
-    font-size: 9px;
+    font-size: 12px;
   }
 }
 

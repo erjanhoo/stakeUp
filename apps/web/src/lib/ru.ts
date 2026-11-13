@@ -964,3 +964,113 @@ export const ru: Record<string, string> = Object.fromEntries(
     return [line.slice(0, separator), line.slice(separator + 1)];
   }),
 );
+
+Object.assign(ru, {
+  'About rewards and grace': 'О наградах и днях отдыха',
+  'Shared discipline rewards': 'Награды за дисциплину',
+  'Ocean blue': 'Океанский синий',
+  'Soft violet': 'Нежный фиолетовый',
+  More: 'Подробнее',
+  Activity: 'История',
+  'Your workspace': 'Ваше пространство',
+  'Your private workspace': 'Ваше личное пространство',
+  'Your people. Your promise.': 'Ваши люди. Ваше обещание.',
+  'About circles': 'О командах',
+  'Circles are private and invite-only. Joining a circle does not enroll you in its challenges. Everyone accepts the same rules before a challenge starts.':
+    'Команды закрыты: вступить можно по приглашению. Вступление не записывает вас на испытания. Перед началом каждый принимает общие правила.',
+  'Your people are waiting.': 'Ваша команда ждёт.',
+  'Paste your invitation to join their circle.':
+    'Вставьте приглашение, чтобы присоединиться к команде.',
+  'Join circle with invitation': 'Вступить по приглашению',
+  'Continue to sign in': 'Перейти ко входу',
+  'Your balance': 'Ваш баланс',
+  'Top up': 'Пополнить',
+  'Display currency': 'Валюта отображения',
+  'Top-up amount': 'Сумма пополнения',
+  'Add to balance': 'Пополнить баланс',
+  'Adding…': 'Пополняем…',
+  'Balance updated.': 'Баланс пополнен.',
+  'About your balance': 'О балансе',
+  'Balance history': 'История баланса',
+  'Balance top-up': 'Пополнение баланса',
+  'in pending stakes': 'в ожидающих расчёта взносах',
+  'Your top-ups and challenge results will appear here.':
+    'Здесь появятся пополнения и результаты испытаний.',
+  'Top-ups are added immediately. Final challenge stakes and rewards appear after settlement. Pending stakes are shown separately until reviews and the appeal window close.':
+    'Пополнения зачисляются сразу. Взносы и награды учитываются после завершения расчёта. До окончания проверок и срока обжалования ожидающие взносы показаны отдельно.',
+  'Currency changes the display unit for all amounts. Existing amounts keep their number; no exchange rate is applied.':
+    'Валюта задаёт единицу отображения всех сумм. Числовые значения сохраняются: пересчёт по курсу не выполняется.',
+  'Your current level': 'Ваш текущий уровень',
+  'Ready to Rise': 'Готовы к взлёту',
+  'First Spark': 'Первая искра',
+  'Rhythm Finder': 'В своём ритме',
+  'Momentum Maker': 'Создатель импульса',
+  'Orbit Keeper': 'Хранитель орбиты',
+  'North Star': 'Полярная звезда',
+  points: 'очков',
+  'points to': 'очков до уровня',
+  to: 'до',
+  'Achievement progress': 'Прогресс достижений',
+  'All milestones unlocked': 'Все уровни открыты',
+  'All milestones unlocked. Keep your momentum going.':
+    'Все уровни открыты. Продолжайте двигаться вперёд.',
+  'About progress points': 'Об очках прогресса',
+  'Each accepted photo earns 10 points. Every completed challenge adds 50. Grace passes excuse a day; verified effort unlocks milestones.':
+    'Каждое принятое фото приносит 10 очков, завершённое испытание — ещё 50. Пропуск освобождает от обязательства, а подтверждённые усилия открывают новые уровни.',
+  'Keep showing up to earn points, unlock new levels, and build a record of your effort.':
+    'Продолжайте выполнять обещания, получайте очки и открывайте новые уровни.',
+  'Your profile': 'Ваш профиль',
+  'Your momentum': 'Ваш прогресс',
+  'Shared pool': 'Общий фонд',
+  'Pool activity': 'История фонда',
+  Stake: 'Взнос',
+  'Finalize results': 'Завершить расчёт',
+  'distributed. Remaining pool:': 'распределено. Остаток фонда:',
+  'Back to calendar': 'Назад к календарю',
+  'Grace pass used': 'Пропуск использован',
+  'Your daily commitments': 'Ваши ежедневные обещания',
+  'About the pool and rewards': 'О фонде и наградах',
+  'Missed days contribute after grace. Pending reviews stay separate.':
+    'Пропуски пополняют фонд после учёта дней отдыха. Незавершённые проверки учитываются отдельно.',
+  'Misses contribute after grace and caps. Submitted proof awaits a review decision before contributing. Amounts update as decisions change.':
+    'Фонд учитывает пропуски после дней отдыха и лимитов. Отправленные фото ожидают решения проверки. Суммы обновляются вместе с решениями.',
+  'These are pending contributions. Final transactions are recorded at settlement.':
+    'Это ожидающие взносы. Окончательные операции записываются при завершении расчёта.',
+  'No stakes have been added yet. Grace days are excused, and submitted photos awaiting review are kept separate.':
+    'Взносов пока нет. Дни отдыха исключаются, а фото на проверке учитываются отдельно.',
+  'Daily stake per missed day': 'Взнос за пропущенный день',
+  'Choose a daily stake and a maximum total for this challenge.':
+    'Выберите ежедневный взнос и общую максимальную сумму для испытания.',
+  'Rocket · ambition': 'Ракета · амбиции',
+  'Mountain · adventure': 'Гора · приключения',
+  'Heart · wellbeing': 'Сердце · благополучие',
+  'Coffee · mornings': 'Кофе · утро',
+  'Brain · focus': 'Мозг · концентрация',
+  'Bike · endurance': 'Велосипед · выносливость',
+  'Music · creativity': 'Музыка · творчество',
+  'Target · goals': 'Мишень · цели',
+  'Public feeds': 'Публичных лент',
+  'A little shared momentum': 'Общий импульс',
+  'Your effort adds up': 'Ваши усилия складываются',
+  Together: 'Вместе',
+  committed: 'в деле',
+  'One promise. Shared progress.': 'Одно обещание. Общий прогресс.',
+  'Set a daily stake, support your friends, and celebrate every small win.':
+    'Выберите ежедневный взнос, поддерживайте друзей и отмечайте маленькие победы.',
+  'How does the pool grow?': 'Как растёт общий фонд?',
+  'Missed commitments add the agreed stake after grace passes are applied. Pending reviews stay separate. Eligible finishers share the pool after the appeal window closes.':
+    'После учёта дней отдыха пропуски добавляют согласованный взнос. Незавершённые проверки учитываются отдельно. Участники, выполнившие условия, делят фонд после окончания обжалования.',
+  'Clear rules. Friendly stakes. Shared momentum.':
+    'Понятные правила. Дружеские ставки. Общий импульс.',
+  'Small commitments. Shared progress.': 'Маленькие обещания. Общий прогресс.',
+  'Choose the days, upload window and daily stake.':
+    'Выберите дни, время загрузки и ежедневный взнос.',
+  'Choose the days, upload window and daily stake. Each participant accepts before the roster locks.':
+    'Выберите дни, время загрузки и ежедневный взнос. Каждый принимает правила до фиксации состава.',
+  'Eligible finishers share the pool according to transparent discipline scores.':
+    'Участники, выполнившие условия, делят фонд по прозрачному рейтингу дисциплины.',
+  'Every commitment counts. See how your circle is doing.':
+    'Каждое обещание важно. Посмотрите на прогресс команды.',
+  'I accept these dates, upload window, evidence rules, grace days, daily stakes and cap.':
+    'Я принимаю даты, время загрузки, требования к фото, дни отдыха, ежедневные взносы и лимит.',
+});

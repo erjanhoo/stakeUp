@@ -215,17 +215,13 @@ test('private photo → peer rejection → owner appeal → two-peer resolution'
     await expect(page.getByText('Encouragement & conversation', { exact: true })).toBeVisible();
     await page.goto(`/app/members/${profiles[0].id}`);
     await expect(page.locator('.member-hero')).toContainText('10 progress points');
-    await expect(page.locator('.member-badge.earned')).toHaveCount(1);
-    await expect(page.locator('.member-badge.earned')).toContainText('First step');
+    await expect(page.locator('.achievement-stage.is-earned')).toHaveCount(1);
+    await expect(page.locator('.achievement-goals .is-earned')).toContainText('First Spark');
     expect(errors).toEqual([]);
     await page.goto('/');
-    await page.emulateMedia({ reducedMotion: 'reduce' });
-    for (const scene of await page.locator('.trail-scene').all()) {
-      await scene.scrollIntoViewIfNeeded();
-      await expect(scene).toHaveCSS('opacity', '1');
-    }
-    await page.locator('#how-it-works').scrollIntoViewIfNeeded();
-    await page.screenshot({ path: info.outputPath('commitment-trail.png'), fullPage: true });
+    await expect(page).toHaveURL(/\/app$/);
+    await expect(page.getByRole('heading', { name: 'Your daily commitments' })).toBeVisible();
+    await page.screenshot({ path: info.outputPath('restored-overview.png'), fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );

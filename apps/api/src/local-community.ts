@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import type { AppNotification, ProofComment, ProofSocial, PersonalRecap } from '@stakeup/contracts';
 import type { FinanceState } from './local-competition.js';
 import { AppError } from './errors.js';
+import { effectiveGrace } from './local-grace.js';
 export interface CommunityState extends FinanceState {
   notifications?: (AppNotification & { userId: string; key: string })[];
   comments?: (ProofComment & { proofId: string })[];
@@ -222,8 +223,7 @@ export function communityCommand(
   if (!h || !state.members.some((m) => m.circleId === h.circleId && m.userId === uid && !m.leftAt))
     throw new AppError(404, 'Challenge not found.');
   if (action.startsWith('grace')) {
-    if (action === 'grace_list')
-      return (state.graceChoices ?? []).filter((g) => g.challengeId === h.id && g.userId === uid);
+    if (action === 'grace_list') return effectiveGrace(state, h.id, uid, now);
     const o = state.obligations.find(
       (o) => o.id === p.obligationId && o.challengeId === h.id && o.userId === uid,
     );
@@ -235,8 +235,6 @@ export function communityCommand(
       )
     )
       throw new AppError(403, 'Only enrolled participants can choose their own grace days.');
-    if ((h.rules.gracePolicy ?? 'automatic_v1') !== 'chosen_v1')
-      throw new AppError(409, 'This challenge uses its original automatic grace policy.');
     if (action === 'grace_cancel' && now > new Date(o.deadlineAt))
       throw new AppError(409, 'Choose or cancel a grace day before its upload deadline.');
     const choices = (state.graceChoices ??= []);
@@ -244,12 +242,11 @@ export function communityCommand(
       state.graceChoices = choices.filter((g) => g.obligationId !== o.id);
       return { ok: true };
     }
-    if (choices.some((g) => g.obligationId === o.id)) return { ok: true };
+    if (effectiveGrace(state, h.id, uid, now).some((g) => g.obligationId === o.id))
+      return { ok: true };
     if ((state.proofs ?? []).some((s) => s.obligationId === o.id && s.receivedAt))
       throw new AppError(409, 'Proof is already submitted for this day.');
-    if (
-      choices.filter((g) => g.challengeId === h.id && g.userId === uid).length >= h.rules.graceDays
-    )
+    if (effectiveGrace(state, h.id, uid, now).length >= h.rules.graceDays)
       throw new AppError(409, 'Your grace-day allowance is used up.');
     choices.push({
       obligationId: o.id,

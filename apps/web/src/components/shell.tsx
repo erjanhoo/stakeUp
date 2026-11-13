@@ -1,3 +1,4 @@
+import { JoinCircleButton } from './invitation';
 import { useState, useEffect } from 'react';
 import { NavLink, Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -7,9 +8,6 @@ import {
   SlidersHorizontal,
   ArrowUpRight,
   LogOut,
-  Plus,
-  KeyRound,
-  Route,
   Globe,
   Award,
   ClipboardCheck,
@@ -26,15 +24,29 @@ const links = [
   { to: '/app', label: 'Overview', icon: LayoutGrid, end: true },
   { to: '/app/circles', label: 'My circles', icon: Users },
   { to: '/app/reviews', label: 'Review inbox', icon: ClipboardCheck },
-  { to: '/app/activity', label: 'Personal activity', icon: ReceiptText },
-  { to: '/app/settings', label: 'Settings & appearance', icon: SlidersHorizontal },
+  { to: '/app/activity', label: 'Activity', icon: ReceiptText },
+  { to: '/app/settings', label: 'Settings', icon: SlidersHorizontal },
 ];
 export function Shell() {
   const { t } = useI18n(),
     { profile, signOut } = useAuth(),
     { data: circles, reload: reloadCircles } = useResource<CircleSummary[]>('/circles'),
     navigate = useNavigate();
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
+  useEffect(() => {
+    if (!hash) window.scrollTo({ top: 0 });
+    else {
+      const target = () => document.getElementById(hash.slice(1))?.scrollIntoView();
+      const observer = new MutationObserver(target);
+      observer.observe(document.getElementById('root')!, { childList: true, subtree: true });
+      target();
+      const timer = setTimeout(() => observer.disconnect(), 1500);
+      return () => {
+        clearTimeout(timer);
+        observer.disconnect();
+      };
+    }
+  }, [pathname, hash]);
   useEffect(() => {
     void reloadCircles();
   }, [pathname, reloadCircles]);
@@ -60,7 +72,7 @@ export function Shell() {
         <div>
           <div className="st-sidebar-brand">
             <Brand />
-            <span className="st-version">VC</span>
+            <span className="st-version">{profile?.currency ?? 'USD'}</span>
           </div>
           <div className="st-sidebar-caption">
             <i />
@@ -106,10 +118,6 @@ export function Shell() {
                   </Link>
                 ))}
             </div>
-            <Link className="st-nav-link" to="/app/roadmap">
-              <Route size={18} />
-              {t('The road ahead')}
-            </Link>
           </div>
         </div>
         <div className="st-profile-dock">
@@ -122,7 +130,7 @@ export function Shell() {
             <ArrowUpRight size={16} />
           </Link>
           <div className="st-profile-dock-footer">
-            <span>{t('VIRTUAL STAKES ONLY')}</span>
+            <span>{t('Your private workspace')}</span>
             <button disabled={busy} onClick={() => void logout()} aria-label={t('Log out')}>
               <LogOut size={16} />
             </button>
@@ -138,17 +146,10 @@ export function Shell() {
             <Globe size={15} />
             <span>{profile?.timezone}</span>
             <span className="st-topbar-divider" />
-            <span>{t('All stakes are virtual. Always.')}</span>
+            <span>{t('Your workspace')}</span>
           </div>
           <div className="st-topbar-actions">
-            <Link className="st-topbar-join" to="/join">
-              <KeyRound size={14} />
-              {t('Join circle')}
-            </Link>
-            <Link className="st-btn st-btn-small" to="/app/circles/new">
-              <Plus size={15} />
-              {t('Create circle')}
-            </Link>
+            {!['/app', '/app/circles'].includes(pathname) && <JoinCircleButton />}
             <NotificationBell />
             <Link
               className="st-topbar-review"
@@ -173,8 +174,8 @@ export function Shell() {
           <Outlet />
         </main>
         <footer className="st-app-footer">
-          <span>{t('StakeUp · All stakes are virtual.')}</span>
-          <span>{t('Private circles. Friendly stakes. Always virtual.')}</span>
+          <span>StakeUp</span>
+          <span>{t('Your people. Your promise.')}</span>
         </footer>
       </div>
       <nav className="st-bottom-nav" aria-label={t('Mobile navigation')}>

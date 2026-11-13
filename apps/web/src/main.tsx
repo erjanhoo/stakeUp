@@ -18,6 +18,8 @@ import './interaction-polish.css';
 import './pwa-inbox.css';
 import { AppearanceProvider } from './lib/appearance';
 import { afterSignIn } from './lib/social';
+import { InvitationRedirect } from './components/invitation';
+import './refinement.css';
 const CompetitionPage = lazy(() =>
   import('./pages/competition').then((m) => ({ default: m.CompetitionPage })),
 );
@@ -39,14 +41,12 @@ const CreateChallenge = lazy(() =>
 const ChallengePage = lazy(() =>
   import('./pages/social').then((m) => ({ default: m.ChallengePage })),
 );
-const JoinCircle = lazy(() => import('./pages/social').then((m) => ({ default: m.JoinCircle })));
 const ActivityPage = lazy(() =>
   import('./pages/dashboard').then((m) => ({ default: m.ActivityPage })),
 );
 const NotificationsPage = lazy(() =>
   import('./pages/notifications').then((m) => ({ default: m.Notifications })),
 );
-const Roadmap = lazy(() => import('./pages/dashboard').then((m) => ({ default: m.Roadmap })));
 const Onboarding = lazy(() => import('./pages/profile').then((m) => ({ default: m.Onboarding })));
 const Settings = lazy(() => import('./pages/profile').then((m) => ({ default: m.Settings })));
 const MemberPage = lazy(() => import('./pages/member').then((m) => ({ default: m.MemberPage })));
@@ -95,7 +95,7 @@ function AppContent() {
         <Route path="/register" element={<AuthPage variant="register" />} />
         <Route path="/forgot-password" element={<AuthPage variant="forgot" />} />
         <Route path="/reset-password" element={<AuthPage variant="reset" />} />
-        <Route path="/join" element={<JoinCircle />} />
+        <Route path="/join" element={<InvitationRedirect />} />
         <Route element={<Protected onboarding />}>
           <Route path="/onboarding" element={<Onboarding />} />
         </Route>
@@ -116,7 +116,7 @@ function AppContent() {
             <Route path="members/:id" element={<MemberPage />} />
             <Route path="settings" element={<Settings />} />
             <Route path="profile" element={<OwnProfile />} />
-            <Route path="roadmap" element={<Roadmap />} />
+            <Route path="roadmap" element={<Navigate to="/app" replace />} />
           </Route>
         </Route>
         <Route path="*" element={<UtilityScreen />} />

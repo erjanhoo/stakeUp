@@ -92,7 +92,7 @@
   justify-content: center;
   gap: 8px;
   min-height: 44px;
-  padding: 10px 16px;
+  padding: 12px 16px;
   border-radius: 6px;
   border: 1px solid var(--k-line);
   background: var(--k-canvas);
@@ -188,7 +188,7 @@
 .inbox-task-person small {
   display: block;
   color: var(--k-muted);
-  font-size: 11px;
+  font-size: 13px;
   margin-top: 4px;
 }
 .inbox-task > h2 {
@@ -272,7 +272,7 @@
     gap: 12px;
   }
   .install-device-tabs button {
-    padding: 10px 12px;
+    padding: 12px 12px;
   }
   .review-inbox-toolbar {
     align-items: stretch;
@@ -285,7 +285,7 @@
   }
   .review-inbox-toolbar > div > button {
     padding: 10px 6px;
-    font-size: 11px;
+    font-size: 13px;
     flex-wrap: wrap;
   }
   .review-inbox-toolbar > div > button > svg {
